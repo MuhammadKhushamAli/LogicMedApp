@@ -18,6 +18,7 @@
         android:layout_marginTop="20dp"
         />
     <RelativeLayout
+        android:id="@+id/on_board_main_img_section"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/on_board_title"
@@ -62,6 +63,7 @@
             android:layout_marginBottom="10dp"
             />
         <TextView
+            android:id="@+id/on_board_term_agreement"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/termsAndPrivacyText"
@@ -70,6 +72,7 @@
             android:layout_marginBottom="10dp"
             />
         <Button
+            android:id="@+id/on_board_get_start_slider"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             />
