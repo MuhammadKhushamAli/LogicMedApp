@@ -7,5 +7,73 @@
     android:layout_height="match_parent"
     tools:context=".onBoardScreen">
 
+    <TextView
+        android:id="@+id/on_board_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/onBoardScreenTitle"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:layout_marginTop="20dp"
+        />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/on_board_title"
+        android:layout_above="@id/on_board_get_start_section"
+        android:gravity="center"
+        >
+        <ImageView
+            android:id="@+id/on_board_main_img"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:src="@drawable/on_board_main"
+            android:contentDescription="@string/onBoardMainImageDesc"
+            />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:src="@drawable/on_board_sub"
+            android:layout_alignBottom="@id/on_board_main_img"
+            android:contentDescription="@string/onBoardSubImageDesc"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:background="@android:color/transparent"
+            />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/on_board_get_start_section"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/get_start_section_bg"
+        android:padding="20dp"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/onBoardScreenSubTitle"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:textAlignment="center"
+            android:layout_marginBottom="10dp"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/termsAndPrivacyText"
+            android:textSize="11sp"
+            android:textAlignment="center"
+            android:layout_marginBottom="10dp"
+            />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+    </LinearLayout>
 
 </RelativeLayout>
