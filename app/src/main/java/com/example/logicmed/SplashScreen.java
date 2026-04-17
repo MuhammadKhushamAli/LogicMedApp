@@ -1,5 +1,7 @@
 package com.example.logicmed;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
@@ -14,7 +16,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class splashScreen extends AppCompatActivity {
+public class SplashScreen extends AppCompatActivity {
     private TextView tvTitle;
     private RelativeLayout lMainImagesSection;
     private LinearLayout lGetStartSection;
@@ -24,6 +26,7 @@ public class splashScreen extends AppCompatActivity {
     private Animation invisibleToVisible;
     private TextView tvTermsAgreement;
     private SlideToStart sliderGetStart;
+    private SharedPreferences sPref;
 
 
     @Override
@@ -39,14 +42,17 @@ public class splashScreen extends AppCompatActivity {
 
         init();
         setAnimations();
-    }
 
+        sliderGetStart.setSliderSliderListener(this::redirect);
+    }
     private void init() {
         tvTitle = findViewById(R.id.on_board_title);
         tvTermsAgreement = findViewById(R.id.on_board_term_agreement);
         sliderGetStart = findViewById(R.id.on_board_get_start_slider);
         lMainImagesSection = findViewById(R.id.on_board_main_img_section);
         lGetStartSection = findViewById(R.id.on_board_get_start_section);
+        sPref = getSharedPreferences(KeyUtils.userPrefFileKey, MODE_PRIVATE);
+
         lMainImagesSection.setVisibility(View.INVISIBLE);
         tvTermsAgreement.setVisibility(View.INVISIBLE);
         sliderGetStart.setVisibility(View.INVISIBLE);
@@ -81,5 +87,30 @@ public class splashScreen extends AppCompatActivity {
             sliderGetStart.setVisibility(View.VISIBLE);
             sliderGetStart.startAnimation(invisibleToVisible);
         }, 6000);
+    }
+
+    private void redirect() {
+        Intent i = null;
+        if (sPref.getBoolean(KeyUtils.isLoggedInPrefKey, false)) {
+            i = new Intent(
+                    SplashScreen.this,
+                    MainActivity.class
+            );
+        }
+        else {
+            if (sPref.getBoolean(KeyUtils.isFirstTimePrefKey, true)) {
+                i = new Intent(
+                        SplashScreen.this,
+                        OnBoardScreen.class
+                );
+            }
+            else {
+                i = new Intent(
+                        SplashScreen.this,
+                        AuthenticationScreen.class
+                );
+            }
+        }
+        startActivity(i);
     }
 }
