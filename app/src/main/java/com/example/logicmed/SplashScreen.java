@@ -46,11 +46,11 @@ public class SplashScreen extends AppCompatActivity {
         sliderGetStart.setSliderSliderListener(this::redirect);
     }
     private void init() {
-        tvTitle = findViewById(R.id.on_board_title);
-        tvTermsAgreement = findViewById(R.id.on_board_term_agreement);
-        sliderGetStart = findViewById(R.id.on_board_get_start_slider);
-        lMainImagesSection = findViewById(R.id.on_board_main_img_section);
-        lGetStartSection = findViewById(R.id.on_board_get_start_section);
+        tvTitle = findViewById(R.id.splash_title);
+        tvTermsAgreement = findViewById(R.id.splash_term_agreement);
+        sliderGetStart = findViewById(R.id.splash_get_start_slider);
+        lMainImagesSection = findViewById(R.id.splash_main_img_section);
+        lGetStartSection = findViewById(R.id.splash_get_start_section);
         sPref = getSharedPreferences(KeyUtils.userPrefFileKey, MODE_PRIVATE);
 
         lMainImagesSection.setVisibility(View.INVISIBLE);
