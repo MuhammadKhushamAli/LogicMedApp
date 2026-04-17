@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LogicMed">
         <activity
-            android:name=".onBoardScreen"
+            android:name=".splashScreen"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
