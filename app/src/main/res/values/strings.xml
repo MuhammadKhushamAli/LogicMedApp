@@ -9,4 +9,8 @@
     <string name="sliderText">Get Started</string>
     <string name="onBoardScreenTitle">Find your angle</string>
     <string name="tagDesc">Tag</string>
+    <string name="titleImgDesc">Title Image</string>
+    <string name="smileyTagText">20k</string>
+    <string name="badgeTagText">#4</string>
+    <string name="doctorTagText">4th</string>
 </resources>

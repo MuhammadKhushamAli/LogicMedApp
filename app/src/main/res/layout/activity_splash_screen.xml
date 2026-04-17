@@ -50,7 +50,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/get_start_section_bg"
+        android:background="@drawable/splash_screen_get_start_section_bg"
         android:padding="20dp"
         >
         <TextView
