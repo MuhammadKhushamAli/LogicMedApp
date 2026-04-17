@@ -2,6 +2,7 @@ package com.example.logicmed;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -11,11 +12,19 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatImageButton;
+
 public class SlideToStart extends RelativeLayout {
-    private ImageButton btnSlider;
+    private SliderButton btnSlider;
     private RelativeLayout lSliderPath;
-    TextView tvSliderText;
     onSlideListener listener;
+
+    @Override
+    public boolean requestChildRectangleOnScreen(@NonNull View child, @NonNull Rect rectangle, boolean immediate, int source) {
+        return super.requestChildRectangleOnScreen(child, rectangle, immediate, source);
+    }
+
 
     public interface onSlideListener {
         void onSlideComplete();
@@ -29,7 +38,7 @@ public class SlideToStart extends RelativeLayout {
         inflate(context, R.layout.slide_to_start, this);
         btnSlider = findViewById(R.id.slider_btn);
         lSliderPath = findViewById(R.id.slider_path);
-        tvSliderText = findViewById(R.id.slider_text);
+        TextView tvSliderText = findViewById(R.id.slider_text);
 
         if (attrs != null) {
             TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.SlideToStart);
@@ -45,7 +54,6 @@ public class SlideToStart extends RelativeLayout {
 
         slideHandler();
     }
-
 
     private void slideHandler() {
         btnSlider.setOnTouchListener(new OnTouchListener() {

@@ -5,7 +5,7 @@
     android:id="@+id/slider_path"
     android:padding="10dp"
     android:gravity="center_vertical">
-    <ImageButton
+    <com.example.logicmed.SliderButton
         android:id="@+id/slider_btn"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
