@@ -1,17 +1,20 @@
 package com.example.logicmed;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class SlideToStart extends RelativeLayout {
     private ImageButton btnSlider;
     private RelativeLayout lSliderPath;
+    TextView tvSliderText;
     onSlideListener listener;
 
     public interface onSlideListener {
@@ -20,12 +23,26 @@ public class SlideToStart extends RelativeLayout {
 
     public SlideToStart(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init(context);
+        init(context, attrs);
     }
-    private void init(Context context) {
+    private void init(Context context, AttributeSet attrs) {
         inflate(context, R.layout.slide_to_start, this);
         btnSlider = findViewById(R.id.slider_btn);
         lSliderPath = findViewById(R.id.slider_path);
+        tvSliderText = findViewById(R.id.slider_text);
+
+        if (attrs != null) {
+            TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.SlideToStart);
+            try {
+                String sliderText = typedArray.getString(R.styleable.SlideToStart_slider_text);
+                tvSliderText.setText(sliderText);
+
+            } finally {
+                typedArray.recycle();
+            }
+        }
+
+
         slideHandler();
     }
 

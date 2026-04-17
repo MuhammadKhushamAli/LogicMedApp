@@ -14,9 +14,9 @@
         android:layout_marginEnd="15dp"
         />
     <TextView
+        android:id="@+id/slider_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/sliderText"
         android:textAlignment="center"
         android:textSize="20sp"
         android:textStyle="bold"
