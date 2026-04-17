@@ -20,6 +20,5 @@
     <string name="locationHint">Location</string>
     <string name="passwordHint">Password</string>
     <string name="cPasswordHint">Confirm Password</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="loginFragTitle">Log in</string>
 </resources>

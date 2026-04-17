@@ -5,4 +5,6 @@
         <attr name="slider_cover_color" format="color"/>
         <attr name="slider_text_color" format="color"/>
     </declare-styleable>
+    <attr name="button_color" format="color"/>
+    <attr name="button_text_color" format="color"/>
 </resources>
