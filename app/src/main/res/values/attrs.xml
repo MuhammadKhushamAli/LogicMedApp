@@ -2,5 +2,6 @@
 <resources>
     <declare-styleable name="SlideToStart">
         <attr name="slider_text" format="string" />
+        <attr name="slider_cover_color" format="color"/>
     </declare-styleable>
 </resources>

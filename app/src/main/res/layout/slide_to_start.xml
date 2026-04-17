@@ -5,9 +5,14 @@
     android:id="@+id/slider_path"
     android:padding="10dp"
     android:gravity="center_vertical">
+    <View
+        android:id="@+id/slider_cover"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        />
     <com.example.logicmed.SliderButton
         android:id="@+id/slider_btn"
-        android:layout_width="wrap_content"
+        android:layout_width="50dp"
         android:layout_height="50dp"
         android:contentDescription="@string/sliderTickMarkDesc"
         android:background="@drawable/slider_icon_bg"
@@ -16,11 +21,11 @@
     <TextView
         android:id="@+id/slider_text"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
+        android:layout_height="50dp"
         android:textSize="20sp"
         android:textStyle="bold"
         android:layout_toEndOf="@id/slider_btn"
+        android:gravity="center"
         />
 
 </RelativeLayout>
