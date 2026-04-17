@@ -51,6 +51,7 @@ public class SlideToStart extends RelativeLayout {
         btnSlider.setOnTouchListener(new OnTouchListener() {
             private float initialRelativeX;
             private float initialAbsX;
+            private float initialRelXPreserve = 0.0f;
 
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -58,6 +59,9 @@ public class SlideToStart extends RelativeLayout {
                     case MotionEvent.ACTION_DOWN:
                         initialRelativeX = view.getX();
                         initialAbsX = motionEvent.getRawX();
+                        if (initialRelXPreserve == 0.0f) {
+                            initialRelXPreserve = view.getX();
+                        }
                         return true;
 
                     case MotionEvent.ACTION_MOVE:
@@ -79,7 +83,7 @@ public class SlideToStart extends RelativeLayout {
                             view.performClick();
                         }
                         else {
-                            view.animate().x(initialRelativeX).setDuration(2000).start();
+                            view.animate().x(initialRelXPreserve).setDuration(2000).start();
                         }
                         return true;
                 }
