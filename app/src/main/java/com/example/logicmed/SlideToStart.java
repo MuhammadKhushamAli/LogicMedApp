@@ -53,6 +53,10 @@ public class SlideToStart extends RelativeLayout {
             try {
                 String sliderText = typedArray.getString(R.styleable.SlideToStart_slider_text);
                 tvSliderText.setText(sliderText);
+
+                int textColor = typedArray.getColor(R.styleable.SlideToStart_slider_text_color, Color.BLACK);
+                tvSliderText.setTextColor(textColor);
+
                 int color = typedArray.getColor(R.styleable.SlideToStart_slider_cover_color, Color.BLACK);
                 GradientDrawable drawable = new GradientDrawable();
                 drawable.setShape(GradientDrawable.RECTANGLE);

@@ -27,6 +27,7 @@
             android:text="@string/onBoardScreenTitle"
             android:textStyle="bold"
             android:textSize="30sp"
+            android:textColor="@color/black"
             android:textAlignment="center"
             />
 
@@ -124,6 +125,7 @@
                 android:text="@string/badgeTagText"
                 android:textSize="20sp"
                 android:textAlignment="center"
+                android:textColor="@color/black"
                 app:drawableTopCompat="@drawable/badge_icon" />
         </androidx.cardview.widget.CardView>
 
@@ -148,6 +150,7 @@
                 android:text="@string/doctorTagText"
                 android:textSize="20sp"
                 android:textAlignment="center"
+                android:textColor="@color/black"
                 app:drawableTopCompat="@drawable/stethoscope_icon"
                 />
         </androidx.cardview.widget.CardView>
@@ -169,6 +172,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/on_board_screen_slider_bg"
             app:slider_text="@string/sliderText"
+            app:slider_text_color="@color/black"
             app:slider_cover_color="@color/bg_color"
             />
     </FrameLayout>
