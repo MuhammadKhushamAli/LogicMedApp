@@ -1,5 +1,7 @@
 package com.example.logicmed;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -19,6 +21,22 @@ public class OnBoardScreen extends AppCompatActivity {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
+
+        });
+
+        SlideToStart slideToStart = findViewById(R.id.on_board_slider);
+        slideToStart.setSliderSliderListener(() -> {
+            getSharedPreferences(KeyUtils.userPrefFileKey, MODE_PRIVATE)
+                    .edit()
+                    .putBoolean(KeyUtils.isFirstTimePrefKey, false)
+                    .apply();
+
+            startActivity(
+                    new Intent(
+                            OnBoardScreen.this,
+                            AuthenticationScreen.class
+                    )
+            );
         });
     }
 }
