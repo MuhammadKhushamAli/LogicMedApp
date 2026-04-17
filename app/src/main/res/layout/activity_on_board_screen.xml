@@ -8,7 +8,10 @@
     android:orientation="vertical"
     tools:context=".OnBoardScreen">
     <TextView
-        android:layout_width=""
-        android:layout_height=""
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/onBoardScreenTitle"
+        android:textStyle="bold"
+
 
 </LinearLayout>
