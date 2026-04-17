@@ -109,6 +109,7 @@ public class SlideToStart extends RelativeLayout {
                             coverWidthAnimator((int) (maxTransX + sliderBtnWidth - 50));
                             view.animate().x(maxTransX).setDuration(2000).start();
                             valueAnimator.start();
+                            listener.onSlideComplete();
                             view.performClick();
                         }
                         else {

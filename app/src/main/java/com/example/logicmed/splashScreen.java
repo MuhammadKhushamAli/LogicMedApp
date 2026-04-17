@@ -18,12 +18,13 @@ public class splashScreen extends AppCompatActivity {
     private TextView tvTitle;
     private RelativeLayout lMainImagesSection;
     private LinearLayout lGetStartSection;
-    Animation topToCurrent;
-    Animation rotateToCurrent;
-    Animation bottomToCurrent;
-    Animation invisibleToVisible;
-    TextView tvTermsAgreement;
-    SlideToStart slidergetStart;
+    private Animation topToCurrent;
+    private Animation rotateToCurrent;
+    private Animation bottomToCurrent;
+    private Animation invisibleToVisible;
+    private TextView tvTermsAgreement;
+    private SlideToStart sliderGetStart;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,12 +44,12 @@ public class splashScreen extends AppCompatActivity {
     private void init() {
         tvTitle = findViewById(R.id.on_board_title);
         tvTermsAgreement = findViewById(R.id.on_board_term_agreement);
-        slidergetStart = findViewById(R.id.on_board_get_start_slider);
+        sliderGetStart = findViewById(R.id.on_board_get_start_slider);
         lMainImagesSection = findViewById(R.id.on_board_main_img_section);
         lGetStartSection = findViewById(R.id.on_board_get_start_section);
         lMainImagesSection.setVisibility(View.INVISIBLE);
         tvTermsAgreement.setVisibility(View.INVISIBLE);
-        slidergetStart.setVisibility(View.INVISIBLE);
+        sliderGetStart.setVisibility(View.INVISIBLE);
         lMainImagesSection.setRotation(90);
 
         topToCurrent = AnimationUtils.loadAnimation(this, R.anim.top_to_current);
@@ -76,9 +77,9 @@ public class splashScreen extends AppCompatActivity {
             tvTermsAgreement.startAnimation(invisibleToVisible);
         }, 6000);
 
-        slidergetStart.postDelayed(() -> {
-            slidergetStart.setVisibility(View.VISIBLE);
-            slidergetStart.startAnimation(invisibleToVisible);
+        sliderGetStart.postDelayed(() -> {
+            sliderGetStart.setVisibility(View.VISIBLE);
+            sliderGetStart.startAnimation(invisibleToVisible);
         }, 6000);
     }
 }
