@@ -96,7 +96,6 @@ public class SlideToStart extends RelativeLayout {
 
                         if (distMoveX > 0 && newX <= maxTranslationX) {
                             view.setX(newX);
-                            Toast.makeText(getContext(), "" + sliderBtnWidth, Toast.LENGTH_LONG).show();
                             layoutParams.width = (int) (newX + sliderBtnWidth - 50);
                             vSliderCover.setLayoutParams(layoutParams);
                         }
