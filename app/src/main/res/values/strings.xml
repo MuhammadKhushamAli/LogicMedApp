@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">LogicMed</string>
-    <string name="onBoardScreenTitle">Transforming\nHealthcare</string>
-    <string name="onBoardMainImageDesc">On Board Main Image</string>
-    <string name="onBoardSubImageDesc">On Board Sub Image</string>
-    <string name="onBoardScreenSubTitle">The purpose of life is to\nfind joy and fulfillment.</string>
+    <string name="splashScreenTitle">Transforming\nHealthcare</string>
+    <string name="MainImageDesc">Main Image</string>
+    <string name="SubImageDesc">Sub Image</string>
+    <string name="splashScreenSubTitle">The purpose of life is to\nfind joy and fulfillment.</string>
     <string name="termsAndPrivacyText">Tap to accept Terms &amp; Privacy.</string>
     <string name="sliderTickMarkDesc">Slider Tick Mark</string>
     <string name="sliderText">Get Started</string>
