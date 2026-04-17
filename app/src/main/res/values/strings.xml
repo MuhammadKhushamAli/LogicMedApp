@@ -7,4 +7,6 @@
     <string name="termsAndPrivacyText">Tap to accept Terms &amp; Privacy.</string>
     <string name="sliderTickMarkDesc">Slider Tick Mark</string>
     <string name="sliderText">Get Started</string>
+    <string name="onBoardScreenTitle">Find your angle</string>
+    <string name="tagDesc">Tag</string>
 </resources>
