@@ -27,7 +27,7 @@ public class onBoardScreen extends AppCompatActivity {
     Animation bottomToCurrent;
     Animation invisibleToVisible;
     TextView tvTermsAgreement;
-    Button btnetStart;
+    SlideToStart slidergetStart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,12 +47,12 @@ public class onBoardScreen extends AppCompatActivity {
     private void init() {
         tvTitle = findViewById(R.id.on_board_title);
         tvTermsAgreement = findViewById(R.id.on_board_term_agreement);
-        btnetStart = findViewById(R.id.on_board_get_start_slider);
+        slidergetStart = findViewById(R.id.on_board_get_start_slider);
         lMainImagesSection = findViewById(R.id.on_board_main_img_section);
         lGetStartSection = findViewById(R.id.on_board_get_start_section);
         lMainImagesSection.setVisibility(View.INVISIBLE);
         tvTermsAgreement.setVisibility(View.INVISIBLE);
-        btnetStart.setVisibility(View.INVISIBLE);
+        slidergetStart.setVisibility(View.INVISIBLE);
         lMainImagesSection.setRotation(90);
 
         topToCurrent = AnimationUtils.loadAnimation(this, R.anim.top_to_current);
@@ -80,9 +80,9 @@ public class onBoardScreen extends AppCompatActivity {
             tvTermsAgreement.startAnimation(invisibleToVisible);
         }, 6000);
 
-        btnetStart.postDelayed(() -> {
-            btnetStart.setVisibility(View.VISIBLE);
-            btnetStart.startAnimation(invisibleToVisible);
+        slidergetStart.postDelayed(() -> {
+            slidergetStart.setVisibility(View.VISIBLE);
+            slidergetStart.startAnimation(invisibleToVisible);
         }, 6000);
     }
 }
