@@ -71,22 +71,22 @@ public class SplashScreen extends AppCompatActivity {
         lMainImagesSection.postDelayed(() -> {
             lMainImagesSection.setVisibility(View.VISIBLE);
             lMainImagesSection.setAnimation(invisibleToVisible);
-        }, 2000);
+        }, 500);
 
         lMainImagesSection.postDelayed(() -> {
             lMainImagesSection.setRotation(0);
             lMainImagesSection.startAnimation(rotateToCurrent);
-        }, 4000);
+        }, 1000);
 
         tvTermsAgreement.postDelayed(() -> {
             tvTermsAgreement.setVisibility(View.VISIBLE);
             tvTermsAgreement.startAnimation(invisibleToVisible);
-        }, 6000);
+        }, 2000);
 
         sliderGetStart.postDelayed(() -> {
             sliderGetStart.setVisibility(View.VISIBLE);
             sliderGetStart.startAnimation(invisibleToVisible);
-        }, 6000);
+        }, 2000);
     }
 
     private void redirect() {

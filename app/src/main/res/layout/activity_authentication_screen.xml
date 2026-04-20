@@ -6,6 +6,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".AuthenticationScreen">
+    <TextView
+        android:id="@+id/auth_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/authTitle"
+        android:textStyle="bold"
+        android:textSize="30sp"
+        android:textAlignment="viewStart"
+        android:layout_marginTop="40dp"
+        android:layout_marginStart="15dp"
+        android:layout_alignParentTop="true"
+        />
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

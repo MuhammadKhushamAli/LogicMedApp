@@ -21,4 +21,5 @@
     <string name="passwordHint">Password</string>
     <string name="cPasswordHint">Confirm Password</string>
     <string name="loginFragTitle">Log in</string>
+    <string name="authTitle">Let Us Know Who are You?</string>
 </resources>
