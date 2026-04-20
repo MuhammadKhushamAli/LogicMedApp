@@ -3,6 +3,8 @@ package com.example.logicmed;
 import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -19,7 +21,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
 public class AuthenticationScreen extends AppCompatActivity {
     private ViewPager2 viewPager2;
     private ValueAnimator valueAnimator;
-    private RecyclerView.LayoutParams layoutParams;
+    private ViewGroup.LayoutParams layoutParams;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +43,7 @@ public class AuthenticationScreen extends AppCompatActivity {
         viewPager2.setAdapter(
                 new AuthViewPagerAdapter(this)
         );
+        layoutParams = (ViewGroup.LayoutParams) viewPager2.getLayoutParams();
         TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(
                 tabLayout,
                 viewPager2,
@@ -67,20 +70,20 @@ public class AuthenticationScreen extends AppCompatActivity {
                     @Override
                     public void onPageSelected(int position) {
                         super.onPageSelected(position);
-
                         viewPager2.post(() -> {
                             RecyclerView recyclerView = (RecyclerView) viewPager2.getChildAt(0);
                             assert recyclerView.getLayoutManager() != null : "Recycler View Has no Layout Manager";
+
                             View view  = recyclerView.getLayoutManager().findViewByPosition(position);
                             assert view != null : "View is null in Auth Activity";
+
                             view.post(() -> {
                                 int measureX = View.MeasureSpec.makeMeasureSpec(view.getWidth(), View.MeasureSpec.EXACTLY);
-                                int measureY = View.MeasureSpec.makeMeasureSpec(view.getHeight(), View.MeasureSpec.UNSPECIFIED);
+                                int measureY = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
                                 view.measure(measureX, measureY);
                                 int measuredHeight = view.getMeasuredHeight();
 
-                                layoutParams = (RecyclerView.LayoutParams) view.getLayoutParams();
-                                authPagerAnimator(view, measuredHeight);
+                                authPagerAnimator(viewPager2, measuredHeight);
                                 valueAnimator.start();
                             });
 
@@ -89,12 +92,12 @@ public class AuthenticationScreen extends AppCompatActivity {
                 }
         );
     }
-    private void authPagerAnimator(View view, int endHeight) {
-        valueAnimator = ValueAnimator.ofInt(view.getHeight(), endHeight);
-        valueAnimator.setDuration(2000);
-        valueAnimator.addUpdateListener(animatedValue -> {
-            layoutParams.height = (int) animatedValue.getAnimatedValue();
-            view.setLayoutParams(layoutParams);
+    private void authPagerAnimator(ViewPager2 viewPager2, int endHeight) {
+        valueAnimator = ValueAnimator.ofInt(viewPager2.getHeight(), endHeight);
+        valueAnimator.addUpdateListener(valueAnimator -> {
+            layoutParams.height = (int) valueAnimator.getAnimatedValue();
+            viewPager2.requestLayout();
         });
+        valueAnimator.setDuration(1000);
     }
 }
