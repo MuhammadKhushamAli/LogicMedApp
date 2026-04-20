@@ -49,20 +49,14 @@
         android:orientation="horizontal"
         android:baselineAligned="false"
         >
-        <com.google.android.material.textfield.TextInputLayout
+        <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+            android:id="@+id/signup_role"
             android:layout_width="0dp"
             android:layout_weight="0.3"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp"
-            >
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/signup_role"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/roleHint"
-                android:inputType="text"
-                />
-        </com.google.android.material.textfield.TextInputLayout>
+            android:hint="@string/roleHint"
+            android:inputType="text"
+            />
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="0dp"
