@@ -13,6 +13,7 @@
         android:theme="@style/Theme.LogicMed" >
         <activity
             android:name=".AuthenticationScreen"
+            android:windowSoftInputMode="adjustPan"
             android:exported="false" />
         <activity
             android:name=".OnBoardScreen"
