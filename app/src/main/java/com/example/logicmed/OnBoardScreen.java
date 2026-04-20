@@ -37,6 +37,7 @@ public class OnBoardScreen extends AppCompatActivity {
                             AuthenticationScreen.class
                     )
             );
+            finish();
         });
     }
 }
