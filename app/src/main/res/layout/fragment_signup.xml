@@ -58,19 +58,15 @@
             android:inputType="text"
             />
 
-        <com.google.android.material.textfield.TextInputLayout
+        <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+            android:id="@+id/signup_location"
             android:layout_width="0dp"
-            android:layout_weight="0.6"
             android:layout_height="wrap_content"
-            >
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/signup_location"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/locationHint"
-                android:inputType="text"
-                />
-        </com.google.android.material.textfield.TextInputLayout>
+            android:layout_weight="0.6"
+            android:hint="@string/locationHint"
+            android:inputType="text"
+            />
+
     </LinearLayout>
 
     <com.google.android.material.textfield.TextInputLayout
