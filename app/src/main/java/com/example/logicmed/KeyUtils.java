@@ -1,7 +1,10 @@
 package com.example.logicmed;
 
+import okhttp3.MediaType;
+
 public class KeyUtils {
     static public final String userPrefFileKey = "userPref";
     static public final String isLoggedInPrefKey = "isLoggedInPref";
     static public final String isFirstTimePrefKey = "isFirstTimePref";
+    static public final MediaType JSON = MediaType.get("application/json; charset=utf-8");
 }

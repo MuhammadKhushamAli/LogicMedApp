@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -35,6 +36,9 @@ public class AuthenticationScreen extends AppCompatActivity {
         });
         init();
         setAuthSectionHeight();
+        new ViewModelProvider(this).get(SignupViewModel.class).getCurrentPage().observe(this, currentPage -> {
+            setViewPager2Height(1);
+        });
     }
 
     private void init() {
@@ -70,27 +74,31 @@ public class AuthenticationScreen extends AppCompatActivity {
                     @Override
                     public void onPageSelected(int position) {
                         super.onPageSelected(position);
-                        viewPager2.post(() -> {
-                            RecyclerView recyclerView = (RecyclerView) viewPager2.getChildAt(0);
-                            assert recyclerView.getLayoutManager() != null : "Recycler View Has no Layout Manager";
-
-                            View view  = recyclerView.getLayoutManager().findViewByPosition(position);
-                            assert view != null : "View is null in Auth Activity";
-
-                            view.post(() -> {
-                                int measureX = View.MeasureSpec.makeMeasureSpec(view.getWidth(), View.MeasureSpec.EXACTLY);
-                                int measureY = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
-                                view.measure(measureX, measureY);
-                                int measuredHeight = view.getMeasuredHeight();
-
-                                authPagerAnimator(viewPager2, measuredHeight);
-                                valueAnimator.start();
-                            });
-
-                        });
+                        setViewPager2Height(position);
                     }
                 }
         );
+    }
+
+    private void setViewPager2Height(int position) {
+        viewPager2.post(() -> {
+            RecyclerView recyclerView = (RecyclerView) viewPager2.getChildAt(0);
+            assert recyclerView.getLayoutManager() != null : "Recycler View Has no Layout Manager";
+
+            View view  = recyclerView.getLayoutManager().findViewByPosition(position);
+            assert view != null : "View is null in Auth Activity";
+
+            view.post(() -> {
+                int measureX = View.MeasureSpec.makeMeasureSpec(view.getWidth(), View.MeasureSpec.EXACTLY);
+                int measureY = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+                view.measure(measureX, measureY);
+                int measuredHeight = view.getMeasuredHeight();
+
+                authPagerAnimator(viewPager2, measuredHeight);
+                valueAnimator.start();
+            });
+
+        });
     }
     private void authPagerAnimator(ViewPager2 viewPager2, int endHeight) {
         valueAnimator = ValueAnimator.ofInt(viewPager2.getHeight(), endHeight);
@@ -100,4 +108,5 @@ public class AuthenticationScreen extends AppCompatActivity {
         });
         valueAnimator.setDuration(1000);
     }
+
 }
