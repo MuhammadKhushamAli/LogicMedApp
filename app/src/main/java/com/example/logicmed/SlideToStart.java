@@ -26,12 +26,6 @@ public class SlideToStart extends RelativeLayout {
     RelativeLayout.LayoutParams layoutParams;
     ValueAnimator valueAnimator;
 
-    @Override
-    public boolean requestChildRectangleOnScreen(@NonNull View child, @NonNull Rect rectangle, boolean immediate, int source) {
-        return super.requestChildRectangleOnScreen(child, rectangle, immediate, source);
-    }
-
-
     public interface onSlideListener {
         void onSlideComplete();
     }
