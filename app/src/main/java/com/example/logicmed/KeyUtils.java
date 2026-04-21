@@ -7,4 +7,5 @@ public class KeyUtils {
     static public final String isLoggedInPrefKey = "isLoggedInPref";
     static public final String isFirstTimePrefKey = "isFirstTimePref";
     static public final MediaType JSON = MediaType.get("application/json; charset=utf-8");
+    static public final String firebaseUserCollectionKey = "users";
 }

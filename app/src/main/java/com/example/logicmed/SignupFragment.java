@@ -1,6 +1,8 @@
 package com.example.logicmed;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,9 +18,18 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,6 +38,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -49,9 +61,11 @@ public class SignupFragment extends Fragment {
     private AutoCompleteTextView atLocation;
     private TextInputEditText tePassword;
     private TextInputEditText teCPassword;
+    private MaterialButton btnSignup;
     private ProgressBar progressBar;
-    MyApplication app;
-    Boolean isFetching;
+    private MyApplication app;
+    private FirebaseAuth firebaseAuth;
+    private FirebaseFirestore firestore;
 
 
     public SignupFragment() {
@@ -78,6 +92,16 @@ public class SignupFragment extends Fragment {
         init(view);
         setDropDown(atvRole, list, false);
         fetchCities("Pakistan", "https://countriesnow.space/api/v0.1/countries/cities");
+
+        btnSignup.setOnClickListener(v -> {
+            String fullName = Objects.requireNonNull(teFullName.getText()).toString();
+            String email = Objects.requireNonNull(teEmail.getText()).toString();
+            String role = Objects.requireNonNull(atvRole.getText()).toString();
+            String city = Objects.requireNonNull(atLocation.getText()).toString();
+            String password = Objects.requireNonNull(tePassword.getText()).toString();
+            String cPassword = Objects.requireNonNull(teCPassword.getText()).toString();
+            firebaseAuth(fullName, email, role, city, password, cPassword);
+        });
     }
 
     private void init(View view) {
@@ -88,7 +112,11 @@ public class SignupFragment extends Fragment {
         tePassword = view.findViewById(R.id.signup_pass);
         teCPassword = view.findViewById(R.id.signup_c_pass);
         progressBar = view.findViewById(R.id.signup_progress_bar);
+        btnSignup = view.findViewById(R.id.signup_btn);
         app = (MyApplication) requireContext().getApplicationContext();
+        firebaseAuth = FirebaseAuth.getInstance();
+        firestore = FirebaseFirestore.getInstance();
+
 
         progressBar.setVisibility(View.GONE);
     }
@@ -108,7 +136,6 @@ public class SignupFragment extends Fragment {
     private void fetchCities(String country, String url) {
         progressBar.setVisibility(View.VISIBLE);
 
-        isFetching = Boolean.TRUE;
         String reqJson = "{\"country\": \"" + country + "\"}";
 
         OkHttpClient client = new OkHttpClient();
@@ -160,5 +187,99 @@ public class SignupFragment extends Fragment {
                 }
             }
         });
+    }
+    private void firebaseAuth(String fullName, String email, String role, String city, String password, String cPassword) {
+        Context context = requireContext();
+        Activity activity = requireActivity();
+        String message = null;
+
+        if (fullName.isEmpty() || email.isEmpty() || role.isEmpty() || city.isEmpty() || password.isEmpty() || cPassword.isEmpty()) {
+            message = "All Fields are Required!";
+        }
+        else if (!(email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"))) {
+            message = "Email Must be in Correct Formate!";
+        }
+        else if (!(password.equals(cPassword))) {
+            message =  "Password Must be Equal to Confirm Password!";
+        }
+        else if (!(password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*.?&])[A-Za-z\\d@$!.%*?&]{8,}$"))) {
+            message = "Password must contain:\n" +
+                    "• At least 8 characters\n" +
+                    "• One uppercase & one lowercase letter\n" +
+                    "• One number & one special character";
+        }
+        if (message != null) {
+            View view = getView();
+            assert view != null : "View is Null for Snack bar";
+            Snackbar snackbar = Snackbar.make(view, message, Snackbar.LENGTH_SHORT);
+            TextView textView = snackbar.getView().findViewById(com.google.android.material.R.id.snackbar_text);
+            textView.setMaxLines(4);
+            snackbar.show();
+            return;
+        }
+
+
+        progressBar.setVisibility(View.VISIBLE);
+
+        firebaseAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            assert firebaseAuth.getCurrentUser() != null;
+                            java.lang.String uID = firebaseAuth.getCurrentUser().getUid();
+                            Map<String, String> data = new HashMap<>();
+                            data.put("fullName", fullName);
+                            data.put("role", role);
+                            data.put("city", city);
+
+                            firebaseDB(uID, data);
+                        }
+                        else {
+                            String error = task.getException() != null ? task.getException().getMessage() : "Unable to Signup";
+                            Toast.makeText(context, error, Toast.LENGTH_LONG).show();
+                        }
+
+                    }
+                });
+    }
+    private void firebaseDB(String uID, Map<String, String> data) {
+        Context context = requireContext();
+        Activity activity = requireActivity();
+
+        firestore.collection(KeyUtils.firebaseUserCollectionKey)
+                .document(uID)
+                .set(data)
+                .addOnCompleteListener(activity, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            if (
+                                    context.getSharedPreferences(KeyUtils.userPrefFileKey, Context.MODE_PRIVATE)
+                                            .edit()
+                                            .putBoolean(KeyUtils.isLoggedInPrefKey, true)
+                                            .commit()
+                            ) {
+
+                                startActivity(
+                                        new Intent(
+                                                context,
+                                                MainActivity.class
+                                        )
+                                );
+                            }
+                            else {
+                                Toast.makeText(context, "Unable to Maintain Login Status", Toast.LENGTH_SHORT).show();
+                            }
+                            activity.finish();
+                        }
+                        else {
+                            String error = task.getException() != null ? task.getException().getMessage() : "Unable to Maintain DB";
+                            Toast.makeText(context, error, Toast.LENGTH_LONG).show();
+                        }
+                        progressBar.setVisibility(View.GONE);
+                    }
+                });
+
     }
 }
