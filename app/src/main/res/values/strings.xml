@@ -22,4 +22,5 @@
     <string name="cPasswordHint">Confirm Password</string>
     <string name="loginFragTitle">Log in</string>
     <string name="authTitle">Let Us Know Who are You?</string>
+    <string name="doctorDataTitle">Enter your Data Here!</string>
 </resources>
