@@ -10,14 +10,23 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SubCategoriesAdapter extends RecyclerView.Adapter<SubCategoriesAdapter.SubCategoriesViewHolder> {
     private final Context context;
     private final ArrayList<String> subCategoriesArrayList;
+    private final setOnclickListener listener;
 
-    public SubCategoriesAdapter(Context context, ArrayList<String> subCategoriesArrayList) {
+    public interface setOnclickListener {
+        void addSubCategory(String subCategory);
+        void removeSubCategory(String subCategory);
+    }
+
+    public SubCategoriesAdapter(Context context, ArrayList<String> subCategoriesArrayList,
+                                setOnclickListener listener) {
         this.context = context;
         this.subCategoriesArrayList = subCategoriesArrayList;
+        this.listener = listener;
     }
 
     @NonNull
@@ -33,7 +42,12 @@ public class SubCategoriesAdapter extends RecyclerView.Adapter<SubCategoriesAdap
         holder.ctvTitle.setText(subCategoryTitle);
 
         holder.ctvTitle.setOnClickListener(v -> {
-                holder.ctvTitle.toggle();
+            if (holder.ctvTitle.isChecked()) {
+                listener.addSubCategory(holder.ctvTitle.getText().toString());
+            }
+            else {
+                listener.removeSubCategory(holder.ctvTitle.getText().toString());
+            }
         });
     }
 
@@ -50,4 +64,5 @@ public class SubCategoriesAdapter extends RecyclerView.Adapter<SubCategoriesAdap
             ctvTitle = itemView.findViewById(R.id.sub_categories_title);
         }
     }
+
 }

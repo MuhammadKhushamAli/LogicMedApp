@@ -23,4 +23,6 @@
     <string name="loginFragTitle">Log in</string>
     <string name="authTitle">Let Us Know Who are You?</string>
     <string name="doctorDataTitle">Enter your Data Here!</string>
+    <string name="doctorDayOfDutyTitle">Select your available days</string>
+    <string name="submitBtnText">Submit</string>
 </resources>

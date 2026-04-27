@@ -3,7 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DoctorDetailSignUp">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    tools:context=".DoctorDetailSignUpFragment">
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -13,10 +15,37 @@
         android:textSize="20sp"
         android:layout_marginTop="20dp"
         />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/doctorDayOfDutyTitle"
+        android:textAlignment="center"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp"
+        />
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/doctor_days_of_duty_chip_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:horizontalItemSpacing="8dp"
+        app:selectionRequired="true"
+        />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/doctor_data_fields_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/doctor_data_submit_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cornerRadius="10dp"
+        android:backgroundTint="?button_color"
+        android:textColor="?button_text_color"
+        android:text="@string/submitBtnText"
         />
 
 </LinearLayout>

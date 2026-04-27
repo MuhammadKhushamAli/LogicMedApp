@@ -1,0 +1,130 @@
+package com.example.logicmed;
+
+import android.app.TimePickerDialog;
+import android.content.Context;
+import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipDrawable;
+import com.google.android.material.chip.ChipGroup;
+
+import java.util.List;
+
+public class DoctorDetailSignUpFragment extends Fragment implements SubCategoriesAdapter.setOnclickListener{
+
+    private setOnSignUpListener listener;
+    private ChipGroup cgDaysOfDuties;
+    private RecyclerView rvCategories;
+    private Context context;
+    private MaterialButton btnSubmit;
+    private List<String> categoriesOfDoctor;
+    private List<String> timingsOfDoctors;
+
+    public interface setOnSignUpListener {
+        void setDataOnSignUp(List<String> categoriesOfDoctor, List<String> timingsOfDoctors);
+    }
+
+    public DoctorDetailSignUpFragment() {
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        this.listener = (setOnSignUpListener) context;
+        this.context = context;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_doctor_detail_sign_up, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        init(view);
+        addDaysOfDuties();
+        setCategoriesAndSubCategories();
+
+        btnSubmit.setOnClickListener(v -> {
+            listener.setDataOnSignUp(categoriesOfDoctor, timingsOfDoctors);
+        });
+
+    }
+    private void init(View view) {
+        cgDaysOfDuties = view.findViewById(R.id.doctor_days_of_duty_chip_group);
+        rvCategories = view.findViewById(R.id.doctor_data_fields_recycler_view);
+        btnSubmit = view.findViewById(R.id.doctor_data_submit_button);
+    }
+    private void addDaysOfDuties() {
+        String[] daysOfWeek = new String[] {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
+
+        for (String dayOfWeek : daysOfWeek) {
+            Chip chip = new Chip(context);
+            chip.setText(dayOfWeek);
+            chip.setCheckable(true);
+            chip.setChipDrawable(ChipDrawable.createFromAttributes(context, null, 0,
+                    com.google.android.material.R.style.Widget_MaterialComponents_Chip_Filter));
+
+            chip.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if (isChecked) {
+                    formAndToTImePicker(chip, dayOfWeek);
+                }
+                else {
+                    String prevText = chip.getText().toString();
+                    timingsOfDoctors.remove(prevText);
+                    chip.setText(dayOfWeek);
+                    chip.setTag(null);
+                }
+            });
+
+            cgDaysOfDuties.addView(chip);
+        }
+
+    }
+    private void formAndToTImePicker(Chip chip, String dayOfWeek) {
+        new TimePickerDialog(context, (view, hour, minutes) -> {
+            String fromTime = hour + ":" + minutes;
+
+            new TimePickerDialog(context, (view2, hourEnd, minutesEnd) -> {
+                String endTime = hourEnd + ":" + minutesEnd;
+
+                String textForClickableChip = dayOfWeek + " ( " + fromTime + " - " + endTime + " ) ";
+                chip.setText(textForClickableChip);
+                chip.setTag(fromTime + " - " + endTime);
+                timingsOfDoctors.add(textForClickableChip);
+
+            }, 5, 0, false);
+        }, 9, 0, false);
+    }
+    private void setCategoriesAndSubCategories() {
+        MyApplication app = (MyApplication) context.getApplicationContext();
+        CategoriesAdapter categoriesAdapter = new CategoriesAdapter(context, app.doctorsCategoriesAndSubCategories, this);
+        rvCategories.setHasFixedSize(true);
+        rvCategories.setAdapter(categoriesAdapter);
+    }
+    @Override
+    public void addSubCategory(String subCategory) {
+        categoriesOfDoctor.add(subCategory);
+    }
+    @Override
+    public void removeSubCategory(String subCategory) {
+        categoriesOfDoctor.remove(subCategory);
+    }
+}

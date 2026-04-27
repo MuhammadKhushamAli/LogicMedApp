@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Trace;
@@ -54,7 +55,8 @@ import okhttp3.Response;
 import okio.BufferedSink;
 
 
-public class SignupFragment extends Fragment {
+public class SignupFragment extends Fragment implements
+DoctorDetailSignUpFragment.setOnSignUpListener{
     private TextInputEditText teFullName;
     private TextInputEditText teEmail;
     private AutoCompleteTextView atvRole;
@@ -66,6 +68,8 @@ public class SignupFragment extends Fragment {
     private MyApplication app;
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firestore;
+    private FragmentManager fragmentManager;
+    private DoctorDetailSignUpFragment doctorDetailSignUpFragment;
 
 
     public SignupFragment() {
@@ -100,7 +104,18 @@ public class SignupFragment extends Fragment {
             String city = Objects.requireNonNull(atLocation.getText()).toString();
             String password = Objects.requireNonNull(tePassword.getText()).toString();
             String cPassword = Objects.requireNonNull(teCPassword.getText()).toString();
-            firebaseAuth(fullName, email, role, city, password, cPassword);
+
+            if (role.equals("Doctor")) {
+                doctorDetailSignUpFragment = new DoctorDetailSignUpFragment();
+                fragmentManager
+                        .beginTransaction()
+                        .show(doctorDetailSignUpFragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
+            else {
+                firebaseAuth(fullName, email, role, city, password, cPassword);
+            }
         });
     }
 
@@ -116,8 +131,7 @@ public class SignupFragment extends Fragment {
         app = (MyApplication) requireContext().getApplicationContext();
         firebaseAuth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
-
-
+        fragmentManager = getChildFragmentManager();
         progressBar.setVisibility(View.GONE);
     }
 
@@ -280,6 +294,15 @@ public class SignupFragment extends Fragment {
                         progressBar.setVisibility(View.GONE);
                     }
                 });
+
+    }
+
+    @Override
+    public void setDataOnSignUp(List<String> categoriesOfDoctor, List<String> timingsOfDoctors) {
+        fragmentManager
+                .beginTransaction()
+                .hide(doctorDetailSignUpFragment)
+                .commit();
 
     }
 }

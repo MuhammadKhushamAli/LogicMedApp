@@ -13,14 +13,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.CategoriyViewHolder> {
-    Context context;
-    MyApplication app;
-    ArrayList<DoctorCategoriesAndSubCategories> doctorCategoriesAndSubCategories;
+    private Context context;
+    private ArrayList<DoctorCategoriesAndSubCategories> doctorCategoriesAndSubCategories;
+    private SubCategoriesAdapter.setOnclickListener listener;
 
-    public CategoriesAdapter(Context context) {
+    public CategoriesAdapter(Context context, ArrayList<DoctorCategoriesAndSubCategories> doctorCategoriesAndSubCategories,
+                             SubCategoriesAdapter.setOnclickListener listener) {
         this.context = context;
-        this.app = (MyApplication) context.getApplicationContext();
-        doctorCategoriesAndSubCategories = app.doctorsCategoriesAndSubCategories;
+        this.doctorCategoriesAndSubCategories = doctorCategoriesAndSubCategories;
+        this.listener = listener;
     }
 
     @NonNull
@@ -37,7 +38,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
         holder.rvSubCategories.setHasFixedSize(true);
         holder.rvSubCategories.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
         holder.rvSubCategories.setAdapter(
-                new SubCategoriesAdapter(context, doctorCategoriesAndSubCategoriesObj.getSubCategories())
+                new SubCategoriesAdapter(context, doctorCategoriesAndSubCategoriesObj.getSubCategories(), listener)
         );
     }
 
