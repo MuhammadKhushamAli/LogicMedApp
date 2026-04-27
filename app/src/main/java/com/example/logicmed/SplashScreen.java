@@ -16,6 +16,9 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 public class SplashScreen extends AppCompatActivity {
     private TextView tvTitle;
     private RelativeLayout lMainImagesSection;
@@ -90,8 +93,10 @@ public class SplashScreen extends AppCompatActivity {
     }
 
     private void redirect() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         Intent i = null;
-        if (sPref.getBoolean(KeyUtils.isLoggedInPrefKey, false)) {
+        if (user != null) {
+            sPref.edit().putBoolean(KeyUtils.isLoggedInPrefKey, true).apply();
             i = new Intent(
                     SplashScreen.this,
                     MainActivity.class
@@ -110,6 +115,7 @@ public class SplashScreen extends AppCompatActivity {
                         AuthenticationScreen.class
                 );
             }
+            sPref.edit().putBoolean(KeyUtils.isLoggedInPrefKey, false).apply();
         }
         startActivity(i);
         finish();
