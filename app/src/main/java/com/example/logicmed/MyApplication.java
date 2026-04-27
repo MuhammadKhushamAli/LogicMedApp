@@ -15,69 +15,83 @@ public class MyApplication extends Application {
         doctorsCategoriesAndSubCategories = new ArrayList<>(
                 Arrays.asList(
                         new DoctorCategoriesAndSubCategories(
-                                "Primary Care & General Practice",
-                                new ArrayList<>(
-                                        Arrays.asList(
-                                                "Family Medicine",
-                                                "Internal Medicine (Internists)",
-                                                "Pediatricians",
-                                                "Geriatricians"
-                                        )
-                                )
+                          "Days of Duty",
+                          new ArrayList<>(
+                              Arrays.asList(
+                                      "Monday",
+                                      "Tuesday",
+                                      "Wednesday",
+                                      "Thursday",
+                                      "Friday",
+                                      "Saturday",
+                                      "Sunday"
+                              )
+                          )
                         ),
                         new DoctorCategoriesAndSubCategories(
-                                "Internal Medicine Sub-Specialties",
-                                new ArrayList<>(
-                                        Arrays.asList(
-                                                "Cardiology",
-                                                "Endocrinology",
-                                                "Gastroenterology",
-                                                "Hematology",
-                                                "Infectious Disease",
-                                                "Nephrology",
-                                                "Oncology",
-                                                "Pulmonology",
-                                                "Rheumatology"
+                            "Primary Care & General Practice",
+                            new ArrayList<>(
+                                Arrays.asList(
+                                        "Family Medicine",
+                                        "Internal Medicine (Internists)",
+                                        "Pediatricians",
+                                        "Geriatricians"
+                                )
+                            )
+                        ),
+                        new DoctorCategoriesAndSubCategories(
+                            "Internal Medicine Sub-Specialties",
+                            new ArrayList<>(
+                                Arrays.asList(
+                                        "Cardiology",
+                                        "Endocrinology",
+                                        "Gastroenterology",
+                                        "Hematology",
+                                        "Infectious Disease",
+                                        "Nephrology",
+                                        "Oncology",
+                                        "Pulmonology",
+                                        "Rheumatology"
 
-                                        )
                                 )
+                            )
                         ),
                         new DoctorCategoriesAndSubCategories(
-                                "Surgical Specialties",
-                                new ArrayList<>(
-                                        Arrays.asList(
-                                                "General Surgery",
-                                                "Orthopedic Surgery",
-                                                "Neurosurgery",
-                                                "Cardiothoracic Surgery",
-                                                "Plastic & Reconstructive Surgery"
-                                        )
+                            "Surgical Specialties",
+                            new ArrayList<>(
+                                Arrays.asList(
+                                        "General Surgery",
+                                        "Orthopedic Surgery",
+                                        "Neurosurgery",
+                                        "Cardiothoracic Surgery",
+                                        "Plastic & Reconstructive Surgery"
                                 )
+                            )
                         ),
                         new DoctorCategoriesAndSubCategories(
-                                "Specialized Care by System or Patient Type",
-                                new ArrayList<>(
-                                        Arrays.asList(
-                                                "Neurology",
-                                                "Dermatology",
-                                                "Obstetrics & Gynecology (OB-GYN)",
-                                                "Ophthalmology",
-                                                "Otolaryngology (ENT)",
-                                                "Psychiatry",
-                                                "Urology"
-                                        )
+                            "Specialized Care by System or Patient Type",
+                            new ArrayList<>(
+                                Arrays.asList(
+                                        "Neurology",
+                                        "Dermatology",
+                                        "Obstetrics & Gynecology (OB-GYN)",
+                                        "Ophthalmology",
+                                        "Otolaryngology (ENT)",
+                                        "Psychiatry",
+                                        "Urology"
                                 )
+                            )
                         ),
                         new DoctorCategoriesAndSubCategories(
-                                "Diagnostic & Support Specialties",
-                                new ArrayList<>(
-                                        Arrays.asList(
-                                                "Radiology",
-                                                "Pathology",
-                                                "Anesthesiology",
-                                                "Emergency Medicine"
-                                        )
+                            "Diagnostic & Support Specialties",
+                            new ArrayList<>(
+                                Arrays.asList(
+                                        "Radiology",
+                                        "Pathology",
+                                        "Anesthesiology",
+                                        "Emergency Medicine"
                                 )
+                            )
                         )
                 )
         );
