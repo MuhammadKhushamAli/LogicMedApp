@@ -24,5 +24,6 @@
     <string name="authTitle">Let Us Know Who are You?</string>
     <string name="doctorDataTitle">Enter your Data Here!</string>
     <string name="doctorDayOfDutyTitle">Select your available days</string>
+    <string name="doctorCategoriesTitle">Select your categories</string>
     <string name="submitBtnText">Submit</string>
 </resources>

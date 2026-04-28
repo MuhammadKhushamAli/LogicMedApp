@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckedTextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -42,6 +43,7 @@ public class SubCategoriesAdapter extends RecyclerView.Adapter<SubCategoriesAdap
         holder.ctvTitle.setText(subCategoryTitle);
 
         holder.ctvTitle.setOnClickListener(v -> {
+            holder.ctvTitle.toggle();
             if (holder.ctvTitle.isChecked()) {
                 listener.addSubCategory(holder.ctvTitle.getText().toString());
             }

@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     tools:context=".DoctorDetailSignUpFragment">
     <TextView
+        android:id="@+id/doc_data_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/doctorDataTitle"
         android:textAlignment="center"
         android:textStyle="bold"
         android:textSize="20sp"
-        android:layout_marginTop="20dp"
+        android:layout_alignParentTop="true"
         />
     <TextView
+        android:id="@+id/doc_data_sub_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/doctorDayOfDutyTitle"
@@ -23,20 +24,42 @@
         android:textSize="15sp"
         android:textStyle="bold"
         android:layout_marginTop="10dp"
+        android:layout_below="@id/doc_data_title"
+        android:layout_marginBottom="10dp"
         />
-
-    <com.google.android.material.chip.ChipGroup
-        android:id="@+id/doctor_days_of_duty_chip_group"
+    <HorizontalScrollView
+        android:id="@+id/doc_data_chip_group_section"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:horizontalItemSpacing="8dp"
-        app:selectionRequired="true"
+        android:layout_below="@id/doc_data_sub_title"
+        >
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/doctor_days_of_duty_chip_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:horizontalItemSpacing="2dp"
+            app:selectionRequired="true"
+            app:singleLine="true"
+            />
+    </HorizontalScrollView>
+    <TextView
+        android:id="@+id/doc_data_category_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/doctorCategoriesTitle"
+        android:textAlignment="center"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/doc_data_chip_group_section"
+        android:layout_marginHorizontal="10dp"
         />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/doctor_data_fields_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@id/doctor_data_submit_button"
+        android:layout_below="@id/doc_data_category_title"
         />
     <com.google.android.material.button.MaterialButton
         android:id="@+id/doctor_data_submit_button"
@@ -46,6 +69,7 @@
         android:backgroundTint="?button_color"
         android:textColor="?button_text_color"
         android:text="@string/submitBtnText"
+        android:layout_alignParentBottom="true"
         />
 
-</LinearLayout>
+</RelativeLayout>

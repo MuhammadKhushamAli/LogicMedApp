@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentContainerView;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -30,7 +31,10 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.firestore.WriteBatch;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -55,8 +59,7 @@ import okhttp3.Response;
 import okio.BufferedSink;
 
 
-public class SignupFragment extends Fragment implements
-DoctorDetailSignUpFragment.setOnSignUpListener{
+public class SignupFragment extends Fragment implements DoctorDetailSignUpFragment.setOnSignUpListener {
     private TextInputEditText teFullName;
     private TextInputEditText teEmail;
     private AutoCompleteTextView atvRole;
@@ -69,8 +72,16 @@ DoctorDetailSignUpFragment.setOnSignUpListener{
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firestore;
     private FragmentManager fragmentManager;
+    private FragmentContainerView fragmentContainerView;
     private DoctorDetailSignUpFragment doctorDetailSignUpFragment;
 
+    private String fullName;
+    private String email;
+    private String role;
+    private String city;
+    private String password;
+    private String cPassword;
+    private ViewModelProvider viewModelProvider;
 
     public SignupFragment() {
     }
@@ -90,31 +101,37 @@ DoctorDetailSignUpFragment.setOnSignUpListener{
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         List<String> list = new ArrayList<>();
-        list.add("Doctor");
-        list.add("Patient");
+        list.add(KeyUtils.doctorKey);
+        list.add(KeyUtils.patientKey);
 
         init(view);
         setDropDown(atvRole, list, false);
         fetchCities("Pakistan", "https://countriesnow.space/api/v0.1/countries/cities");
 
         btnSignup.setOnClickListener(v -> {
-            String fullName = Objects.requireNonNull(teFullName.getText()).toString();
-            String email = Objects.requireNonNull(teEmail.getText()).toString();
-            String role = Objects.requireNonNull(atvRole.getText()).toString();
-            String city = Objects.requireNonNull(atLocation.getText()).toString();
-            String password = Objects.requireNonNull(tePassword.getText()).toString();
-            String cPassword = Objects.requireNonNull(teCPassword.getText()).toString();
+            fullName = Objects.requireNonNull(teFullName.getText()).toString();
+            email = Objects.requireNonNull(teEmail.getText()).toString();
+            role = Objects.requireNonNull(atvRole.getText()).toString();
+            city = Objects.requireNonNull(atLocation.getText()).toString();
+            password = Objects.requireNonNull(tePassword.getText()).toString();
+            cPassword = Objects.requireNonNull(teCPassword.getText()).toString();
 
-            if (role.equals("Doctor")) {
+            if (role.equals(KeyUtils.doctorKey)) {
                 doctorDetailSignUpFragment = new DoctorDetailSignUpFragment();
-                fragmentManager
-                        .beginTransaction()
-                        .show(doctorDetailSignUpFragment)
-                        .addToBackStack(null)
-                        .commit();
+                if (!(fullName.isEmpty() || email.isEmpty() || role.isEmpty() || city.isEmpty() || password.isEmpty() || cPassword.isEmpty())) {
+                    fragmentManager
+                            .beginTransaction()
+                            .replace(R.id.signup_detail_frag, doctorDetailSignUpFragment)
+                            .commit();
+                    fragmentContainerView.setVisibility(View.VISIBLE);
+                    viewModelProvider.get(SignupViewModel.class).setCurrentPage(1);
+                }
+                else {
+                    Toast.makeText(requireContext(), "Fill all the Fields Here First", Toast.LENGTH_LONG).show();
+                }
             }
             else {
-                firebaseAuth(fullName, email, role, city, password, cPassword);
+                validateInputAndMakeMap(null, null);
             }
         });
     }
@@ -133,8 +150,10 @@ DoctorDetailSignUpFragment.setOnSignUpListener{
         firestore = FirebaseFirestore.getInstance();
         fragmentManager = getChildFragmentManager();
         progressBar.setVisibility(View.GONE);
+        fragmentContainerView = view.findViewById(R.id.signup_detail_frag);
+        fragmentContainerView.setVisibility(View.GONE);
+        viewModelProvider = new ViewModelProvider(requireActivity());
     }
-
     private void setDropDown(AutoCompleteTextView autoCompleteTextView, List<String> list, Boolean isKeyListener) {
         if (isKeyListener == false) {
             autoCompleteTextView.setKeyListener(null);
@@ -187,7 +206,7 @@ DoctorDetailSignUpFragment.setOnSignUpListener{
                             activity.runOnUiThread(() -> {
                                 setDropDown(atLocation, app.cities, true);
                                 progressBar.setVisibility(View.GONE);
-                                new ViewModelProvider(requireActivity()).get(SignupViewModel.class).setCurrentPage(1);
+                                viewModelProvider.get(SignupViewModel.class).setCurrentPage(1);
                             });
                         }
                     } catch (JSONException e) {
@@ -202,35 +221,10 @@ DoctorDetailSignUpFragment.setOnSignUpListener{
             }
         });
     }
-    private void firebaseAuth(String fullName, String email, String role, String city, String password, String cPassword) {
+    private void firebaseAuth(Map<String, Object> data) {
         Context context = requireContext();
         Activity activity = requireActivity();
-        String message = null;
 
-        if (fullName.isEmpty() || email.isEmpty() || role.isEmpty() || city.isEmpty() || password.isEmpty() || cPassword.isEmpty()) {
-            message = "All Fields are Required!";
-        }
-        else if (!(email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"))) {
-            message = "Email Must be in Correct Formate!";
-        }
-        else if (!(password.equals(cPassword))) {
-            message =  "Password Must be Equal to Confirm Password!";
-        }
-        else if (!(password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*.?&])[A-Za-z\\d@$!.%*?&]{8,}$"))) {
-            message = "Password must contain:\n" +
-                    "• At least 8 characters\n" +
-                    "• One uppercase & one lowercase letter\n" +
-                    "• One number & one special character";
-        }
-        if (message != null) {
-            View view = getView();
-            assert view != null : "View is Null for Snack bar";
-            Snackbar snackbar = Snackbar.make(view, message, Snackbar.LENGTH_SHORT);
-            TextView textView = snackbar.getView().findViewById(com.google.android.material.R.id.snackbar_text);
-            textView.setMaxLines(4);
-            snackbar.show();
-            return;
-        }
 
 
         progressBar.setVisibility(View.VISIBLE);
@@ -242,10 +236,6 @@ DoctorDetailSignUpFragment.setOnSignUpListener{
                         if (task.isSuccessful()) {
                             assert firebaseAuth.getCurrentUser() != null;
                             java.lang.String uID = firebaseAuth.getCurrentUser().getUid();
-                            Map<String, String> data = new HashMap<>();
-                            data.put("fullName", fullName);
-                            data.put("role", role);
-                            data.put("city", city);
 
                             firebaseDB(uID, data);
                         }
@@ -257,13 +247,13 @@ DoctorDetailSignUpFragment.setOnSignUpListener{
                     }
                 });
     }
-    private void firebaseDB(String uID, Map<String, String> data) {
+    private void firebaseDB(String uID, Map<String, Object> data) {
         Context context = requireContext();
         Activity activity = requireActivity();
 
         firestore.collection(KeyUtils.firebaseUserCollectionKey)
                 .document(uID)
-                .set(data)
+                .set(data, SetOptions.merge())
                 .addOnCompleteListener(activity, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -301,8 +291,58 @@ DoctorDetailSignUpFragment.setOnSignUpListener{
     public void setDataOnSignUp(List<String> categoriesOfDoctor, List<String> timingsOfDoctors) {
         fragmentManager
                 .beginTransaction()
-                .hide(doctorDetailSignUpFragment)
+                .remove(doctorDetailSignUpFragment)
                 .commit();
-
+        fragmentContainerView.setVisibility(View.GONE);
+        viewModelProvider.get(SignupViewModel.class).setCurrentPage(1);
+        validateInputAndMakeMap(categoriesOfDoctor, timingsOfDoctors);
     }
+
+    private void validateInputAndMakeMap(List<String> docCategories, List<String> docTimings) {
+        Context context = requireContext();
+        String message = null;
+
+        if (fullName.isEmpty() || email.isEmpty() || role.isEmpty() || city.isEmpty() || password.isEmpty() || cPassword.isEmpty()) {
+            message = "All Fields are Required!";
+        }
+        else if (!(email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"))) {
+            message = "Email Must be in Correct Formate!";
+        }
+        else if (!(password.equals(cPassword))) {
+            message =  "Password Must be Equal to Confirm Password!";
+        }
+        else if (!(password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*.?&])[A-Za-z\\d@$!.%*?&]{8,}$"))) {
+            message = "Password must contain:\n" +
+                    "• At least 8 characters\n" +
+                    "• One uppercase & one lowercase letter\n" +
+                    "• One number & one special character";
+        }
+        if (message != null) {
+            View view = getView();
+            assert view != null : "View is Null for Snack bar";
+            Snackbar snackbar = Snackbar.make(view, message, Snackbar.LENGTH_SHORT);
+            TextView textView = snackbar.getView().findViewById(com.google.android.material.R.id.snackbar_text);
+            textView.setMaxLines(4);
+            snackbar.show();
+            return;
+        }
+
+        Map<String, Object> userData = new HashMap<>();
+        userData.put("fullName", fullName);
+        userData.put("role", role);
+        userData.put("city", city);
+
+
+        if (role.equals(KeyUtils.doctorKey)) {
+            if (docCategories == null || docTimings == null) {
+                Toast.makeText(context, "Categories and Timings are required for Doctors", Toast.LENGTH_LONG).show();
+                return;
+            }
+            userData.put("docCategories", docCategories);
+            userData.put("docTimings", docTimings);
+        }
+
+        firebaseAuth(userData);
+    }
+
 }

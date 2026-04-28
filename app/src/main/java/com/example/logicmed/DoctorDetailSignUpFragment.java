@@ -2,22 +2,26 @@ package com.example.logicmed;
 
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipDrawable;
 import com.google.android.material.chip.ChipGroup;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DoctorDetailSignUpFragment extends Fragment implements SubCategoriesAdapter.setOnclickListener{
@@ -40,7 +44,7 @@ public class DoctorDetailSignUpFragment extends Fragment implements SubCategorie
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        this.listener = (setOnSignUpListener) context;
+        this.listener = (setOnSignUpListener) getParentFragment();
         this.context = context;
     }
 
@@ -71,6 +75,9 @@ public class DoctorDetailSignUpFragment extends Fragment implements SubCategorie
         cgDaysOfDuties = view.findViewById(R.id.doctor_days_of_duty_chip_group);
         rvCategories = view.findViewById(R.id.doctor_data_fields_recycler_view);
         btnSubmit = view.findViewById(R.id.doctor_data_submit_button);
+        categoriesOfDoctor = new ArrayList<>();
+        timingsOfDoctors = new ArrayList<>();
+
     }
     private void addDaysOfDuties() {
         String[] daysOfWeek = new String[] {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
@@ -92,6 +99,7 @@ public class DoctorDetailSignUpFragment extends Fragment implements SubCategorie
                     chip.setText(dayOfWeek);
                     chip.setTag(null);
                 }
+                chip.setChecked(isChecked);
             });
 
             cgDaysOfDuties.addView(chip);
@@ -99,24 +107,33 @@ public class DoctorDetailSignUpFragment extends Fragment implements SubCategorie
 
     }
     private void formAndToTImePicker(Chip chip, String dayOfWeek) {
-        new TimePickerDialog(context, (view, hour, minutes) -> {
+        TimePickerDialog fromTimePickerDialogue = new TimePickerDialog(context, (view, hour, minutes) -> {
             String fromTime = hour + ":" + minutes;
 
-            new TimePickerDialog(context, (view2, hourEnd, minutesEnd) -> {
+            TimePickerDialog toTimePickerDialogue = new TimePickerDialog(context, (view2, hourEnd, minutesEnd) -> {
                 String endTime = hourEnd + ":" + minutesEnd;
 
                 String textForClickableChip = dayOfWeek + " ( " + fromTime + " - " + endTime + " ) ";
                 chip.setText(textForClickableChip);
                 chip.setTag(fromTime + " - " + endTime);
                 timingsOfDoctors.add(textForClickableChip);
-
             }, 5, 0, false);
+
+            toTimePickerDialogue.setTitle("To");
+            toTimePickerDialogue.show();
+            toTimePickerDialogue.getButton(DialogInterface.BUTTON_NEGATIVE).setVisibility(View.GONE);
+
         }, 9, 0, false);
+
+        fromTimePickerDialogue.setTitle("From");
+        fromTimePickerDialogue.show();
+        fromTimePickerDialogue.getButton(DialogInterface.BUTTON_NEGATIVE).setVisibility(View.GONE);
     }
     private void setCategoriesAndSubCategories() {
         MyApplication app = (MyApplication) context.getApplicationContext();
         CategoriesAdapter categoriesAdapter = new CategoriesAdapter(context, app.doctorsCategoriesAndSubCategories, this);
         rvCategories.setHasFixedSize(true);
+        rvCategories.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
         rvCategories.setAdapter(categoriesAdapter);
     }
     @Override
