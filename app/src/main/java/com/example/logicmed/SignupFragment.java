@@ -272,6 +272,9 @@ public class SignupFragment extends Fragment implements DoctorDetailSignUpFragme
                                                 MainActivity.class
                                         )
                                 );
+                                MyApplication app = (MyApplication) context.getApplicationContext();
+                                app.cities.clear();
+                                app.doctorsCategoriesAndSubCategories.clear();
                             }
                             else {
                                 Toast.makeText(context, "Unable to Maintain Login Status", Toast.LENGTH_SHORT).show();
