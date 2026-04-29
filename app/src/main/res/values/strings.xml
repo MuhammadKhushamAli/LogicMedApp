@@ -26,4 +26,8 @@
     <string name="doctorDayOfDutyTitle">Select your available days</string>
     <string name="doctorCategoriesTitle">Select your categories</string>
     <string name="submitBtnText">Submit</string>
+    <string name="homeFrag">Home</string>
+    <string name="searchFrag">Search</string>
+    <string name="chatFrag">Chat</string>
+    <string name="aiChatFrag">AI</string>
 </resources>

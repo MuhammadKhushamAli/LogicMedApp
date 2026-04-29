@@ -7,4 +7,5 @@
     </declare-styleable>
     <attr name="button_color" format="color"/>
     <attr name="button_text_color" format="color"/>
+    <attr name="bottom_nav_color" format="color"/>
 </resources>

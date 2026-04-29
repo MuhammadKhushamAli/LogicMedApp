@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/home_frag"
+        android:title="@string/homeFrag"
+        android:icon="@drawable/home_icon"
+        />
+    <item
+        android:id="@+id/search_frag"
+        android:title="@string/searchFrag"
+        android:icon="@drawable/search_icon"
+        />
+    <item
+        android:id="@+id/chat_frag"
+        android:title="@string/chatFrag"
+        android:icon="@drawable/chat_icon"
+        />
+    <item
+        android:id="@+id/ai_chat_frag"
+        android:title="@string/aiChatFrag"
+        android:icon="@drawable/ai_icon"
+        />
+
+</menu>
