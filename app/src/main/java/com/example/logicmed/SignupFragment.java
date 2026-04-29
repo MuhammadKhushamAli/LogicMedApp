@@ -242,6 +242,7 @@ public class SignupFragment extends Fragment implements DoctorDetailSignUpFragme
                         else {
                             String error = task.getException() != null ? task.getException().getMessage() : "Unable to Signup";
                             Toast.makeText(context, error, Toast.LENGTH_LONG).show();
+                            progressBar.setVisibility(View.GONE);
                         }
 
                     }
@@ -334,14 +335,13 @@ public class SignupFragment extends Fragment implements DoctorDetailSignUpFragme
 
 
         if (role.equals(KeyUtils.doctorKey)) {
-            if (docCategories == null || docTimings == null) {
+            if (docCategories.isEmpty() || docTimings.isEmpty()) {
                 Toast.makeText(context, "Categories and Timings are required for Doctors", Toast.LENGTH_LONG).show();
                 return;
             }
             userData.put("docCategories", docCategories);
             userData.put("docTimings", docTimings);
         }
-
         firebaseAuth(userData);
     }
 
