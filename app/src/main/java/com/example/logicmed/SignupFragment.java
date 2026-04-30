@@ -115,6 +115,34 @@ public class SignupFragment extends Fragment implements DoctorDetailSignUpFragme
             password = Objects.requireNonNull(tePassword.getText()).toString();
             cPassword = Objects.requireNonNull(teCPassword.getText()).toString();
 
+            String message = null;
+
+            if (fullName.isEmpty() || email.isEmpty() || role.isEmpty() || city.isEmpty() || password.isEmpty() || cPassword.isEmpty()) {
+                message = "All Fields are Required!";
+            }
+            else if (!(email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"))) {
+                message = "Email Must be in Correct Formate!";
+            }
+            else if (!(password.equals(cPassword))) {
+                message =  "Password Must be Equal to Confirm Password!";
+            }
+            else if (!(password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*.?&])[A-Za-z\\d@$!.%*?&]{8,}$"))) {
+                message = "Password must contain:\n" +
+                        "• At least 8 characters\n" +
+                        "• One uppercase & one lowercase letter\n" +
+                        "• One number & one special character";
+            }
+            if (message != null) {
+                View snackbarView = getView();
+                assert snackbarView != null : "View is Null for Snack bar";
+                Snackbar snackbar = Snackbar.make(snackbarView, message, Snackbar.LENGTH_SHORT);
+                TextView textView = snackbar.getView().findViewById(com.google.android.material.R.id.snackbar_text);
+                textView.setMaxLines(4);
+                snackbar.show();
+                return;
+            }
+
+
             if (role.equals(KeyUtils.doctorKey)) {
                 doctorDetailSignUpFragment = new DoctorDetailSignUpFragment();
                 if (!(fullName.isEmpty() || email.isEmpty() || role.isEmpty() || city.isEmpty() || password.isEmpty() || cPassword.isEmpty())) {
@@ -130,7 +158,7 @@ public class SignupFragment extends Fragment implements DoctorDetailSignUpFragme
                 }
             }
             else {
-                validateInputAndMakeMap(null, null);
+                inputAndMakeMap(null, null);
             }
         });
     }
@@ -297,37 +325,11 @@ public class SignupFragment extends Fragment implements DoctorDetailSignUpFragme
                 .commit();
         fragmentContainerView.setVisibility(View.GONE);
         viewModelProvider.get(SignupViewModel.class).setCurrentPage(1);
-        validateInputAndMakeMap(categoriesOfDoctor, timingsOfDoctors);
+        inputAndMakeMap(categoriesOfDoctor, timingsOfDoctors);
     }
 
-    private void validateInputAndMakeMap(List<String> docCategories, List<String> docTimings) {
+    private void inputAndMakeMap(List<String> docCategories, List<String> docTimings) {
         Context context = requireContext();
-        String message = null;
-
-        if (fullName.isEmpty() || email.isEmpty() || role.isEmpty() || city.isEmpty() || password.isEmpty() || cPassword.isEmpty()) {
-            message = "All Fields are Required!";
-        }
-        else if (!(email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"))) {
-            message = "Email Must be in Correct Formate!";
-        }
-        else if (!(password.equals(cPassword))) {
-            message =  "Password Must be Equal to Confirm Password!";
-        }
-        else if (!(password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*.?&])[A-Za-z\\d@$!.%*?&]{8,}$"))) {
-            message = "Password must contain:\n" +
-                    "• At least 8 characters\n" +
-                    "• One uppercase & one lowercase letter\n" +
-                    "• One number & one special character";
-        }
-        if (message != null) {
-            View view = getView();
-            assert view != null : "View is Null for Snack bar";
-            Snackbar snackbar = Snackbar.make(view, message, Snackbar.LENGTH_SHORT);
-            TextView textView = snackbar.getView().findViewById(com.google.android.material.R.id.snackbar_text);
-            textView.setMaxLines(4);
-            snackbar.show();
-            return;
-        }
 
         Map<String, Object> userData = new HashMap<>();
         userData.put("fullName", fullName);
