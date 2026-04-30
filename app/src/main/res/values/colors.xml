@@ -7,4 +7,5 @@
     <color name="secondary_color">#EFF3FF</color>
     <color name="dark_nav">#2C2B2B</color>
     <color name="light_nav">#BCB5B5</color>
+    <color name="red">#FF0000</color>
 </resources>

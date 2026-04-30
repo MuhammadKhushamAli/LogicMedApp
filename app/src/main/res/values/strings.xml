@@ -33,4 +33,6 @@
     <string name="profileImgDesc">Profile Image</string>
     <string name="openDrawerString">Open</string>
     <string name="closeDrawerString">Close</string>
+    <string name="setupProfileTitle">Give us some more details about you</string>
+    <string name="uploadButton">Upload Image</string>
 </resources>

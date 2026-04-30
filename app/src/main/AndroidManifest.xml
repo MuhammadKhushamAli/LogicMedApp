@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LogicMed">
         <activity
+            android:name=".SetupProfileActivity"
+            android:exported="false" />
+        <activity
             android:name=".DoctorDataFragment"
             android:exported="false" />
         <activity
