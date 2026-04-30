@@ -35,4 +35,5 @@
     <string name="closeDrawerString">Close</string>
     <string name="setupProfileTitle">Give us some more details about you</string>
     <string name="uploadButton">Upload Image</string>
+    <string name="skipBtnText">Skip</string>
 </resources>
