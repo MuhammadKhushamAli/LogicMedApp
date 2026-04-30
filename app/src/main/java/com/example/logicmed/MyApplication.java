@@ -2,11 +2,15 @@ package com.example.logicmed;
 
 import android.app.Application;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class MyApplication extends Application {
+    public FirebaseFirestore firestore;
     public List<String> cities;
     public ArrayList<DoctorCategoriesAndSubCategories> doctorsCategoriesAndSubCategories;
     @Override
@@ -81,6 +85,8 @@ public class MyApplication extends Application {
                     )
                 )
         );
+
+        firestore = FirebaseFirestore.getInstance();
 
     }
 }

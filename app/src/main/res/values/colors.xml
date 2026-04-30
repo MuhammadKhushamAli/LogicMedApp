@@ -3,6 +3,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="bg_color">#D8DDEB</color>
+    <color name="doc_session_color">#A0A2BA</color>
     <color name="secondary_color">#EFF3FF</color>
     <color name="dark_nav">#2C2B2B</color>
     <color name="light_nav">#BCB5B5</color>

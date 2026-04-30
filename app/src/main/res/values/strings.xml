@@ -30,4 +30,7 @@
     <string name="searchFrag">Search</string>
     <string name="chatFrag">Chat</string>
     <string name="aiChatFrag">AI</string>
+    <string name="profileImgDesc">Profile Image</string>
+    <string name="openDrawerString">Open</string>
+    <string name="closeDrawerString">Close</string>
 </resources>

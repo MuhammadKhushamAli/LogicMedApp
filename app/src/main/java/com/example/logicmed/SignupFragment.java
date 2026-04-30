@@ -70,7 +70,6 @@ public class SignupFragment extends Fragment implements DoctorDetailSignUpFragme
     private ProgressBar progressBar;
     private MyApplication app;
     private FirebaseAuth firebaseAuth;
-    private FirebaseFirestore firestore;
     private FragmentManager fragmentManager;
     private FragmentContainerView fragmentContainerView;
     private DoctorDetailSignUpFragment doctorDetailSignUpFragment;
@@ -147,7 +146,6 @@ public class SignupFragment extends Fragment implements DoctorDetailSignUpFragme
         btnSignup = view.findViewById(R.id.signup_btn);
         app = (MyApplication) requireContext().getApplicationContext();
         firebaseAuth = FirebaseAuth.getInstance();
-        firestore = FirebaseFirestore.getInstance();
         fragmentManager = getChildFragmentManager();
         progressBar.setVisibility(View.GONE);
         fragmentContainerView = view.findViewById(R.id.signup_detail_frag);
@@ -252,7 +250,7 @@ public class SignupFragment extends Fragment implements DoctorDetailSignUpFragme
         Context context = requireContext();
         Activity activity = requireActivity();
 
-        firestore.collection(KeyUtils.firebaseUserCollectionKey)
+        app.firestore.collection(KeyUtils.firebaseUserCollectionKey)
                 .document(uID)
                 .set(data, SetOptions.merge())
                 .addOnCompleteListener(activity, new OnCompleteListener<Void>() {
