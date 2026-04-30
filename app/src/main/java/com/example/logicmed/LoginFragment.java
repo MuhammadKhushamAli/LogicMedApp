@@ -21,6 +21,8 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.model.Document;
 
 import java.util.Objects;
 
@@ -29,7 +31,7 @@ public class LoginFragment extends Fragment {
     TextInputEditText tePassword;
     MaterialButton btnLogin;
     ProgressBar progressBar;
-    private FirebaseAuth firebaseAuth;
+    MyApplication app;
 
     public LoginFragment() {
     }
@@ -64,34 +66,50 @@ public class LoginFragment extends Fragment {
         btnLogin = view.findViewById(R.id.login_btn);
         progressBar = view.findViewById(R.id.login_progress_bar);
         progressBar.setVisibility(View.GONE);
-        firebaseAuth = FirebaseAuth.getInstance();
+        app = (MyApplication) requireContext().getApplicationContext();
     }
     private void firebaseAuthLogin(String email, String password) {
         progressBar.setVisibility(View.VISIBLE);
         Context context = requireContext();
         Activity activity = requireActivity();
-        firebaseAuth.signInWithEmailAndPassword(email, password)
+        app.firebaseAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+
                         if (task.isSuccessful()) {
-                            if (
-                                    context.getSharedPreferences(KeyUtils.userPrefFileKey, Context.MODE_PRIVATE)
-                                            .edit()
-                                            .putBoolean(KeyUtils.isLoggedInPrefKey, true)
-                                            .commit()
-                            ) {
-                                startActivity(
-                                        new Intent(
-                                                context,
-                                                MainActivity.class
-                                        )
-                                );
-                                activity.finish();
-                            }
-                            else {
-                                Toast.makeText(context, "Unable to Update Login State", Toast.LENGTH_LONG).show();
-                            }
+                                app.firestore.collection(KeyUtils.firebaseUserCollectionKey)
+                                                .document(Objects.requireNonNull(task.getResult().getUser()).getUid())
+                                                        .get()
+                                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                if(task.isSuccessful()) {
+                                                    DocumentSnapshot document = task.getResult();
+
+                                                    String role = document.getString("role");
+                                                    if (
+                                                            app.sPrefUserEdit
+                                                                    .putBoolean(KeyUtils.isLoggedInPrefKey, true)
+                                                                    .putString(KeyUtils.rolePrefKey, role)
+                                                                    .commit()
+                                                    ) {
+
+                                                        startActivity(
+                                                                new Intent(
+                                                                        context,
+                                                                        MainActivity.class
+                                                                )
+                                                        );
+                                                        activity.finish();
+                                                    }
+                                                    else {
+                                                        Toast.makeText(context, "Unable to Update Login State", Toast.LENGTH_LONG).show();
+                                                    }
+
+                                                }
+                                            }
+                                        });
                         }
                         else {
                             String error = task.getException() != null ? task.getException().getMessage() : "Unable to Login";

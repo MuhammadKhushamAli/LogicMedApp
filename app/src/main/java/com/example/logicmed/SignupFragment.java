@@ -69,7 +69,6 @@ public class SignupFragment extends Fragment implements DoctorDetailSignUpFragme
     private MaterialButton btnSignup;
     private ProgressBar progressBar;
     private MyApplication app;
-    private FirebaseAuth firebaseAuth;
     private FragmentManager fragmentManager;
     private FragmentContainerView fragmentContainerView;
     private DoctorDetailSignUpFragment doctorDetailSignUpFragment;
@@ -106,6 +105,7 @@ public class SignupFragment extends Fragment implements DoctorDetailSignUpFragme
         init(view);
         setDropDown(atvRole, list, false);
         fetchCities("Pakistan", "https://countriesnow.space/api/v0.1/countries/cities");
+
 
         btnSignup.setOnClickListener(v -> {
             fullName = Objects.requireNonNull(teFullName.getText()).toString();
@@ -173,7 +173,6 @@ public class SignupFragment extends Fragment implements DoctorDetailSignUpFragme
         progressBar = view.findViewById(R.id.signup_progress_bar);
         btnSignup = view.findViewById(R.id.signup_btn);
         app = (MyApplication) requireContext().getApplicationContext();
-        firebaseAuth = FirebaseAuth.getInstance();
         fragmentManager = getChildFragmentManager();
         progressBar.setVisibility(View.GONE);
         fragmentContainerView = view.findViewById(R.id.signup_detail_frag);
@@ -255,13 +254,13 @@ public class SignupFragment extends Fragment implements DoctorDetailSignUpFragme
 
         progressBar.setVisibility(View.VISIBLE);
 
-        firebaseAuth.createUserWithEmailAndPassword(email, password)
+        app.firebaseAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            assert firebaseAuth.getCurrentUser() != null;
-                            java.lang.String uID = firebaseAuth.getCurrentUser().getUid();
+                            assert app.firebaseAuth.getCurrentUser() != null;
+                            java.lang.String uID = app.firebaseAuth.getCurrentUser().getUid();
 
                             firebaseDB(uID, data);
                         }
@@ -286,19 +285,18 @@ public class SignupFragment extends Fragment implements DoctorDetailSignUpFragme
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
                             if (
-                                    context.getSharedPreferences(KeyUtils.userPrefFileKey, Context.MODE_PRIVATE)
-                                            .edit()
+                                    app.sPrefUserEdit
                                             .putBoolean(KeyUtils.isLoggedInPrefKey, true)
+                                            .putString(KeyUtils.rolePrefKey, role)
                                             .commit()
                             ) {
 
                                 startActivity(
                                         new Intent(
                                                 context,
-                                                MainActivity.class
+                                                SetupProfileActivity.class
                                         )
                                 );
-                                MyApplication app = (MyApplication) context.getApplicationContext();
                                 app.cities.clear();
                                 app.doctorsCategoriesAndSubCategories.clear();
                             }

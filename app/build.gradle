@@ -27,6 +27,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
@@ -46,5 +47,4 @@ dependencies {
     implementation libs.okhttp
     implementation(libs.material.v1120)
     implementation libs.cloudinary.android
-    implementation libs.gradle.dotenv
 }
