@@ -37,4 +37,6 @@
     <string name="uploadButton">Upload Image</string>
     <string name="skipBtnText">Skip</string>
     <string name="docFeeHind">Enter the Appointment Fee</string>
+    <string name="toolBarTitle">Step Toward Healthy Life</string>
+    <string name="logoutBtnDesc">Logout</string>
 </resources>
