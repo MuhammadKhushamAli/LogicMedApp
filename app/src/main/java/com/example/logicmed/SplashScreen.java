@@ -29,7 +29,7 @@ public class SplashScreen extends AppCompatActivity {
     private Animation invisibleToVisible;
     private TextView tvTermsAgreement;
     private SlideToStart sliderGetStart;
-    private SharedPreferences sPref;
+    private MyApplication app;
 
 
     @Override
@@ -54,7 +54,6 @@ public class SplashScreen extends AppCompatActivity {
         sliderGetStart = findViewById(R.id.splash_get_start_slider);
         lMainImagesSection = findViewById(R.id.splash_main_img_section);
         lGetStartSection = findViewById(R.id.splash_get_start_section);
-        sPref = getSharedPreferences(KeyUtils.userPrefFileKey, MODE_PRIVATE);
 
         lMainImagesSection.setVisibility(View.INVISIBLE);
         tvTermsAgreement.setVisibility(View.INVISIBLE);
@@ -65,6 +64,7 @@ public class SplashScreen extends AppCompatActivity {
         bottomToCurrent = AnimationUtils.loadAnimation(this, R.anim.bottom_to_current);
         rotateToCurrent = AnimationUtils.loadAnimation(this, R.anim.rotate_to_current);
         invisibleToVisible = AnimationUtils.loadAnimation(this, R.anim.invisible_to_visible);
+        app = (MyApplication) getApplicationContext();
     }
 
     private void setAnimations() {
@@ -93,17 +93,17 @@ public class SplashScreen extends AppCompatActivity {
     }
 
     private void redirect() {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseUser user = app.firebaseAuth.getCurrentUser();
         Intent i = null;
         if (user != null) {
-            sPref.edit().putBoolean(KeyUtils.isLoggedInPrefKey, true).apply();
+            app.sPrefUserEdit.putBoolean(KeyUtils.isLoggedInPrefKey, true).apply();
             i = new Intent(
                     SplashScreen.this,
                     MainActivity.class
             );
         }
         else {
-            if (sPref.getBoolean(KeyUtils.isFirstTimePrefKey, true)) {
+            if (app.sPrefUser.getBoolean(KeyUtils.isFirstTimePrefKey, true)) {
                 i = new Intent(
                         SplashScreen.this,
                         OnBoardScreen.class
@@ -115,7 +115,7 @@ public class SplashScreen extends AppCompatActivity {
                         AuthenticationScreen.class
                 );
             }
-            sPref.edit().putBoolean(KeyUtils.isLoggedInPrefKey, false).apply();
+            app.sPrefUserEdit.putBoolean(KeyUtils.isLoggedInPrefKey, false).apply();
         }
         startActivity(i);
         finish();
