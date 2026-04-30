@@ -57,6 +57,7 @@ public class SetupProfileActivity extends AppCompatActivity {
     private TextInputLayout tIFeeLayout;
     private ActivityResultLauncher<Intent> cameraActivityResultLauncher;
     private ActivityResultLauncher<Intent> uploadActivityResultLauncher;
+    private MyApplication app;
     private final int CAMERA_PERMISSION_CODE = 1;
     private Bitmap bitmap;
     private Uri uri;
@@ -94,7 +95,7 @@ public class SetupProfileActivity extends AppCompatActivity {
 
         mbSubmit.setOnClickListener(v -> {
             if (bitmap != null || uri != null) {
-                uploadToCloudinary(uri, bitmap);
+                uploadToCloudinaryAndMaintainDB();
             }
             else {
                 Toast.makeText(SetupProfileActivity.this, "Go for Skip", Toast.LENGTH_LONG).show();
@@ -102,22 +103,6 @@ public class SetupProfileActivity extends AppCompatActivity {
         });
     }
 
-    private void checkCameraPermission() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-            openCamera();
-        }
-        else {
-            ActivityCompat.requestPermissions(
-                    this,
-                    new String[] {Manifest.permission.CAMERA},
-                    CAMERA_PERMISSION_CODE
-            );
-        }
-    }
-    private void openCamera() {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        cameraActivityResultLauncher.launch(intent);
-    }
     private void init() {
         ivProfile = findViewById(R.id.setup_profile_profile_img);
         ibCamera = findViewById(R.id.setup_profile_camera_btn);
@@ -127,6 +112,16 @@ public class SetupProfileActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.setup_profile_progress_bar);
         progressBar.setVisibility(View.GONE);
         etFee = findViewById(R.id.setup_profile_doc_fee);
+        tIFeeLayout = findViewById(R.id.setup_profile_doc_fee_layout);
+        app = (MyApplication) getApplicationContext();
+
+        if(app.sPrefUser.getString(KeyUtils.rolePrefKey, KeyUtils.patientKey).equals(KeyUtils.doctorKey)) {
+            tIFeeLayout.setVisibility(View.VISIBLE);
+        }
+        else {
+            tIFeeLayout.setVisibility(View.GONE);
+        }
+
 
         bitmap = null;
         uri = null;
@@ -137,7 +132,6 @@ public class SetupProfileActivity extends AppCompatActivity {
                     if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
                         bitmap = (Bitmap) Objects.requireNonNull(result.getData().getExtras()).get("data");
                         ivProfile.setImageBitmap(bitmap);
-                        uploadToCloudinary(null, bitmap);
                     }
                 }
         );
@@ -148,12 +142,17 @@ public class SetupProfileActivity extends AppCompatActivity {
                     if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
                         uri = result.getData().getData();
                         ivProfile.setImageURI(uri);
-                        uploadToCloudinary(uri, null);
                     }
                 }
         );
     }
-    private void uploadToCloudinary(Uri uri, Bitmap bitmap) {
+    private void uploadToCloudinaryAndMaintainDB() {
+        if (app.sPrefUser.getString(KeyUtils.rolePrefKey, KeyUtils.patientKey).equals(KeyUtils.doctorKey)) {
+            if (Objects.requireNonNull(etFee.getText()).toString().isEmpty()) {
+                Toast.makeText(SetupProfileActivity.this, "Fee is Required", Toast.LENGTH_LONG).show();
+                return;
+            }
+        }
         progressBar.setVisibility(View.VISIBLE);
         MediaManager mediaManager = MediaManager.get();
         UploadRequest<?> uploadRequest = null;
@@ -186,9 +185,14 @@ public class SetupProfileActivity extends AppCompatActivity {
                             if (user != null) {
                                 String uID = user.getUid();
 
-                                String cloudinaryUrl = resultData.get("secure_url");
+                                String cloudinaryUrl = Objects.requireNonNull(resultData.get("secure_url")).toString();
 
                                 Map<String, Object> dataMap = new HashMap<>();
+
+                                if (app.sPrefUser.getString(KeyUtils.rolePrefKey, KeyUtils.patientKey).equals(KeyUtils.doctorKey)) {
+                                    dataMap.put("fee", Objects.requireNonNull(etFee.getText()).toString());
+                                }
+
                                 dataMap.put("profile_image_url", cloudinaryUrl);
 
                                 app.firestore.collection(KeyUtils.firebaseUserCollectionKey)
@@ -226,5 +230,21 @@ public class SetupProfileActivity extends AppCompatActivity {
                         }
                     }).dispatch();
         }
+    }
+    private void checkCameraPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            openCamera();
+        }
+        else {
+            ActivityCompat.requestPermissions(
+                    this,
+                    new String[] {Manifest.permission.CAMERA},
+                    CAMERA_PERMISSION_CODE
+            );
+        }
+    }
+    private void openCamera() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        cameraActivityResultLauncher.launch(intent);
     }
 }
