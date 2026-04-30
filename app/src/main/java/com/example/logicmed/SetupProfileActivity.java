@@ -186,8 +186,10 @@ public class SetupProfileActivity extends AppCompatActivity {
                             if (user != null) {
                                 String uID = user.getUid();
 
+                                String cloudinaryUrl = resultData.get("secure_url");
+
                                 Map<String, Object> dataMap = new HashMap<>();
-                                dataMap.put("profile_image_url", resultData.get("secure_url"));
+                                dataMap.put("profile_image_url", cloudinaryUrl);
 
                                 app.firestore.collection(KeyUtils.firebaseUserCollectionKey)
                                         .document(uID)
@@ -195,7 +197,10 @@ public class SetupProfileActivity extends AppCompatActivity {
                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
-                                                if (!(task.isSuccessful())) {
+                                                if (task.isSuccessful()) {
+                                                    app.sPrefUserEdit.putString(KeyUtils.profileUrlPrefKey, cloudinaryUrl).apply();
+                                                }
+                                                else {
                                                     Toast.makeText(SetupProfileActivity.this, "Unable to Update Profile", Toast.LENGTH_LONG).show();
                                                 }
                                                 progressBar.setVisibility(View.GONE);

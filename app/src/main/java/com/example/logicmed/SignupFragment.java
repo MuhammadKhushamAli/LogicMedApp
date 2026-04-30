@@ -288,6 +288,8 @@ public class SignupFragment extends Fragment implements DoctorDetailSignUpFragme
                                     app.sPrefUserEdit
                                             .putBoolean(KeyUtils.isLoggedInPrefKey, true)
                                             .putString(KeyUtils.rolePrefKey, role)
+                                            .putString(KeyUtils.namePrefKey, fullName)
+                                            .putString(KeyUtils.emailPrefKey, email)
                                             .commit()
                             ) {
 

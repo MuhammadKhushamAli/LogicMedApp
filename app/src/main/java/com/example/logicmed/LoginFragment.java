@@ -88,10 +88,15 @@ public class LoginFragment extends Fragment {
                                                     DocumentSnapshot document = task.getResult();
 
                                                     String role = document.getString("role");
+                                                    String name = document.getString("fullName");
+                                                    String profileUrl = document.getString("profile_image_url");
                                                     if (
                                                             app.sPrefUserEdit
                                                                     .putBoolean(KeyUtils.isLoggedInPrefKey, true)
                                                                     .putString(KeyUtils.rolePrefKey, role)
+                                                                    .putString(KeyUtils.namePrefKey, name)
+                                                                    .putString(KeyUtils.emailPrefKey, email)
+                                                                    .putString(KeyUtils.profileUrlPrefKey, profileUrl)
                                                                     .commit()
                                                     ) {
 
