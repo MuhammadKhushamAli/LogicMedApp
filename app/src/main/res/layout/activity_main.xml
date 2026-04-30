@@ -6,15 +6,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:openDrawer="start"
+    android:fitsSystemWindows="true"
     tools:context=".MainActivity">
     <RelativeLayout
+        android:id="@+id/main_activity_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         >
         <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/toolbar_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            android:layout_alignParentTop="true"
             >
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -26,9 +30,9 @@
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/main_fragment_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_above="@id/bottom_nav_bar"
-            android:layout_alignParentTop="true"
+            android:layout_below="@id/toolbar_layout"
             />
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_nav_bar"

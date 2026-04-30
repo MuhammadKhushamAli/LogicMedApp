@@ -47,4 +47,5 @@ dependencies {
     implementation libs.okhttp
     implementation(libs.material.v1120)
     implementation libs.cloudinary.android
+    implementation libs.glide
 }
