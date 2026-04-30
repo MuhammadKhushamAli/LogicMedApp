@@ -1,7 +1,9 @@
 package com.example.logicmed;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -62,6 +64,18 @@ public class MainActivity extends AppCompatActivity {
         ImageView ivProfile = view.findViewById(R.id.drawer_nav_profile_icon);
         TextView tvName = view.findViewById(R.id.drawer_nav_profile_name);
         TextView tvEmail = view.findViewById(R.id.drawer_nav_profile_email);
+
+        ImageButton ibLogout = toolbar.findViewById(R.id.logout_btn);
+        ibLogout.setOnClickListener(v -> {
+            app.firebaseAuth.signOut();
+            app.sPrefUserEdit.clear().apply();
+            startActivity(
+                    new Intent(
+                            this,
+                            AuthenticationScreen.class
+                    )
+            );
+        });
 
         String cloudinaryProfileURL = app.sPrefUser.getString(KeyUtils.profileUrlPrefKey, "");
 
