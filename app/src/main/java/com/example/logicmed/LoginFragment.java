@@ -86,17 +86,20 @@ public class LoginFragment extends Fragment {
                                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                                 if(task.isSuccessful()) {
                                                     DocumentSnapshot document = task.getResult();
+                                                    User user = document.toObject(User.class);
 
-                                                    String role = document.getString("role");
-                                                    String name = document.getString("fullName");
-                                                    String profileUrl = document.getString("profile_image_url");
+                                                    if (user == null) {
+                                                        Toast.makeText(context, "Unable to get Data", Toast.LENGTH_LONG).show();
+                                                        return;
+                                                    }
+
                                                     if (
                                                             app.sPrefUserEdit
                                                                     .putBoolean(KeyUtils.isLoggedInPrefKey, true)
-                                                                    .putString(KeyUtils.rolePrefKey, role)
-                                                                    .putString(KeyUtils.namePrefKey, name)
+                                                                    .putString(KeyUtils.rolePrefKey, user.getRole())
+                                                                    .putString(KeyUtils.namePrefKey, user.getFullName())
                                                                     .putString(KeyUtils.emailPrefKey, email)
-                                                                    .putString(KeyUtils.profileUrlPrefKey, profileUrl)
+                                                                    .putString(KeyUtils.profileUrlPrefKey, user.getProfileImageUrl())
                                                                     .commit()
                                                     ) {
 
