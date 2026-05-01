@@ -246,7 +246,7 @@ public class SignupFragment extends Fragment implements DoctorDetailSignUpFragme
             }
         });
     }
-    private void firebaseAuth(Map<String, Object> data) {
+    private void firebaseAuth(User user) {
         Context context = requireContext();
         Activity activity = requireActivity();
 
@@ -262,7 +262,7 @@ public class SignupFragment extends Fragment implements DoctorDetailSignUpFragme
                             assert app.firebaseAuth.getCurrentUser() != null;
                             java.lang.String uID = app.firebaseAuth.getCurrentUser().getUid();
 
-                            firebaseDB(uID, data);
+                            firebaseDB(uID, user);
                         }
                         else {
                             String error = task.getException() != null ? task.getException().getMessage() : "Unable to Signup";
@@ -273,13 +273,13 @@ public class SignupFragment extends Fragment implements DoctorDetailSignUpFragme
                     }
                 });
     }
-    private void firebaseDB(String uID, Map<String, Object> data) {
+    private void firebaseDB(String uID, User user) {
         Context context = requireContext();
         Activity activity = requireActivity();
 
         app.firestore.collection(KeyUtils.firebaseUserCollectionKey)
                 .document(uID)
-                .set(data, SetOptions.merge())
+                .set(user)
                 .addOnCompleteListener(activity, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -331,21 +331,16 @@ public class SignupFragment extends Fragment implements DoctorDetailSignUpFragme
     private void inputAndMakeMap(List<String> docCategories, List<String> docTimings) {
         Context context = requireContext();
 
-        Map<String, Object> userData = new HashMap<>();
-        userData.put("fullName", fullName);
-        userData.put("role", role);
-        userData.put("city", city);
-
+        User user = null;
 
         if (role.equals(KeyUtils.doctorKey)) {
             if (docCategories.isEmpty() || docTimings.isEmpty()) {
                 Toast.makeText(context, "Categories and Timings are required for Doctors", Toast.LENGTH_LONG).show();
                 return;
             }
-            userData.put("docCategories", docCategories);
-            userData.put("docTimings", docTimings);
+            user = new Doctor(fullName, role, city, docCategories, docTimings);
         }
-        firebaseAuth(userData);
+        firebaseAuth(user);
     }
 
 }
