@@ -44,4 +44,7 @@
     <string name="upcomingAppointmentWithTitle">Upcoming Appointments</string>
     <string name="noUpcomingAppointment">No Upcoming Appointment</string>
     <string name="searchBarHint">Search Here</string>
+    <string name="doctorPicDesc">Doctor Picture</string>
+    <string name="clickForMoreDetail">Click For More Detail</string>
+    <string name="feeTitle">Fee:</string>
 </resources>

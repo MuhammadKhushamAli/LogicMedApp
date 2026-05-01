@@ -2,6 +2,7 @@ package com.example.logicmed;
 
 public class User {
     static public final String PROFILE_IMG_URL_FIELD = "profileImageUrl";
+    static public final String ROLE_FIELD = "role";
     private String fullName;
     private String profileImageUrl;
     private String role;

@@ -48,4 +48,5 @@ dependencies {
     implementation(libs.material.v1120)
     implementation libs.cloudinary.android
     implementation libs.glide
+    implementation 'com.firebaseui:firebase-ui-firestore:10.0.0-beta02'
 }
