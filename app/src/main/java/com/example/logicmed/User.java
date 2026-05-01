@@ -22,6 +22,8 @@ public class User {
         this.profileImageUrl = profileImageUrl;
         this.role = role;
         this.city = city;
+        this.appointments = new ArrayList<>();
+        this.messages = new ArrayList<>();
     }
 
     public User(String fullName, String role, String city) {

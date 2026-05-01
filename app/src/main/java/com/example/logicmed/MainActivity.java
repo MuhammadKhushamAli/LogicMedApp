@@ -90,6 +90,7 @@ public class MainActivity extends AppCompatActivity implements SearchFragment.se
                             AuthenticationScreen.class
                     )
             );
+            finish();
         });
 
         String cloudinaryProfileURL = app.sPrefUser.getString(KeyUtils.profileUrlPrefKey, "");
