@@ -33,7 +33,9 @@ public class DoctorRecyclerViewAdapter extends FirestoreRecyclerAdapter<Doctor, 
                     .into(holder.ivProfileImage);
         }
         holder.tvName.setText(model.getFullName());
-        holder.tvFee.setText(String.valueOf(model.getFee()));
+
+        String feeStr = "Fee: " + model.getFee();
+        holder.tvFee.setText(feeStr);
     }
 
     @NonNull
