@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
         init();
         linkFragsToBottomNavBar();
+        bottomNavigationView.setSelectedItemId(R.id.home_frag);
     }
     private void init() {
         app = (MyApplication) getApplicationContext();
