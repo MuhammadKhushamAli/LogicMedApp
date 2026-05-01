@@ -43,4 +43,5 @@
     <string name="incButton">Increment</string>
     <string name="upcomingAppointmentWithTitle">Upcoming Appointments</string>
     <string name="noUpcomingAppointment">No Upcoming Appointment</string>
+    <string name="searchBarHint">Search Here</string>
 </resources>
