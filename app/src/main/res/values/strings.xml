@@ -39,4 +39,8 @@
     <string name="docFeeHind">Enter the Appointment Fee</string>
     <string name="toolBarTitle">Step Toward Healthy Life</string>
     <string name="logoutBtnDesc">Logout</string>
+    <string name="decButton">Decrement</string>
+    <string name="incButton">Increment</string>
+    <string name="upcomingAppointmentWithTitle">Upcoming Appointments</string>
+    <string name="noUpcomingAppointment">No Upcoming Appointment</string>
 </resources>
