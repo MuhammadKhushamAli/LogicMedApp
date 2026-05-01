@@ -1,5 +1,8 @@
 package com.example.logicmed;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class User {
     static public final String PROFILE_IMG_URL_FIELD = "profileImageUrl";
     static public final String ROLE_FIELD = "role";
@@ -7,6 +10,8 @@ public class User {
     private String profileImageUrl;
     private String role;
     private String city;
+    private List<String> messages;
+    private List<String> appointments;
 
     public User() {
 
@@ -54,4 +59,20 @@ public class User {
     public void setCity(String city) {
         this.city = city;
     }
+    public List<String> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(List<String> messages) {
+        this.messages = messages;
+    }
+
+    public List<String> getAppointments() {
+        return appointments;
+    }
+
+    public void setAppointments(List<String> appointments) {
+        this.appointments = appointments;
+    }
+
 }
