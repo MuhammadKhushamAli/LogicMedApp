@@ -46,8 +46,8 @@
     <string name="searchBarHint">Search Here</string>
     <string name="doctorPicDesc">Doctor Picture</string>
     <string name="clickForMoreDetail">Click For More Detail</string>
-    <string name="docCategoriesTitle">Doctor's Specialities: </string>
-    <string name="docTimingsTitle">Doctor's Timings (In Week): </string>
+    <string name="docCategoriesTitle">Doctor\'s Specialities: </string>
+    <string name="docTimingsTitle">Doctor\'s Timings (In Week): </string>
     <string name="bookAppointmentText">Book an Appointment</string>
     <string name="backArrow">Go Back</string>
 </resources>

@@ -27,7 +27,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SearchFragment.setOnClickListener {
     private BottomNavigationView bottomNavigationView;
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
@@ -47,25 +47,25 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main_activity_layout), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
-        init();
+        init(savedInstanceState);
         linkFragsToBottomNavBar();
         linkingBackStackToBottomNavBar();
     }
-    private void init() {
+    private void init(Bundle savedInstanceState) {
         isPrev = false;
         app = (MyApplication) getApplicationContext();
         fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .setReorderingAllowed(true)
-                .add(R.id.main_fragment_container, new HomeFragment())
-                .commit();
+        if (savedInstanceState == null) {
+            fragmentManager.beginTransaction()
+                    .setReorderingAllowed(true)
+                    .add(R.id.main_fragment_container, new HomeFragment())
+                    .commit();
+        }
 
         bottomNavigationView = findViewById(R.id.bottom_nav_bar);
         ViewCompat.setOnApplyWindowInsetsListener(bottomNavigationView, (v, insets) -> insets);
@@ -163,5 +163,12 @@ public class MainActivity extends AppCompatActivity {
                 bottomNavigationView.setSelectedItemId(id);
             }
         });
+    }
+
+    @Override
+    public void onClickListener(String uID) {
+        Intent intent = new Intent(this, DoctorDetailActivity.class);
+        intent.putExtra(KeyUtils.doctorsUIDIntentKey, uID);
+        startActivity(intent);
     }
 }

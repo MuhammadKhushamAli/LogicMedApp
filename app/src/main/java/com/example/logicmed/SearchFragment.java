@@ -17,11 +17,23 @@ import android.view.ViewGroup;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.Query;
 
-public class SearchFragment extends Fragment {
+public class SearchFragment extends Fragment implements DoctorRecyclerViewAdapter.setOnClickListener {
     private SearchView searchView;
     private RecyclerView rvDoctorsList;
 
+    private setOnClickListener listener;
+
+    public interface setOnClickListener {
+        void onClickListener(String uID);
+    }
+
     public SearchFragment() {
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        listener = (setOnClickListener) context;
     }
 
     @Override
@@ -53,9 +65,14 @@ public class SearchFragment extends Fragment {
                 .setLifecycleOwner(getViewLifecycleOwner())
                 .build();
 
-        DoctorRecyclerViewAdapter doctorRecyclerView = new DoctorRecyclerViewAdapter(options);
+        DoctorRecyclerViewAdapter doctorRecyclerView = new DoctorRecyclerViewAdapter(options, this);
         rvDoctorsList.setHasFixedSize(true);
         rvDoctorsList.setLayoutManager(new GridLayoutManager(context, 2));
         rvDoctorsList.setAdapter(doctorRecyclerView);
     }
+    @Override
+    public void onClickListener(String uID) {
+        listener.onClickListener(uID);
+    }
+
 }

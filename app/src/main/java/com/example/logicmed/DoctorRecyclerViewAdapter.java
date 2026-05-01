@@ -19,9 +19,14 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 
 public class DoctorRecyclerViewAdapter extends FirestoreRecyclerAdapter<Doctor, DoctorRecyclerViewAdapter.DoctorViewHolder> {
 
-    public DoctorRecyclerViewAdapter(@NonNull FirestoreRecyclerOptions<Doctor> options) {
-        super(options);
+    private setOnClickListener listener;
+    public interface setOnClickListener {
+        void onClickListener(String uID);
+    }
 
+    public DoctorRecyclerViewAdapter(@NonNull FirestoreRecyclerOptions<Doctor> options, setOnClickListener listener) {
+        super(options);
+        this.listener = listener;
     }
 
     @Override
@@ -39,13 +44,14 @@ public class DoctorRecyclerViewAdapter extends FirestoreRecyclerAdapter<Doctor, 
         holder.tvFee.setText(feeStr);
 
         holder.itemView.setOnClickListener(v -> {
-            Context context = holder.itemView.getContext();
+            int pos = holder.getBindingAdapterPosition();
 
-            String doctorUID = getSnapshots().getSnapshot(holder.getBindingAdapterPosition()).getId();
+            if (pos != RecyclerView.NO_POSITION) {
+                Context context = v.getContext();
 
-            Intent intent = new Intent(context, DoctorDetailActivity.class);
-            intent.putExtra(KeyUtils.doctorsUIDIntentKey, doctorUID);
-            context.startActivity(intent);
+                String doctorUID = getSnapshots().getSnapshot(pos).getId();
+                listener.onClickListener(doctorUID);
+            }
         });
     }
 
