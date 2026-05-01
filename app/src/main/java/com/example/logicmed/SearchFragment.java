@@ -1,6 +1,7 @@
 package com.example.logicmed;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.Query;
@@ -20,8 +22,8 @@ import com.google.firebase.firestore.Query;
 public class SearchFragment extends Fragment implements DoctorRecyclerViewAdapter.setOnClickListener {
     private SearchView searchView;
     private RecyclerView rvDoctorsList;
-
     private setOnClickListener listener;
+    private DoctorRecyclerViewAdapter doctorRecyclerView;
 
     public interface setOnClickListener {
         void onClickListener(String uID);
@@ -62,17 +64,24 @@ public class SearchFragment extends Fragment implements DoctorRecyclerViewAdapte
         Query query = app.firestore.collection(KeyUtils.firebaseUserCollectionKey).whereEqualTo(User.ROLE_FIELD, KeyUtils.doctorKey);
         FirestoreRecyclerOptions<Doctor> options = new FirestoreRecyclerOptions.Builder<Doctor>()
                 .setQuery(query, Doctor.class)
-                .setLifecycleOwner(getViewLifecycleOwner())
                 .build();
 
-        DoctorRecyclerViewAdapter doctorRecyclerView = new DoctorRecyclerViewAdapter(options, this);
+        doctorRecyclerView = new DoctorRecyclerViewAdapter(options, this);
         rvDoctorsList.setHasFixedSize(true);
         rvDoctorsList.setLayoutManager(new GridLayoutManager(context, 2));
         rvDoctorsList.setAdapter(doctorRecyclerView);
+        doctorRecyclerView.startListening();
+
     }
     @Override
     public void onClickListener(String uID) {
         listener.onClickListener(uID);
     }
 
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        doctorRecyclerView.stopListening();
+    }
 }
