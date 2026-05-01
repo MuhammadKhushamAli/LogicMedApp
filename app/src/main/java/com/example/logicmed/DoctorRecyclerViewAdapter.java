@@ -1,6 +1,7 @@
 package com.example.logicmed;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +37,16 @@ public class DoctorRecyclerViewAdapter extends FirestoreRecyclerAdapter<Doctor, 
 
         String feeStr = "Fee: " + model.getFee();
         holder.tvFee.setText(feeStr);
+
+        holder.itemView.setOnClickListener(v -> {
+            Context context = holder.itemView.getContext();
+
+            String doctorUID = getSnapshots().getSnapshot(holder.getBindingAdapterPosition()).getId();
+
+            Intent intent = new Intent(context, DoctorDetailActivity.class);
+            intent.putExtra(KeyUtils.doctorsUIDIntentKey, doctorUID);
+            context.startActivity(intent);
+        });
     }
 
     @NonNull
