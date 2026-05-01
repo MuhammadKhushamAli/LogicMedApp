@@ -190,14 +190,14 @@ public class SetupProfileActivity extends AppCompatActivity {
                                 Map<String, Object> dataMap = new HashMap<>();
 
                                 if (app.sPrefUser.getString(KeyUtils.rolePrefKey, KeyUtils.patientKey).equals(KeyUtils.doctorKey)) {
-                                    dataMap.put("fee", Objects.requireNonNull(etFee.getText()).toString());
+                                    dataMap.put(Doctor.FEE_FIELD, Float.parseFloat(String.valueOf(etFee.getText())));
                                 }
 
-                                dataMap.put("profile_image_url", cloudinaryUrl);
+                                dataMap.put(User.PROFILE_IMG_URL_FIELD, cloudinaryUrl);
 
                                 app.firestore.collection(KeyUtils.firebaseUserCollectionKey)
                                         .document(uID)
-                                        .set(dataMap, SetOptions.merge())
+                                        .update(dataMap)
                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
