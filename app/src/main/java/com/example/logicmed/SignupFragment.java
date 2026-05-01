@@ -340,6 +340,9 @@ public class SignupFragment extends Fragment implements DoctorDetailSignUpFragme
             }
             user = new Doctor(fullName, role, city, docCategories, docTimings);
         }
+        else {
+            user = new User(fullName, role, city);
+        }
         firebaseAuth(user);
     }
 
