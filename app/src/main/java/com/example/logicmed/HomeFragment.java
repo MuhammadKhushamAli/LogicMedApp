@@ -8,9 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class home_frag extends Fragment {
+public class HomeFragment extends Fragment {
 
-    public home_frag() {
+    public HomeFragment() {
     }
 
     @Override
