@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private ActionBarDrawerToggle toggle;
     private MyApplication app;
     private FragmentManager fragmentManager;
+    private Boolean isPrev;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,11 +56,16 @@ public class MainActivity extends AppCompatActivity {
 
         init();
         linkFragsToBottomNavBar();
-        bottomNavigationView.setSelectedItemId(R.id.home_frag);
+        linkingBackStackToBottomNavBar();
     }
     private void init() {
+        isPrev = false;
         app = (MyApplication) getApplicationContext();
         fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .setReorderingAllowed(true)
+                .add(R.id.main_fragment_container, new HomeFragment())
+                .commit();
 
         bottomNavigationView = findViewById(R.id.bottom_nav_bar);
         ViewCompat.setOnApplyWindowInsetsListener(bottomNavigationView, (v, insets) -> insets);
@@ -110,6 +116,10 @@ public class MainActivity extends AppCompatActivity {
     }
     private void linkFragsToBottomNavBar() {
         bottomNavigationView.setOnItemSelectedListener(item -> {
+            if (isPrev) {
+                isPrev = false;
+                return true;
+            }
             int id = item.getItemId();
             Fragment selectedFrag = null;
 
@@ -125,12 +135,33 @@ public class MainActivity extends AppCompatActivity {
 
             if (selectedFrag != null) {
                 fragmentManager.beginTransaction()
+                        .setReorderingAllowed(true)
                         .replace(R.id.main_fragment_container, selectedFrag)
                         .addToBackStack(null)
                         .commit();
                 return true;
             }
             return false;
+        });
+    }
+    private void linkingBackStackToBottomNavBar() {
+        fragmentManager.addOnBackStackChangedListener(() -> {
+            Fragment currentFrag = fragmentManager.findFragmentById(R.id.main_fragment_container);
+            int id = -1;
+            if (currentFrag instanceof HomeFragment) {
+                id = R.id.home_frag;
+            }
+            else if (currentFrag instanceof SearchFragment) {
+                id = R.id.search_frag;
+            }
+            else if (currentFrag instanceof ChatFragment) {
+                id = R.id.chat_frag;
+            }
+
+            if (id != -1) {
+                isPrev = true;
+                bottomNavigationView.setSelectedItemId(id);
+            }
         });
     }
 }
