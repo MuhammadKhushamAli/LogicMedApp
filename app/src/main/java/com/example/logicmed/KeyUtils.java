@@ -17,4 +17,5 @@ public class KeyUtils {
     static public final String doctorKey = "Doctor";
     static public final String patientKey = "Patient";
     static public final String doctorsUIDIntentKey = "doctorsUIDIntent";
+    static public final String chatUIDIntentKey = "chatUIDIntent";
 }

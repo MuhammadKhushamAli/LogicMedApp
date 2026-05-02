@@ -50,4 +50,5 @@
     <string name="docTimingsTitle">Doctor\'s Timings (In Week): </string>
     <string name="bookAppointmentText">Book an Appointment</string>
     <string name="backArrow">Go Back</string>
+    <string name="startConversation">Start Conversation</string>
 </resources>

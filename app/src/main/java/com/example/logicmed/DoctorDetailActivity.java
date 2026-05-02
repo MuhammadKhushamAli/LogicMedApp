@@ -2,13 +2,14 @@ package com.example.logicmed;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -18,10 +19,17 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldPath;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class DoctorDetailActivity extends AppCompatActivity {
     MyApplication app;
@@ -32,6 +40,8 @@ public class DoctorDetailActivity extends AppCompatActivity {
     private RecyclerView rvTimings;
     private RecyclerView rvCategories;
     private FloatingActionButton addMessage;
+    private ProgressBar progressBar;
+    private String uId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +55,7 @@ public class DoctorDetailActivity extends AppCompatActivity {
         });
         init();
         getDoctorData();
+        startConversation();
         ibGoBack.setOnClickListener(v -> {
             finish();
         });
@@ -59,11 +70,13 @@ public class DoctorDetailActivity extends AppCompatActivity {
         tvFee = findViewById(R.id.doctor_detail_fee);
         rvTimings = findViewById(R.id.doctor_detail_timings);
         rvCategories = findViewById(R.id.doctor_detail_categories);
+        addMessage = findViewById(R.id.doctor_detail_start_conversation_btn);
+        progressBar = findViewById(R.id.doctor_detail_progress_bar);
+        uId = null;
     }
-
     private void getDoctorData() {
         Intent intent = getIntent();
-        String uId = intent.getStringExtra(KeyUtils.doctorsUIDIntentKey);
+        uId = intent.getStringExtra(KeyUtils.doctorsUIDIntentKey);
         if (uId == null || uId.isEmpty()) {
             Toast.makeText(DoctorDetailActivity.this, "Unable to Get ID, Try Again", Toast.LENGTH_LONG).show();
             return;
@@ -101,5 +114,100 @@ public class DoctorDetailActivity extends AppCompatActivity {
                         rvCategories.setAdapter(doctorCategoryAdapter);
                     }
                 });
+    }
+    private void startConversation() {
+        addMessage.setOnClickListener(v -> {
+            progressBar.setVisibility(View.VISIBLE);
+
+            String currentUId = app.firebaseAuth.getUid();
+
+            if(uId == null || currentUId == null || uId.isEmpty() || currentUId.isEmpty()) {
+                Toast.makeText(DoctorDetailActivity.this, "User not Found", Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            FirebaseFirestore firestore = app.firestore;
+
+            firestore.collection(KeyUtils.firebaseUserCollectionKey).document(currentUId)
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            List<String> messagesIds = (List<String>) task.getResult().get(User.MESSAGES_FIELD);
+
+                            if (messagesIds != null && !(messagesIds.isEmpty())) {
+                                firestore.collection(KeyUtils.firebaseChatCollectionKey)
+                                        .whereIn(FieldPath.documentId(), messagesIds)
+                                        .whereArrayContains(Chat.PARTICIPANTS_FIELD, uId)
+                                        .get()
+                                        .addOnCompleteListener(taskOfChats -> {
+                                            if (taskOfChats.isSuccessful()) {
+                                                QuerySnapshot querySnapshot = taskOfChats.getResult();
+                                                if(querySnapshot != null && !(querySnapshot.isEmpty())) {
+                                                    String chatId = querySnapshot.getDocuments().get(0).getId();
+                                                    navigateToChatActivity(chatId);
+                                                }
+                                                else {
+                                                    createNewChat();
+                                                }
+                                            }
+                                            else {
+                                                Toast.makeText(DoctorDetailActivity.this, taskOfChats.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                            }
+                                            progressBar.setVisibility(View.GONE);
+                                        });
+                            }
+                        }
+                    });
+        });
+    }
+
+    private void navigateToChatActivity(String chatId) {
+        Intent intent = new Intent(DoctorDetailActivity.this, ChatActivity.class);
+        intent.putExtra(KeyUtils.chatUIDIntentKey, chatId);
+        startActivity(intent);
+        finish();
+    }
+
+    private void createNewChat() {
+        FirebaseFirestore firestore = app.firestore;
+        String currentUId = app.firebaseAuth.getUid();
+
+        if(uId == null || currentUId == null || uId.isEmpty() || currentUId.isEmpty()) {
+            Toast.makeText(DoctorDetailActivity.this, "User not Found", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        DocumentReference chatDocRef = firestore.collection(KeyUtils.firebaseChatCollectionKey).document();
+        DocumentReference senderDocRef = firestore.collection(KeyUtils.firebaseUserCollectionKey).document(currentUId);
+        DocumentReference receiverDocRef = firestore.collection(KeyUtils.firebaseUserCollectionKey).document(uId);
+        String chatId = chatDocRef.getId();
+
+        firestore.runTransaction(transection -> {
+            DocumentSnapshot senderSnapShot = transection.get(senderDocRef);
+            DocumentSnapshot receiverSnapShot = transection.get(receiverDocRef);
+
+            if (senderSnapShot.exists() && receiverSnapShot.exists()) {
+                Chat chat = new Chat(new ArrayList<>(
+                        Arrays.asList(
+                                currentUId,
+                                uId
+                        )
+                ));
+
+                transection.set(chatDocRef, chat);
+                transection.update(senderDocRef, User.MESSAGES_FIELD, FieldValue.arrayUnion(chatId));
+                transection.update(receiverDocRef, User.MESSAGES_FIELD, FieldValue.arrayUnion(chatId));
+
+            }
+            return null;
+        }).addOnCompleteListener(task -> {
+            if(task.isSuccessful()) {
+                navigateToChatActivity(chatId);
+            }
+            else {
+                Toast.makeText(DoctorDetailActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+            }
+            progressBar.setVisibility(View.GONE);
+        });
     }
 }
