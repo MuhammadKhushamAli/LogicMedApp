@@ -59,9 +59,6 @@ public class SearchFragment extends Fragment implements DoctorRecyclerViewAdapte
         doctorRecyclerView = new DoctorRecyclerViewAdapter(options, this);
         rvDoctorsList.setHasFixedSize(true);
         rvDoctorsList.setLayoutManager(new GridLayoutManager(context, 2));
-        rvDoctorsList.setAdapter(doctorRecyclerView);
-        doctorRecyclerView.startListening();
-
     }
     @Override
     public void onClickListener(String uID) {
@@ -70,6 +67,12 @@ public class SearchFragment extends Fragment implements DoctorRecyclerViewAdapte
         startActivity(intent);
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        rvDoctorsList.setAdapter(doctorRecyclerView);
+        doctorRecyclerView.startListening();
+    }
 
     @Override
     public void onStop() {
