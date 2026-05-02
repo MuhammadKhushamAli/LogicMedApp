@@ -318,7 +318,7 @@ public class SignupFragment extends Fragment implements DoctorDetailSignUpFragme
     }
 
     @Override
-    public void setDataOnSignUp(List<String> categoriesOfDoctor, List<String> timingsOfDoctors) {
+    public void setDataOnSignUp(List<String> categoriesOfDoctor, List<Schedule> timingsOfDoctors) {
         fragmentManager
                 .beginTransaction()
                 .remove(doctorDetailSignUpFragment)
@@ -328,7 +328,7 @@ public class SignupFragment extends Fragment implements DoctorDetailSignUpFragme
         inputAndMakeMap(categoriesOfDoctor, timingsOfDoctors);
     }
 
-    private void inputAndMakeMap(List<String> docCategories, List<String> docTimings) {
+    private void inputAndMakeMap(List<String> docCategories, List<Schedule> docTimings) {
         Context context = requireContext();
 
         User user = null;

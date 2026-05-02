@@ -32,10 +32,10 @@ public class DoctorDetailSignUpFragment extends Fragment implements SubCategorie
     private Context context;
     private MaterialButton btnSubmit;
     private List<String> categoriesOfDoctor;
-    private List<String> timingsOfDoctors;
+    private List<Schedule> timingsOfDoctors;
 
     public interface setOnSignUpListener {
-        void setDataOnSignUp(List<String> categoriesOfDoctor, List<String> timingsOfDoctors);
+        void setDataOnSignUp(List<String> categoriesOfDoctor, List<Schedule> timingsOfDoctors);
     }
 
     public DoctorDetailSignUpFragment() {
@@ -94,8 +94,8 @@ public class DoctorDetailSignUpFragment extends Fragment implements SubCategorie
                     formAndToTImePicker(chip, dayOfWeek);
                 }
                 else {
-                    String prevText = chip.getText().toString();
-                    timingsOfDoctors.remove(prevText);
+                    int prevObjIndex = Integer.parseInt((String) chip.getTag());
+                    timingsOfDoctors.remove(prevObjIndex);
                     chip.setText(dayOfWeek);
                     chip.setTag(null);
                 }
@@ -113,10 +113,11 @@ public class DoctorDetailSignUpFragment extends Fragment implements SubCategorie
             TimePickerDialog toTimePickerDialogue = new TimePickerDialog(context, (view2, hourEnd, minutesEnd) -> {
                 String endTime = hourEnd + ":" + minutesEnd;
 
+                Schedule schedule = new Schedule(dayOfWeek, fromTime, endTime);
                 String textForClickableChip = dayOfWeek + " ( " + fromTime + " - " + endTime + " ) ";
                 chip.setText(textForClickableChip);
-                chip.setTag(fromTime + " - " + endTime);
-                timingsOfDoctors.add(textForClickableChip);
+                timingsOfDoctors.add(schedule);
+                chip.setTag(timingsOfDoctors.indexOf(schedule));
             }, 5, 0, false);
 
             toTimePickerDialogue.setTitle("To");
