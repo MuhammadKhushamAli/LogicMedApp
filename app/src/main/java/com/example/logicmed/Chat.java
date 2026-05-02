@@ -5,23 +5,16 @@ import java.util.List;
 
 public class Chat {
     public static final String PARTICIPANTS_FIELD = "participantsUId";
-    private List<String> messagesIds;
+    public static final String SIGNATURE_FIELD = "chatSignature";
     private List<String> participantsUId;
+    private String chatSignature;
 
     public Chat() {
 
     }
-    public Chat(List<String> participantsUId) {
-        this.messagesIds = new ArrayList<>();
+    public Chat(List<String> participantsUId, String chatSignature) {
         this.participantsUId = participantsUId;
-    }
-
-    public List<String> getMessagesIds() {
-        return messagesIds;
-    }
-
-    public void setMessagesIds(List<String> messagesIds) {
-        this.messagesIds = messagesIds;
+        this.chatSignature = chatSignature;
     }
 
     public List<String> getParticipantsUId() {
@@ -30,5 +23,13 @@ public class Chat {
 
     public void setParticipantsUId(List<String> participantsUId) {
         this.participantsUId = participantsUId;
+    }
+
+    public String getChatSignature() {
+        return chatSignature;
+    }
+
+    public void setChatSignature(String chatSignature) {
+        this.chatSignature = chatSignature;
     }
 }

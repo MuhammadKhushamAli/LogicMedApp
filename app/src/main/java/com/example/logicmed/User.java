@@ -6,14 +6,10 @@ import java.util.List;
 public class User {
     static public final String PROFILE_IMG_URL_FIELD = "profileImageUrl";
     static public final String ROLE_FIELD = "role";
-    static public final String MESSAGES_FIELD = "messages";
-    static public final String APPOINtMENTS_FIELD = "appointments";
     private String fullName;
     private String profileImageUrl;
     private String role;
     private String city;
-    private List<String> messages;
-    private List<String> appointments;
 
     public User() {
 
@@ -24,8 +20,6 @@ public class User {
         this.profileImageUrl = profileImageUrl;
         this.role = role;
         this.city = city;
-        this.appointments = new ArrayList<>();
-        this.messages = new ArrayList<>();
     }
 
     public User(String fullName, String role, String city) {
@@ -63,20 +57,4 @@ public class User {
     public void setCity(String city) {
         this.city = city;
     }
-    public List<String> getMessages() {
-        return messages;
-    }
-
-    public void setMessages(List<String> messages) {
-        this.messages = messages;
-    }
-
-    public List<String> getAppointments() {
-        return appointments;
-    }
-
-    public void setAppointments(List<String> appointments) {
-        this.appointments = appointments;
-    }
-
 }

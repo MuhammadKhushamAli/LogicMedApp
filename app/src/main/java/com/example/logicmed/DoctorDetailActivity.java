@@ -125,38 +125,26 @@ public class DoctorDetailActivity extends AppCompatActivity {
                 Toast.makeText(DoctorDetailActivity.this, "User not Found", Toast.LENGTH_LONG).show();
                 return;
             }
-
-            FirebaseFirestore firestore = app.firestore;
-
-            firestore.collection(KeyUtils.firebaseUserCollectionKey).document(currentUId)
+            String chatSignature = generateChatSignature(currentUId, uId);
+            app.firestore.collection(KeyUtils.firebaseChatCollectionKey)
+                    .whereArrayContains(Chat.PARTICIPANTS_FIELD, currentUId)
+                    .whereEqualTo(Chat.SIGNATURE_FIELD, chatSignature)
                     .get()
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            List<String> messagesIds = (List<String>) task.getResult().get(User.MESSAGES_FIELD);
-
-                            if (messagesIds != null && !(messagesIds.isEmpty())) {
-                                firestore.collection(KeyUtils.firebaseChatCollectionKey)
-                                        .whereIn(FieldPath.documentId(), messagesIds)
-                                        .whereArrayContains(Chat.PARTICIPANTS_FIELD, uId)
-                                        .get()
-                                        .addOnCompleteListener(taskOfChats -> {
-                                            if (taskOfChats.isSuccessful()) {
-                                                QuerySnapshot querySnapshot = taskOfChats.getResult();
-                                                if(querySnapshot != null && !(querySnapshot.isEmpty())) {
-                                                    String chatId = querySnapshot.getDocuments().get(0).getId();
-                                                    navigateToChatActivity(chatId);
-                                                }
-                                                else {
-                                                    createNewChat();
-                                                }
-                                            }
-                                            else {
-                                                Toast.makeText(DoctorDetailActivity.this, taskOfChats.getException().getMessage(), Toast.LENGTH_LONG).show();
-                                            }
-                                            progressBar.setVisibility(View.GONE);
-                                        });
+                    .addOnCompleteListener(taskOfChats -> {
+                        if (taskOfChats.isSuccessful()) {
+                            QuerySnapshot querySnapshot = taskOfChats.getResult();
+                            if(querySnapshot != null && !(querySnapshot.isEmpty())) {
+                                String chatId = querySnapshot.getDocuments().get(0).getId();
+                                navigateToChatActivity(chatId);
+                            }
+                            else {
+                                createNewChat();
                             }
                         }
+                        else {
+                            Toast.makeText(DoctorDetailActivity.this, taskOfChats.getException().getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                        progressBar.setVisibility(View.GONE);
                     });
         });
     }
@@ -169,7 +157,6 @@ public class DoctorDetailActivity extends AppCompatActivity {
     }
 
     private void createNewChat() {
-        FirebaseFirestore firestore = app.firestore;
         String currentUId = app.firebaseAuth.getUid();
 
         if(uId == null || currentUId == null || uId.isEmpty() || currentUId.isEmpty()) {
@@ -177,37 +164,32 @@ public class DoctorDetailActivity extends AppCompatActivity {
             return;
         }
 
-        DocumentReference chatDocRef = firestore.collection(KeyUtils.firebaseChatCollectionKey).document();
-        DocumentReference senderDocRef = firestore.collection(KeyUtils.firebaseUserCollectionKey).document(currentUId);
-        DocumentReference receiverDocRef = firestore.collection(KeyUtils.firebaseUserCollectionKey).document(uId);
-        String chatId = chatDocRef.getId();
+        String chatSignature = generateChatSignature(currentUId, uId);
+        Chat chat = new Chat(new ArrayList<>(
+                Arrays.asList(
+                        currentUId,
+                        uId
+                )
+        ), chatSignature);
 
-        firestore.runTransaction(transection -> {
-            DocumentSnapshot senderSnapShot = transection.get(senderDocRef);
-            DocumentSnapshot receiverSnapShot = transection.get(receiverDocRef);
-
-            if (senderSnapShot.exists() && receiverSnapShot.exists()) {
-                Chat chat = new Chat(new ArrayList<>(
-                        Arrays.asList(
-                                currentUId,
-                                uId
-                        )
-                ));
-
-                transection.set(chatDocRef, chat);
-                transection.update(senderDocRef, User.MESSAGES_FIELD, FieldValue.arrayUnion(chatId));
-                transection.update(receiverDocRef, User.MESSAGES_FIELD, FieldValue.arrayUnion(chatId));
-
-            }
-            return null;
-        }).addOnCompleteListener(task -> {
-            if(task.isSuccessful()) {
-                navigateToChatActivity(chatId);
-            }
-            else {
-                Toast.makeText(DoctorDetailActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
-            }
-            progressBar.setVisibility(View.GONE);
-        });
+        app.firestore.collection(KeyUtils.firebaseChatCollectionKey)
+                .add(chat)
+                .addOnCompleteListener(task -> {
+                    if(task.isSuccessful()) {
+                        navigateToChatActivity(task.getResult().getId());
+                    }
+                    else {
+                        Toast.makeText(DoctorDetailActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                    progressBar.setVisibility(View.GONE);
+                });
+    }
+    private String generateChatSignature(String currentUId, String otherUId) {
+        if (currentUId.compareTo(otherUId) < 0) {
+            return currentUId + "_" + otherUId;
+        }
+        else {
+            return otherUId + "_" + currentUId;
+        }
     }
 }
