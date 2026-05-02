@@ -75,7 +75,6 @@ public class ChatFragment extends Fragment implements ChatPersonRecyclerAdapter.
         chatPersonRecyclerAdapter = new ChatPersonRecyclerAdapter(options, context, this);
         rvChats.setHasFixedSize(true);
         rvChats.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
-        rvChats.setAdapter(chatPersonRecyclerAdapter);
     }
 
     @Override
