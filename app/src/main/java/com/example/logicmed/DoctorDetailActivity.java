@@ -42,6 +42,7 @@ public class DoctorDetailActivity extends AppCompatActivity {
     private FloatingActionButton addMessage;
     private ProgressBar progressBar;
     private String uId;
+    private Doctor doctor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +74,7 @@ public class DoctorDetailActivity extends AppCompatActivity {
         addMessage = findViewById(R.id.doctor_detail_start_conversation_btn);
         progressBar = findViewById(R.id.doctor_detail_progress_bar);
         uId = null;
+        doctor = null;
     }
     private void getDoctorData() {
         Intent intent = getIntent();
@@ -84,7 +86,7 @@ public class DoctorDetailActivity extends AppCompatActivity {
         app.firestore.collection(KeyUtils.firebaseUserCollectionKey).document(uId)
                 .get().addOnCompleteListener(task -> {
                     if(task.isSuccessful()) {
-                        Doctor doctor = task.getResult().toObject(Doctor.class);
+                        doctor = task.getResult().toObject(Doctor.class);
 
                         if (doctor == null) {
                             Toast.makeText(DoctorDetailActivity.this, "Doctor Data Not Found", Toast.LENGTH_LONG).show();
@@ -169,8 +171,21 @@ public class DoctorDetailActivity extends AppCompatActivity {
                 Arrays.asList(
                         currentUId,
                         uId
+                )),
+                chatSignature,
+                new ArrayList<>(
+                        Arrays.asList(
+                                new ParticipantDetail(currentUId,
+                                        app.sPrefUser.getString(KeyUtils.namePrefKey, ""),
+                                        app.sPrefUser.getString(KeyUtils.profileUrlPrefKey, "")
+                                ),
+                                new ParticipantDetail(uId,
+                                        doctor.getFullName(),
+                                        doctor.getProfileImageUrl()
+                                )
+                        )
                 )
-        ), chatSignature);
+        );
 
         app.firestore.collection(KeyUtils.firebaseChatCollectionKey)
                 .add(chat)
