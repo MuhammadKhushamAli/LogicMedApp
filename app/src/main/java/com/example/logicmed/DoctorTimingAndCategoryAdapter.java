@@ -10,14 +10,17 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
+import java.util.Objects;
 
 public class DoctorTimingAndCategoryAdapter extends RecyclerView.Adapter<DoctorTimingAndCategoryAdapter.DoctorTimingAndCategoryHolder> {
     Context context;
-    List<String> timingsOrCategories;
+    List<Schedule> timings;
+    List<String> categories;
 
-    public DoctorTimingAndCategoryAdapter(Context context, List<String> timingsOrCategories) {
+    public DoctorTimingAndCategoryAdapter(Context context, List<Schedule> timings, List<String> categories) {
         this.context = context;
-        this.timingsOrCategories = timingsOrCategories;
+        this.timings = timings;
+        this.categories = categories;
     }
 
     @NonNull
@@ -29,13 +32,31 @@ public class DoctorTimingAndCategoryAdapter extends RecyclerView.Adapter<DoctorT
 
     @Override
     public void onBindViewHolder(@NonNull DoctorTimingAndCategoryHolder holder, int position) {
-        String timingOrCategory = timingsOrCategories.get(position);
-        holder.tvTimingOrCategory.setText(timingOrCategory);
+        String categoryOrTiming = null;
+        if (categories != null) {
+            categoryOrTiming = categories.get(position);
+        }
+        else if (timings != null) {
+            Schedule schedule = timings.get(position);
+            categoryOrTiming = schedule.getDay() + " ( " + schedule.getFromTime() + " : " + schedule.getFromTime() + " ) ";
+        }
+        if (categoryOrTiming != null) {
+            holder.tvTimingOrCategory.setText(categoryOrTiming);
+        }
+
     }
 
     @Override
     public int getItemCount() {
-        return timingsOrCategories.size();
+        if (categories != null) {
+            return categories.size();
+        }
+        else if (timings != null) {
+            return timings.size();
+        }
+        else {
+            return 0;
+        }
     }
 
     public static class DoctorTimingAndCategoryHolder extends RecyclerView.ViewHolder {

@@ -105,12 +105,12 @@ public class DoctorDetailActivity extends AppCompatActivity {
                         String strFee = "Fee: " + doctor.getFee();
                         tvFee.setText(strFee);
 
-                        DoctorTimingAndCategoryAdapter doctorTimingAdapter = new DoctorTimingAndCategoryAdapter(DoctorDetailActivity.this, doctor.getDocTimings());
+                        DoctorTimingAndCategoryAdapter doctorTimingAdapter = new DoctorTimingAndCategoryAdapter(DoctorDetailActivity.this, doctor.getDocTimings(), null);
                         rvTimings.setHasFixedSize(true);
                         rvTimings.setLayoutManager(new GridLayoutManager(DoctorDetailActivity.this, 3));
                         rvTimings.setAdapter(doctorTimingAdapter);
 
-                        DoctorTimingAndCategoryAdapter doctorCategoryAdapter = new DoctorTimingAndCategoryAdapter(DoctorDetailActivity.this, doctor.getDocCategories());
+                        DoctorTimingAndCategoryAdapter doctorCategoryAdapter = new DoctorTimingAndCategoryAdapter(DoctorDetailActivity.this, null, doctor.getDocCategories());
                         rvCategories.setHasFixedSize(true);
                         rvCategories.setLayoutManager(new LinearLayoutManager(DoctorDetailActivity.this, LinearLayoutManager.VERTICAL, false));
                         rvCategories.setAdapter(doctorCategoryAdapter);
