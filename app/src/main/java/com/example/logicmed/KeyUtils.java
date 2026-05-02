@@ -18,4 +18,6 @@ public class KeyUtils {
     static public final String patientKey = "Patient";
     static public final String doctorsUIDIntentKey = "doctorsUIDIntent";
     static public final String chatUIDIntentKey = "chatUIDIntent";
+    static public final String userProfileUrlIntentKey = "userProfile";
+    static public final String userNameIntentKey = "userName";
 }

@@ -23,7 +23,7 @@ public class ChatPersonRecyclerAdapter extends FirestoreRecyclerAdapter<Chat, Ch
     private Context context;
 
     public interface setOnClickListener {
-        void onClickListener(String chatId);
+        void onClickListener(String chatId, String name, String profileUrl);
     }
 
     public ChatPersonRecyclerAdapter(@NonNull FirestoreRecyclerOptions<Chat> options, Context context, setOnClickListener listener) {
@@ -58,7 +58,7 @@ public class ChatPersonRecyclerAdapter extends FirestoreRecyclerAdapter<Chat, Ch
 
             if (pos != RecyclerView.NO_POSITION) {
                 String chatID = getSnapshots().getSnapshot(pos).getId();
-                listener.onClickListener(chatID);
+                listener.onClickListener(chatID, detail.getName(), detail.getProfileUrl());
             }
         });
     }

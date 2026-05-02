@@ -154,6 +154,8 @@ public class DoctorDetailActivity extends AppCompatActivity {
     private void navigateToChatActivity(String chatId) {
         Intent intent = new Intent(DoctorDetailActivity.this, ChatActivity.class);
         intent.putExtra(KeyUtils.chatUIDIntentKey, chatId);
+        intent.putExtra(KeyUtils.userNameIntentKey, doctor.getFullName());
+        intent.putExtra(KeyUtils.userProfileUrlIntentKey, doctor.getProfileImageUrl());
         startActivity(intent);
         finish();
     }

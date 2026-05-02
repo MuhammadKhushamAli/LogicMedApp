@@ -20,15 +20,14 @@
         android:theme="@style/Theme.LogicMed">
         <activity
             android:name=".ChatActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan"
+            />
         <activity
             android:name=".DoctorDetailActivity"
             android:exported="false" />
         <activity
             android:name=".SetupProfileActivity"
-            android:exported="false" />
-        <activity
-            android:name=".DoctorDataFragment"
             android:exported="false" />
         <activity
             android:name=".AuthenticationScreen"

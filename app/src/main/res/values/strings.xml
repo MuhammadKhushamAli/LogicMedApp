@@ -51,4 +51,6 @@
     <string name="bookAppointmentText">Book an Appointment</string>
     <string name="backArrow">Go Back</string>
     <string name="startConversation">Start Conversation</string>
+    <string name="typeMsgHint">Start Typing Here</string>
+    <string name="messageImage">Image Message</string>
 </resources>

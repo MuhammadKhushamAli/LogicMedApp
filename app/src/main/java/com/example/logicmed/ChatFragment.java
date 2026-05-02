@@ -76,13 +76,21 @@ public class ChatFragment extends Fragment implements ChatPersonRecyclerAdapter.
         rvChats.setHasFixedSize(true);
         rvChats.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
         rvChats.setAdapter(chatPersonRecyclerAdapter);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        rvChats.setAdapter(chatPersonRecyclerAdapter);
         chatPersonRecyclerAdapter.startListening();
     }
 
     @Override
-    public void onClickListener(String chatId) {
+    public void onClickListener(String chatId, String name, String profileUrl) {
         Intent intent = new Intent(requireContext(), ChatActivity.class);
         intent.putExtra(KeyUtils.chatUIDIntentKey, chatId);
+        intent.putExtra(KeyUtils.userNameIntentKey, name);
+        intent.putExtra(KeyUtils.userProfileUrlIntentKey, profileUrl);
         startActivity(intent);
     }
 }
