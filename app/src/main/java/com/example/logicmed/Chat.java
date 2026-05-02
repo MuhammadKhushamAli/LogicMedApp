@@ -6,15 +6,15 @@ import java.util.List;
 public class Chat {
     private List<String> messagesIds;
     private String senderUId;
-    private String receiverUid;
+    private String receiverUId;
 
     public Chat() {
 
     }
-    public Chat(String senderUId, String receiverUid) {
+    public Chat(String senderUId, String receiverUId) {
         this.messagesIds = new ArrayList<>();
         this.senderUId = senderUId;
-        this.receiverUid = receiverUid;
+        this.receiverUId = receiverUId;
     }
 
     public List<String> getMessagesIds() {
@@ -33,11 +33,11 @@ public class Chat {
         this.senderUId = senderUId;
     }
 
-    public String getReceiverUid() {
-        return receiverUid;
+    public String getReceiverUId() {
+        return receiverUId;
     }
 
-    public void setReceiverUid(String receiverUid) {
-        this.receiverUid = receiverUid;
+    public void setReceiverUId(String receiverUid) {
+        this.receiverUId = receiverUid;
     }
 }
