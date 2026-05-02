@@ -19,29 +19,30 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
 public class MessageRecyclerAdapter extends FirestoreRecyclerAdapter<Message, MessageRecyclerAdapter.MessageViewHolder> {
     private MyApplication app;
+    Context context;
 
     public MessageRecyclerAdapter(@NonNull FirestoreRecyclerOptions<Message> options, Context context) {
         super(options);
         app = (MyApplication) context.getApplicationContext();
+        this.context = context;
     }
 
     @Override
     protected void onBindViewHolder(@NonNull MessageViewHolder holder, int position, @NonNull Message model) {
-        assert app.firebaseAuth.getCurrentUser() != null : "Current User not Available";
         String uId = app.firebaseAuth.getCurrentUser().getUid();
         holder.tvName.setText(model.getSenderName());
         holder.tvMessage.setVisibility(View.GONE);
         holder.ivImage.setVisibility(View.GONE);
 
-        ConstraintSet constraintSet = new ConstraintSet();
-        constraintSet.clone((ConstraintLayout) holder.itemView);
-
-        if (model.getSenderId().equals(uId)) {
-            constraintSet.setHorizontalBias(R.id.message_content_section, 1.0f);
-        }
-        else {
-            constraintSet.setHorizontalBias(R.id.message_content_section, 0.0f);
-        }
+//        ConstraintSet constraintSet = new ConstraintSet();
+//        constraintSet.clone((ConstraintLayout) holder.itemView);
+//
+//        if (model.getSenderId().equals(uId)) {
+//            constraintSet.setHorizontalBias(R.id.message_content_section, 1.0f);
+//        }
+//        else {
+//            constraintSet.setHorizontalBias(R.id.message_content_section, 0.0f);
+//        }
 
         if (model.getIsImage()) {
             Glide.with(holder.itemView)

@@ -92,6 +92,13 @@ public class ChatActivity extends AppCompatActivity {
                 .build();
 
         messageRecyclerAdapter = new MessageRecyclerAdapter(options, this);
+        messageRecyclerAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                super.onItemRangeInserted(positionStart, itemCount);
+                rvMessages.smoothScrollToPosition(0);
+            }
+        });
         rvMessages.setHasFixedSize(true);
         rvMessages.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true));
     }

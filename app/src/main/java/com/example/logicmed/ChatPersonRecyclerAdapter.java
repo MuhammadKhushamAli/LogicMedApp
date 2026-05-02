@@ -44,6 +44,7 @@ public class ChatPersonRecyclerAdapter extends FirestoreRecyclerAdapter<Chat, Ch
             holder.tvName.setText(errorStr);
             return;
         }
+
         if(!(detail.getProfileUrl().isEmpty())) {
             Glide.with(holder.itemView)
                     .load(detail.getProfileUrl())
@@ -51,11 +52,10 @@ public class ChatPersonRecyclerAdapter extends FirestoreRecyclerAdapter<Chat, Ch
                     .error(R.drawable.avatar)
                     .into(holder.ivProfile);
         }
-        holder.tvName.setText(detail.getName());
 
+        holder.tvName.setText(detail.getName());
         holder.itemView.setOnClickListener(v -> {
             int pos = holder.getBindingAdapterPosition();
-
             if (pos != RecyclerView.NO_POSITION) {
                 String chatID = getSnapshots().getSnapshot(pos).getId();
                 listener.onClickListener(chatID, detail.getName(), detail.getProfileUrl());
