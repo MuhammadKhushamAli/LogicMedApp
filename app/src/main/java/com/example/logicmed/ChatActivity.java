@@ -21,6 +21,8 @@ import com.bumptech.glide.Glide;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FieldPath;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.Query;
 
 import java.util.Objects;
@@ -82,7 +84,8 @@ public class ChatActivity extends AppCompatActivity {
     }
     private void getChatAndUpdate() {
         Query query = app.firestore.collection(KeyUtils.firebaseMessageCollectionKey)
-                .whereEqualTo(Message.CHAT_ID_FIELD, chatId);
+                .whereEqualTo(Message.CHAT_ID_FIELD, chatId)
+                .orderBy(Message.TIMESTAMP_FIELD, Query.Direction.DESCENDING);
 
         FirestoreRecyclerOptions<Message> options = new FirestoreRecyclerOptions.Builder<Message>()
                 .setQuery(query, Message.class)
@@ -91,8 +94,6 @@ public class ChatActivity extends AppCompatActivity {
         messageRecyclerAdapter = new MessageRecyclerAdapter(options, this);
         rvMessages.setHasFixedSize(true);
         rvMessages.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true));
-        rvMessages.setAdapter(messageRecyclerAdapter);
-        messageRecyclerAdapter.startListening();
     }
     private void sendMessage() {
         ibSend.setOnClickListener(v -> {
@@ -123,6 +124,13 @@ public class ChatActivity extends AppCompatActivity {
                        Toast.makeText(this, "Unable to Send, Try Again", Toast.LENGTH_LONG).show();
                    }
                 });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        rvMessages.setAdapter(messageRecyclerAdapter);
+        messageRecyclerAdapter.startListening();
     }
 
     @Override

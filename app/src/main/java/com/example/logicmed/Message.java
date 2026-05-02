@@ -1,14 +1,21 @@
 package com.example.logicmed;
 
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.ServerTimestamp;
+
 import java.util.List;
 
 public class Message {
     public static final String CHAT_ID_FIELD = "chatId";
+    public static final String TIMESTAMP_FIELD = "timeStamps";
     private String message;
     private String senderId;
     private String chatId;
     private String senderName;
     private Boolean isImage;
+    @ServerTimestamp
+    private Timestamp timeStamps;
 
     public Message() {
 
@@ -20,6 +27,7 @@ public class Message {
         this.chatId = chatId;
         this.senderName = senderName;
         this.isImage = isImage;
+        this.timeStamps = null;
     }
 
     public String getMessage() {
@@ -60,5 +68,13 @@ public class Message {
 
     public void setIsImage(Boolean image) {
         isImage = image;
+    }
+
+    public Timestamp getTimeStamps() {
+        return timeStamps;
+    }
+
+    public void setTimeStamps(Timestamp timeStamps) {
+        this.timeStamps = timeStamps;
     }
 }
