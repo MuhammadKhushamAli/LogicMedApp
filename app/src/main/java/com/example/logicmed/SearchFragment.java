@@ -22,21 +22,11 @@ import com.google.firebase.firestore.Query;
 public class SearchFragment extends Fragment implements DoctorRecyclerViewAdapter.setOnClickListener {
     private SearchView searchView;
     private RecyclerView rvDoctorsList;
-    private setOnClickListener listener;
     private DoctorRecyclerViewAdapter doctorRecyclerView;
-
-    public interface setOnClickListener {
-        void onClickListener(String uID);
-    }
 
     public SearchFragment() {
     }
 
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        listener = (setOnClickListener) context;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -75,7 +65,9 @@ public class SearchFragment extends Fragment implements DoctorRecyclerViewAdapte
     }
     @Override
     public void onClickListener(String uID) {
-        listener.onClickListener(uID);
+        Intent intent = new Intent(requireContext(), DoctorDetailActivity.class);
+        intent.putExtra(KeyUtils.doctorsUIDIntentKey, uID);
+        startActivity(intent);
     }
 
 

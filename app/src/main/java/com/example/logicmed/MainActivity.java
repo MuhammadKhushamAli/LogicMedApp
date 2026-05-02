@@ -27,7 +27,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
 
-public class MainActivity extends AppCompatActivity implements SearchFragment.setOnClickListener {
+public class MainActivity extends AppCompatActivity{
     private BottomNavigationView bottomNavigationView;
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
@@ -166,10 +166,4 @@ public class MainActivity extends AppCompatActivity implements SearchFragment.se
         });
     }
 
-    @Override
-    public void onClickListener(String uID) {
-        Intent intent = new Intent(this, DoctorDetailActivity.class);
-        intent.putExtra(KeyUtils.doctorsUIDIntentKey, uID);
-        startActivity(intent);
-    }
 }
