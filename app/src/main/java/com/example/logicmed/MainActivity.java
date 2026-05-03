@@ -2,6 +2,7 @@ package com.example.logicmed;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
@@ -13,6 +14,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.MenuView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -69,6 +71,12 @@ public class MainActivity extends AppCompatActivity{
 
         bottomNavigationView = findViewById(R.id.bottom_nav_bar);
         ViewCompat.setOnApplyWindowInsetsListener(bottomNavigationView, (v, insets) -> insets);
+
+        if (app.sPrefUser.getString(KeyUtils.rolePrefKey, KeyUtils.patientKey).equals(KeyUtils.doctorKey)) {
+            Menu menu = bottomNavigationView.getMenu();
+            menu.removeItem(R.id.search_frag);
+        }
+
 
         drawerLayout = findViewById(R.id.main);
         navigationView = findViewById(R.id.drawer_nav_layout);
