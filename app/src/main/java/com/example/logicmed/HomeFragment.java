@@ -25,7 +25,8 @@ import com.google.firebase.firestore.Query;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment
+        implements AppointmentRecyclerAdapter.setOnClickListener {
     private TextView tvRole;
     private TextView tvName;
     private TextView tvMonth;
@@ -120,7 +121,7 @@ public class HomeFragment extends Fragment {
                 .setQuery(query, Appointment.class)
                 .build();
         Context context = requireContext();
-        adapter = new AppointmentRecyclerAdapter(options, context);
+        adapter = new AppointmentRecyclerAdapter(options, context, this);
         rvAppointments.setHasFixedSize(true);
         rvAppointments.setLayoutManager(new GridLayoutManager(context, 2));
     }
@@ -136,5 +137,11 @@ public class HomeFragment extends Fragment {
     public void onStop() {
         super.onStop();
         adapter.stopListening();
+    }
+
+    @Override
+    public void onChangeStatus(String apID) {
+        app.firestore.collection(KeyUtils.firebaseAppointmentCollectionKey).document(apID)
+                .update(Appointment.STATUS_ID_FIELD, "Resolved");
     }
 }

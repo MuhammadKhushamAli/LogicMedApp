@@ -13,6 +13,7 @@ import java.util.List;
 public class Appointment implements Parcelable {
     public static final String PATIENT_ID_FIELD = "patientId";
     public static final String DOCTOR_ID_FIELD = "doctorId";
+    public static final String STATUS_ID_FIELD = "status";
     private String patientId;
     private String doctorId;
     private ParticipantDetail patientDetails;

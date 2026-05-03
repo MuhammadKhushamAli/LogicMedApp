@@ -1,5 +1,6 @@
 package com.example.logicmed;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.view.LayoutInflater;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,27 +20,47 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 public class AppointmentRecyclerAdapter extends FirestoreRecyclerAdapter<Appointment, AppointmentRecyclerAdapter.AppointmentViewHoler> {
 
     private MyApplication app;
-    public AppointmentRecyclerAdapter(@NonNull FirestoreRecyclerOptions<Appointment> options, Context context) {
+    private setOnClickListener listener;
+    private Context context;
+
+    public interface setOnClickListener {
+        void onChangeStatus(String apID);
+    }
+    public AppointmentRecyclerAdapter(@NonNull FirestoreRecyclerOptions<Appointment> options, Context context, setOnClickListener listener) {
         super(options);
         app = (MyApplication) context.getApplicationContext();
+        this.context = context;
+        this.listener = listener;
     }
 
     @Override
     protected void onBindViewHolder(@NonNull AppointmentViewHoler holder, int position, @NonNull Appointment model) {
-
         ParticipantDetail participantDetail;
+        holder.tvStatus.setText(model.getStatus());
 
         if (app.sPrefUser.getString(KeyUtils.rolePrefKey, KeyUtils.patientKey).equals(KeyUtils.doctorKey)) {
-            holder.tvStatus.setText(model.getStatus());
-            holder.tvStatus.setVisibility(View.VISIBLE);
+            holder.tvClick.setVisibility(View.VISIBLE);
             participantDetail = model.getPatientDetails();
 
             holder.itemView.setOnClickListener(v -> {
+                int pos = holder.getBindingAdapterPosition();
+                if (pos != RecyclerView.NO_POSITION) {
+                    String apId = getSnapshots().getSnapshot(pos).getId();
+
+                    new AlertDialog.Builder(context)
+                            .setTitle("Change the Status")
+                            .setPositiveButton("Resolved", (a, b) -> {
+                                listener.onChangeStatus(apId);
+                            })
+                            .setNegativeButton("Not Change", (a, b) -> {
+
+                            }).show();
+                }
             });
         }
         else {
-            holder.tvStatus.setVisibility(View.GONE);
             participantDetail = model.getDoctorDetails();
+            holder.tvClick.setVisibility(View.GONE);
         }
 
         holder.tvName.setText(participantDetail.getName());
@@ -67,12 +89,14 @@ public class AppointmentRecyclerAdapter extends FirestoreRecyclerAdapter<Appoint
         TextView tvName;
         TextView tvStatus;
         TextView tvDate;
+        TextView tvClick;
         public AppointmentViewHoler(@NonNull View itemView) {
             super(itemView);
             ivProfileImage = itemView.findViewById(R.id.appointment_layout_img);
             tvName = itemView.findViewById(R.id.appointment_layout_name);
             tvStatus = itemView.findViewById(R.id.appointment_layout_status);
             tvDate = itemView.findViewById(R.id.appointment_layout_date);
+            tvClick = itemView.findViewById(R.id.appointment_layout_click);
         }
     }
 }
