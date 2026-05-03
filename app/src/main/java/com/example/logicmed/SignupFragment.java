@@ -3,6 +3,8 @@ package com.example.logicmed;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,8 +14,6 @@ import androidx.fragment.app.FragmentContainerView;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.os.Trace;
-import android.text.method.KeyListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,43 +23,38 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cloudinary.android.MediaManager;
+import com.cloudinary.android.UploadRequest;
+import com.cloudinary.android.callback.ErrorInfo;
+import com.cloudinary.android.callback.UploadCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.SetOptions;
-import com.google.firebase.firestore.WriteBatch;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.MediaType;
-import okhttp3.OkHttp;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import okio.BufferedSink;
 
 
-public class SignupFragment extends Fragment implements DoctorDetailSignUpFragment.setOnSignUpListener {
+public class SignupFragment extends Fragment
+        implements DoctorDetailSignUpFragment.setOnSignUpListener, ProfileSetupFragment.setOnClickListener{
     private TextInputEditText teFullName;
     private TextInputEditText teEmail;
     private AutoCompleteTextView atvRole;
@@ -71,8 +66,7 @@ public class SignupFragment extends Fragment implements DoctorDetailSignUpFragme
     private MyApplication app;
     private FragmentManager fragmentManager;
     private FragmentContainerView fragmentContainerView;
-    private DoctorDetailSignUpFragment doctorDetailSignUpFragment;
-
+    private ProfileSetupFragment profileSetupFragment;
     private String fullName;
     private String email;
     private String role;
@@ -80,6 +74,11 @@ public class SignupFragment extends Fragment implements DoctorDetailSignUpFragme
     private String password;
     private String cPassword;
     private ViewModelProvider viewModelProvider;
+    private List<String> docCategories;
+    private List<Schedule> docTimings;
+    private String cloudinaryURL;
+    private float fee;
+    private Context context;
 
     public SignupFragment() {
     }
@@ -105,7 +104,6 @@ public class SignupFragment extends Fragment implements DoctorDetailSignUpFragme
         init(view);
         setDropDown(atvRole, list, false);
         fetchCities("Pakistan", "https://countriesnow.space/api/v0.1/countries/cities");
-
 
         btnSignup.setOnClickListener(v -> {
             fullName = Objects.requireNonNull(teFullName.getText()).toString();
@@ -144,26 +142,24 @@ public class SignupFragment extends Fragment implements DoctorDetailSignUpFragme
 
 
             if (role.equals(KeyUtils.doctorKey)) {
-                doctorDetailSignUpFragment = new DoctorDetailSignUpFragment();
-                if (!(fullName.isEmpty() || email.isEmpty() || role.isEmpty() || city.isEmpty() || password.isEmpty() || cPassword.isEmpty())) {
-                    fragmentManager
-                            .beginTransaction()
-                            .replace(R.id.signup_detail_frag, doctorDetailSignUpFragment)
-                            .commit();
-                    fragmentContainerView.setVisibility(View.VISIBLE);
-                    viewModelProvider.get(SignupViewModel.class).setCurrentPage(1);
-                }
-                else {
-                    Toast.makeText(requireContext(), "Fill all the Fields Here First", Toast.LENGTH_LONG).show();
-                }
+                fragmentManager
+                        .beginTransaction()
+                        .replace(R.id.signup_detail_frag, new DoctorDetailSignUpFragment())
+                        .commit();
             }
             else {
-                inputAndMakeMap(null, null);
+                fragmentManager
+                        .beginTransaction()
+                        .replace(R.id.signup_detail_frag, profileSetupFragment)
+                        .commit();
             }
+            fragmentContainerView.setVisibility(View.VISIBLE);
+            viewModelProvider.get(SignupViewModel.class).setCurrentPage(1);
         });
     }
 
     private void init(View view) {
+        context = requireContext();
         teFullName = view.findViewById(R.id.signup_name);
         teEmail = view.findViewById(R.id.signup_email);
         atvRole = view.findViewById(R.id.signup_role);
@@ -176,8 +172,12 @@ public class SignupFragment extends Fragment implements DoctorDetailSignUpFragme
         fragmentManager = getChildFragmentManager();
         progressBar.setVisibility(View.GONE);
         fragmentContainerView = view.findViewById(R.id.signup_detail_frag);
+        profileSetupFragment = new ProfileSetupFragment();
         fragmentContainerView.setVisibility(View.GONE);
         viewModelProvider = new ViewModelProvider(requireActivity());
+
+        String nextText = "Next";
+        btnSignup.setText(nextText);
     }
     private void setDropDown(AutoCompleteTextView autoCompleteTextView, List<String> list, Boolean isKeyListener) {
         if (isKeyListener == false) {
@@ -296,7 +296,7 @@ public class SignupFragment extends Fragment implements DoctorDetailSignUpFragme
                                 startActivity(
                                         new Intent(
                                                 context,
-                                                SetupProfileActivity.class
+                                                MainActivity.class
                                         )
                                 );
                                 app.cities.clear();
@@ -319,31 +319,92 @@ public class SignupFragment extends Fragment implements DoctorDetailSignUpFragme
 
     @Override
     public void setDataOnSignUp(List<String> categoriesOfDoctor, List<Schedule> timingsOfDoctors) {
+        if (categoriesOfDoctor.isEmpty() || timingsOfDoctors.isEmpty()) {
+            Toast.makeText(context, "Categories and Timings are required for Doctors", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         fragmentManager
                 .beginTransaction()
-                .remove(doctorDetailSignUpFragment)
+                .replace(R.id.signup_detail_frag, profileSetupFragment)
                 .commit();
-        fragmentContainerView.setVisibility(View.GONE);
         viewModelProvider.get(SignupViewModel.class).setCurrentPage(1);
-        inputAndMakeMap(categoriesOfDoctor, timingsOfDoctors);
+        this.docCategories = categoriesOfDoctor;
+        this.docTimings = timingsOfDoctors;
     }
 
-    private void inputAndMakeMap(List<String> docCategories, List<Schedule> docTimings) {
-        Context context = requireContext();
-
+    private void inputAndMakeMap() {
         User user = null;
-
         if (role.equals(KeyUtils.doctorKey)) {
-            if (docCategories.isEmpty() || docTimings.isEmpty()) {
-                Toast.makeText(context, "Categories and Timings are required for Doctors", Toast.LENGTH_LONG).show();
-                return;
-            }
-            user = new Doctor(fullName, role, city, docCategories, docTimings);
+            user = new Doctor(fullName, cloudinaryURL, role, city, fee, docCategories, docTimings);
         }
         else {
-            user = new User(fullName, role, city);
+            user = new User(fullName, cloudinaryURL, role, city);
         }
         firebaseAuth(user);
     }
 
+    @Override
+    public void onClickListener(Bitmap bitmap, Uri uri) {
+        fragmentManager.beginTransaction()
+                .remove(profileSetupFragment)
+                .commit();
+        fragmentContainerView.setVisibility(View.GONE);
+        String signupTxt = "Sign Up";
+        btnSignup.setText(signupTxt);
+        viewModelProvider.get(SignupViewModel.class).setCurrentPage(1);
+
+        if (bitmap != null || uri != null) {
+            uploadToCloudinary(bitmap, uri);
+        }
+        else {
+            this.cloudinaryURL = null;
+            inputAndMakeMap();
+        }
+    }
+    private void uploadToCloudinary(Bitmap bitmap, Uri uri) {
+        MediaManager mediaManager = MediaManager.get();
+        UploadRequest<?> uploadRequest = null;
+        if (bitmap != null) {
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+            byte[] bytes = byteArrayOutputStream.toByteArray();
+            uploadRequest = mediaManager.upload(bytes);
+        }
+        else if (uri != null) {
+            uploadRequest = mediaManager.upload(uri);
+        }
+        if (uploadRequest != null) {
+            uploadRequest.unsigned("logicmed")
+                    .callback(new UploadCallback() {
+                        @Override
+                        public void onStart(String requestId) {
+
+                        }
+
+                        @Override
+                        public void onProgress(String requestId, long bytes, long totalBytes) {
+
+                        }
+
+                        @Override
+                        public void onSuccess(String requestId, Map resultData) {
+                            cloudinaryURL = Objects.requireNonNull(resultData.get("secure_url")).toString();
+                            inputAndMakeMap();
+                        }
+
+                        @Override
+                        public void onError(String requestId, ErrorInfo error) {
+                            Toast.makeText(requireContext(), "Unable to Upload Image", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+
+                        @Override
+                        public void onReschedule(String requestId, ErrorInfo error) {
+
+                        }
+                    }).dispatch();
+        }
+
+    }
 }

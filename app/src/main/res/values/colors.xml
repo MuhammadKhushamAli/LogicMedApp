@@ -9,5 +9,5 @@
     <color name="light_nav">#BCB5B5</color>
     <color name="red">#FF0000</color>
     <color name="blue">#0000FF</color>
-    <color name="semi_transparent_bg">#A6000000</color>
+    <color name="grey">#193036</color>
 </resources>

@@ -1,24 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:padding="20dp"
+    android:background="?frag_bg"
     tools:context=".SignupFragment">
-    <ProgressBar
-        android:id="@+id/signup_progress_bar"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/signup_detail_frag"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        />
     <TextView
+        android:id="@+id/signup_frag_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/signupFragTitle"
@@ -28,9 +18,11 @@
         android:layout_marginBottom="20dp"
         />
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/signup_name_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:boxCornerRadiusTopStart="20dp"
+        android:layout_below="@id/signup_frag_header"
         >
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/signup_name"
@@ -42,8 +34,10 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/signup_email_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/signup_name_layout"
         >
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/signup_email"
@@ -55,10 +49,12 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <LinearLayout
+        android:id="@+id/signup_loc_role_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:baselineAligned="false"
+        android:layout_below="@id/signup_email_layout"
         >
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="0dp"
@@ -94,9 +90,11 @@
     </LinearLayout>
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/signup_pass_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:passwordToggleEnabled="true"
+        android:layout_below="@id/signup_loc_role_layout"
         >
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/signup_pass"
@@ -108,11 +106,13 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/signup_c_pass_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:passwordToggleEnabled="true"
         app:boxCornerRadiusBottomEnd="20dp"
         android:layout_marginBottom="10dp"
+        android:layout_below="@id/signup_pass_layout"
         >
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/signup_c_pass"
@@ -127,10 +127,25 @@
         android:id="@+id/signup_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/signupFragTitle"
         android:backgroundTint="?button_color"
         app:cornerRadius="10dp"
         android:textColor="?button_text_color"
+        android:layout_below="@id/signup_c_pass_layout"
         />
-
-</LinearLayout>
+    <ProgressBar
+        android:id="@+id/signup_progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:background="?frag_bg"
+        />
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/signup_detail_frag"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone"
+        />
+</RelativeLayout>

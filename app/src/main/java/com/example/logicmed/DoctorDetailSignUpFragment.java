@@ -94,7 +94,7 @@ public class DoctorDetailSignUpFragment extends Fragment implements SubCategorie
                     formAndToTImePicker(chip, dayOfWeek);
                 }
                 else {
-                    int prevObjIndex = Integer.parseInt((String) chip.getTag());
+                    int prevObjIndex = (int) chip.getTag();
                     timingsOfDoctors.remove(prevObjIndex);
                     chip.setText(dayOfWeek);
                     chip.setTag(null);
