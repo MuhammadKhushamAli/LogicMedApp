@@ -1,11 +1,14 @@
 package com.example.logicmed;
 
+import android.app.DownloadManager;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -14,7 +17,10 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.chip.ChipGroup;
+import com.google.firebase.FirebaseOptions;
+import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,12 +32,10 @@ public class HomeFragment extends Fragment {
     private ImageButton ibNext;
     private ImageButton ibPrev;
     private ChipGroup cgDated;
-    private TextView tvHomeCardNoAppointmentPlaceHolder;
-    private TextView tvHomeNoAppointmentPlaceHolder;
     private RecyclerView rvAppointments;
     private MyApplication app;
     private ArrayList<String> monthsOfYear;
-    private ArrayList<String> appointments;
+    private AppointmentRecyclerAdapter adapter;
 
     public HomeFragment() {
     }
@@ -52,7 +56,7 @@ public class HomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         init(view);
         monthsIterator();
-        appointmentsRenderer();
+        getAppointments();
     }
 
     private void init(View view) {
@@ -62,8 +66,6 @@ public class HomeFragment extends Fragment {
         ibNext = view.findViewById(R.id.home_card_inc_btn);
         ibPrev = view.findViewById(R.id.home_card_dec_btn);
         cgDated = view.findViewById(R.id.home_card_appointment_dates);
-        tvHomeCardNoAppointmentPlaceHolder = view.findViewById(R.id.home_card_no_upcoming_appointment_placeholder);
-        tvHomeNoAppointmentPlaceHolder = view.findViewById(R.id.home_no_upcoming_appointment_placeholder);
         rvAppointments = view.findViewById(R.id.home_upcoming_appointments_rv);
 
         app = (MyApplication) requireContext().getApplicationContext();
@@ -84,7 +86,6 @@ public class HomeFragment extends Fragment {
                 "November",
                 "December"
         ));
-        appointments = new ArrayList<>();
 
         tvRole.setText(sPref.getString(KeyUtils.rolePrefKey, ""));
         tvName.setText(sPref.getString(KeyUtils.namePrefKey, ""));
@@ -104,18 +105,36 @@ public class HomeFragment extends Fragment {
                 tvMonth.setText(monthsOfYear.get(currentIndex - 1));
         });
     }
-    private void appointmentsRenderer() {
-        if (appointments.isEmpty()) {
-            cgDated.setVisibility(View.GONE);
-            rvAppointments.setVisibility(View.GONE);
-            tvHomeCardNoAppointmentPlaceHolder.setVisibility(View.VISIBLE);
-            tvHomeNoAppointmentPlaceHolder.setVisibility(View.VISIBLE);
+    private void getAppointments() {
+        Query query = null;
+        if (app.sPrefUser.getString(KeyUtils.rolePrefKey, KeyUtils.patientKey).equals(KeyUtils.doctorKey)) {
+            query = app.firestore.collection(KeyUtils.firebaseAppointmentCollectionKey)
+                    .whereEqualTo(Appointment.DOCTOR_ID_FIELD, app.firebaseAuth.getCurrentUser().getUid());
         }
         else {
-            cgDated.setVisibility(View.VISIBLE);
-            rvAppointments.setVisibility(View.VISIBLE);
-            tvHomeCardNoAppointmentPlaceHolder.setVisibility(View.GONE);
-            tvHomeNoAppointmentPlaceHolder.setVisibility(View.GONE);
+            query = app.firestore.collection(KeyUtils.firebaseAppointmentCollectionKey)
+                    .whereEqualTo(Appointment.PATIENT_ID_FIELD, app.firebaseAuth.getCurrentUser().getUid());
         }
+
+        FirestoreRecyclerOptions<Appointment> options = new FirestoreRecyclerOptions.Builder<Appointment>()
+                .setQuery(query, Appointment.class)
+                .build();
+        Context context = requireContext();
+        adapter = new AppointmentRecyclerAdapter(options, context);
+        rvAppointments.setHasFixedSize(true);
+        rvAppointments.setLayoutManager(new GridLayoutManager(context, 2));
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        rvAppointments.setAdapter(adapter);
+        adapter.startListening();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        adapter.stopListening();
     }
 }

@@ -56,4 +56,5 @@
     <string name="feeHint">Fee:</string>
     <string name="timeSlotHint">Appointment Slot (Min):</string>
     <string name="selectDate">Select Date:</string>
+    <string name="clickToChangeStatus">Click To Change Status\n</string>
 </resources>

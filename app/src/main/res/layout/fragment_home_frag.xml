@@ -79,16 +79,6 @@
                     app:singleLine="true"
                     />
             </HorizontalScrollView>
-            <TextView
-                android:id="@+id/home_card_no_upcoming_appointment_placeholder"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/noUpcomingAppointment"
-                android:textAlignment="center"
-                android:textStyle="italic"
-                android:textSize="15sp"
-                android:visibility="gone"
-                />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
@@ -103,20 +93,9 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/home_upcoming_appointments_rv"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginHorizontal="10dp"
         android:layout_marginTop="10dp"
-        android:visibility="gone"
-        />
-    <TextView
-        android:id="@+id/home_no_upcoming_appointment_placeholder"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/noUpcomingAppointment"
-        android:textAlignment="center"
-        android:textStyle="italic"
-        android:textSize="15sp"
-        android:visibility="gone"
         />
 
 </LinearLayout>
