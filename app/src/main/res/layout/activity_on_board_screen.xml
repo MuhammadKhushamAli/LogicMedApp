@@ -19,24 +19,18 @@
         app:layout_constraintBottom_toTopOf="@id/on_board_main_section"
         app:layout_constraintVertical_chainStyle="spread"
         android:gravity="center_horizontal"
-        tools:ignore="UseCompoundDrawables"
-        >
+        tools:ignore="UseCompoundDrawables">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/onBoardScreenTitle"
-            android:textStyle="bold"
-            android:textSize="30sp"
-            android:textColor="@color/black"
-            android:textAlignment="center"
-            />
-
+            style="@style/TextAppearance.LogicMed.Display"
+            android:textAlignment="center"/>
         <ImageView
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:src="@drawable/on_board_with_login_header_icon"
-            android:contentDescription="@string/titleImgDesc"
-            />
+            android:contentDescription="@string/titleImgDesc"/>
     </LinearLayout>
 
     <RelativeLayout
@@ -46,27 +40,23 @@
         app:layout_constraintStart_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/on_board_header_section"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/on_board_tags_section"
-        >
+        app:layout_constraintBottom_toTopOf="@id/on_board_tags_section">
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:src="@drawable/on_board_with_login_main_bg2"
-            android:contentDescription="@string/subImageDesc"
-            />
+            android:contentDescription="@string/subImageDesc"/>
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="300dp"
             android:src="@drawable/on_board_with_login_bg1"
-            android:contentDescription="@string/subImageDesc"
-            />
+            android:contentDescription="@string/subImageDesc"/>
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="300dp"
             android:src="@drawable/on_board_with_login_main"
             android:contentDescription="@string/mainImageDesc"
-            android:layout_marginTop="20dp"
-            />
+            android:layout_marginTop="20dp"/>
     </RelativeLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -76,84 +66,90 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/on_board_main_section"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/on_board_slider_section"
-        >
-        <androidx.cardview.widget.CardView
+        app:layout_constraintBottom_toTopOf="@id/on_board_slider_section">
+
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/on_board_smiley_tag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/white"
             app:cardUseCompatPadding="true"
-            app:cardCornerRadius="10dp"
+            app:cardCornerRadius="14dp"
+            app:cardElevation="0dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toStartOf="@id/on_board_badge_tag"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_chainStyle="spread"
-            >
+            app:cardBackgroundColor="@color/surface_card"
+            app:strokeWidth="1dp"
+            app:strokeColor="@color/border_subtle">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/black"
+                android:background="@drawable/teal_badge_bg"
                 android:text="@string/smileyTagText"
-                android:textColor="@color/white"
+                android:textColor="@color/accent_teal"
                 app:drawableTopCompat="@drawable/smile_icon"
-                android:paddingHorizontal="30dp"
-                android:paddingVertical="20dp"
+                android:paddingHorizontal="28dp"
+                android:paddingVertical="18dp"
                 android:textSize="20sp"
-                android:textAlignment="center"
-                />
-        </androidx.cardview.widget.CardView>
+                android:textStyle="bold"
+                android:textAlignment="center"/>
+        </com.google.android.material.card.MaterialCardView>
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/on_board_badge_tag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/white"
             app:cardUseCompatPadding="true"
-            app:cardCornerRadius="10dp"
+            app:cardCornerRadius="14dp"
+            app:cardElevation="0dp"
             app:layout_constraintStart_toEndOf="@id/on_board_smiley_tag"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toStartOf="@id/on_board_doctor_tag"
             app:layout_constraintBottom_toBottomOf="parent"
-            >
+            app:cardBackgroundColor="@color/surface_card"
+            app:strokeWidth="1dp"
+            app:strokeColor="@color/border_subtle">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingHorizontal="30dp"
-                android:paddingVertical="20dp"
+                android:paddingHorizontal="28dp"
+                android:paddingVertical="18dp"
                 android:text="@string/badgeTagText"
                 android:textSize="20sp"
+                android:textStyle="bold"
                 android:textAlignment="center"
-                android:textColor="@color/black"
-                app:drawableTopCompat="@drawable/badge_icon" />
-        </androidx.cardview.widget.CardView>
+                android:textColor="@color/accent_amber"
+                app:drawableTopCompat="@drawable/badge_icon"/>
+        </com.google.android.material.card.MaterialCardView>
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/on_board_doctor_tag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/white"
             app:cardUseCompatPadding="true"
-            app:cardCornerRadius="10dp"
+            app:cardCornerRadius="14dp"
+            app:cardElevation="0dp"
             app:layout_constraintStart_toEndOf="@id/on_board_badge_tag"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:backgroundTint="@color/white"
-            >
+            app:cardBackgroundColor="@color/surface_card"
+            app:strokeWidth="1dp"
+            app:strokeColor="@color/border_subtle">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingHorizontal="30dp"
-                android:paddingVertical="20dp"
+                android:paddingHorizontal="28dp"
+                android:paddingVertical="18dp"
                 android:text="@string/doctorTagText"
                 android:textSize="20sp"
+                android:textStyle="bold"
                 android:textAlignment="center"
-                android:textColor="@color/black"
-                app:drawableTopCompat="@drawable/stethoscope_icon"
-                />
-        </androidx.cardview.widget.CardView>
+                android:textColor="@color/accent_purple"
+                app:drawableTopCompat="@drawable/stethoscope_icon"/>
+        </com.google.android.material.card.MaterialCardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <FrameLayout
@@ -164,18 +160,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/on_board_tags_section"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        >
+        app:layout_constraintBottom_toBottomOf="parent">
         <com.example.logicmed.SlideToStart
             android:id="@+id/on_board_slider"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/on_board_screen_slider_bg"
             app:slider_text="@string/sliderText"
-            app:slider_text_color="@color/black"
-            app:slider_cover_color="@color/bg_color"
-            />
+            app:slider_text_color="@color/text_primary"
+            app:slider_cover_color="@color/surface_elevated"/>
     </FrameLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

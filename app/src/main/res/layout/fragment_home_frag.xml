@@ -5,97 +5,106 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
+    android:padding="12dp"
     tools:context=".HomeFragment">
-    <androidx.cardview.widget.CardView
+
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardCornerRadius="20dp"
-        android:elevation="10dp"
+        app:cardElevation="0dp"
         app:cardUseCompatPadding="true"
-        android:backgroundTint="@color/light_nav"
-        >
+        app:cardBackgroundColor="@color/surface_card"
+        app:strokeWidth="1dp"
+        app:strokeColor="@color/border_subtle">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            >
+            android:padding="16dp">
+
             <TextView
                 android:id="@+id/home_card_role"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:textAlignment="center"
-                />
+                style="@style/TextAppearance.LogicMed.Title"
+                android:textAlignment="center"/>
+
             <TextView
                 android:id="@+id/home_card_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="15sp"
-                android:textStyle="bold"
+                style="@style/TextAppearance.LogicMed.Body"
                 android:textAlignment="center"
-                />
+                android:layout_marginTop="4dp"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/border_subtle"
+                android:layout_marginVertical="12dp"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:gravity="end"
-                >
+                android:gravity="center">
+
                 <ImageButton
                     android:id="@+id/home_card_dec_btn"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:src="@drawable/chevron_left"
-                    android:background="@android:color/transparent"
-                    android:contentDescription="@string/decButton"
-                    />
+                    android:background="@drawable/ripple_subtle"
+                    android:contentDescription="@string/decButton"/>
+
                 <TextView
                     android:id="@+id/home_card_month"
                     android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:textStyle="normal"
+                    android:layout_height="40dp"
                     android:gravity="center"
                     android:textSize="15sp"
-                    android:layout_marginHorizontal="10dp"
-                    />
+                    android:textStyle="bold"
+                    android:textColor="@color/accent_teal"
+                    android:layout_marginHorizontal="20dp"/>
 
                 <ImageButton
                     android:id="@+id/home_card_inc_btn"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:src="@drawable/chevron_forward"
-                    android:background="@android:color/transparent"
-                    android:contentDescription="@string/incButton"
-                    />
+                    android:background="@drawable/ripple_subtle"
+                    android:contentDescription="@string/incButton"/>
             </LinearLayout>
+
             <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                >
+                android:layout_marginTop="12dp"
+                android:scrollbars="none">
                 <com.google.android.material.chip.ChipGroup
                     android:id="@+id/home_card_appointment_dates"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:singleLine="true"
-                    />
+                    app:singleLine="true"/>
             </HorizontalScrollView>
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/upcomingAppointmentWithTitle"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_marginStart="10dp"
-        />
+        style="@style/TextAppearance.LogicMed.Title"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/home_upcoming_appointments_rv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginHorizontal="10dp"
-        android:layout_marginTop="10dp"
-        />
+        android:layout_marginHorizontal="4dp"/>
 
 </LinearLayout>

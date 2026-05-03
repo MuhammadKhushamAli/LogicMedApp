@@ -4,20 +4,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingHorizontal="10dp"
+    android:paddingHorizontal="12dp"
+    android:paddingTop="12dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ChatFragment">
+
     <androidx.appcompat.widget.SearchView
         android:id="@+id/chat_search_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:queryHint="@string/searchBarHint"
         app:iconifiedByDefault="false"
-        android:layout_marginBottom="10dp"
-        />
+        android:layout_marginBottom="12dp"
+        style="@style/Widget.LogicMed.SearchView"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chat_list_rv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
+        android:layout_height="match_parent"/>
 </LinearLayout>

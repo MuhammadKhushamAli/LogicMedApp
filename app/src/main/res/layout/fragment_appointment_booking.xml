@@ -4,33 +4,41 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:padding="20dp"
+    android:padding="24dp"
     tools:context=".AppointmentBookingFragment">
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
 
-        <ImageButton
-            android:id="@+id/appointment_booking_go_back_btn"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/arrow_back_icon"
-            android:background="@android:color/transparent"
-            android:contentDescription="@string/backArrow"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true"
-            />
-        <TextView
-            android:id="@+id/appointment_booking_title"
+        <LinearLayout
+            android:id="@+id/appointment_booking_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/bookAppointmentText"
-            android:textSize="25sp"
-            android:textAlignment="center"
-            android:textStyle="bold"
-            />
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_alignParentTop="true">
+
+            <ImageButton
+                android:id="@+id/appointment_booking_go_back_btn"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/arrow_back_icon"
+                android:background="@drawable/ripple_subtle"
+                android:contentDescription="@string/backArrow"
+                android:padding="6dp"/>
+
+            <TextView
+                android:id="@+id/appointment_booking_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/bookAppointmentText"
+                style="@style/TextAppearance.LogicMed.Headline"
+                android:textAlignment="center"
+                android:layout_marginEnd="40dp"/>
+        </LinearLayout>
+
         <LinearLayout
             android:id="@+id/appointment_booking_doctor_intro_section"
             android:layout_width="match_parent"
@@ -38,70 +46,75 @@
             android:orientation="horizontal"
             android:gravity="center"
             android:layout_marginTop="20dp"
-            android:layout_below="@id/appointment_booking_title"
-            >
-            <androidx.cardview.widget.CardView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+            android:layout_below="@id/appointment_booking_header"
+            android:background="@drawable/glass_panel_bg"
+            android:padding="14dp">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="44dp"
+                android:layout_height="44dp"
                 app:cardCornerRadius="100dp"
                 app:cardPreventCornerOverlap="false"
-                android:elevation="10dp"
-                android:layout_marginEnd="10dp"
-                >
+                app:cardElevation="0dp"
+                android:layout_marginEnd="12dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="@color/accent_teal">
                 <ImageView
                     android:id="@+id/appointment_booking_doctor_img"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:src="@drawable/avatar"
-                    android:contentDescription="@string/profileImgDesc"
-                    />
-            </androidx.cardview.widget.CardView>
+                    android:contentDescription="@string/profileImgDesc"/>
+            </com.google.android.material.card.MaterialCardView>
+
             <TextView
                 android:id="@+id/appointment_booking_doctor_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                style="@style/TextAppearance.LogicMed.Body"
                 android:textStyle="bold"
-                android:textSize="15sp"
-                />
+                android:textColor="@color/text_primary"/>
         </LinearLayout>
+
         <TextView
             android:id="@+id/appointment_booking_select_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/selectDate"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_marginTop="20dp"
+            style="@style/TextAppearance.LogicMed.Title"
+            android:layout_marginTop="24dp"
             android:drawableEnd="@drawable/calender"
-            android:drawablePadding="10dp"
+            android:drawablePadding="12dp"
             android:layout_below="@id/appointment_booking_doctor_intro_section"
-            />
+            android:textColor="@color/accent_amber"
+            android:drawableTint="@color/accent_amber"
+            android:background="@drawable/amber_badge_bg"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="10dp"/>
+
         <TextView
             android:id="@+id/appointment_booking_timeslots_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:textSize="18sp"
+            style="@style/TextAppearance.LogicMed.Title"
+            android:textColor="@color/accent_teal"
             android:layout_marginTop="20dp"
-            android:layout_below="@id/appointment_booking_select_date"
-            />
+            android:layout_below="@id/appointment_booking_select_date"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/appointment_booking_time_slots_rv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_below="@id/appointment_booking_timeslots_title"
-            />
+            android:layout_marginTop="12dp"
+            android:layout_below="@id/appointment_booking_timeslots_title"/>
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/appointment_booking_submit_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cornerRadius="10dp"
-            android:backgroundTint="?button_color"
+            style="@style/Widget.LogicMed.Button.Primary"
             android:text="@string/bookAppointmentText"
-            android:textColor="?button_text_color"
-            android:layout_marginTop="20dp"
-            android:layout_below="@id/appointment_booking_time_slots_rv"
-            />
+            android:layout_marginTop="24dp"
+            android:layout_below="@id/appointment_booking_time_slots_rv"/>
     </RelativeLayout>
 </androidx.core.widget.NestedScrollView>

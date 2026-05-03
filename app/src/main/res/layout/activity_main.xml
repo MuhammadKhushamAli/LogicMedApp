@@ -8,66 +8,72 @@
     tools:openDrawer="start"
     android:fitsSystemWindows="true"
     tools:context=".MainActivity">
+
     <RelativeLayout
         android:id="@+id/main_activity_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
+
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/toolbar_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             android:layout_alignParentTop="true"
-            >
+            android:background="@drawable/toolbar_bg"
+            app:elevation="0dp">
+
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:popupTheme="@style/Theme.AppCompat.Light"
-                >
+                android:background="@android:color/transparent">
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    >
+                    android:layout_height="match_parent">
+
                     <TextView
                         android:id="@+id/toolbar_title"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:text="@string/toolBarTitle"
+                        style="@style/TextAppearance.LogicMed.Body"
                         android:textStyle="bold"
-                        android:textSize="15sp"
+                        android:textColor="@color/text_primary"
                         android:textAlignment="center"
                         android:gravity="center"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toStartOf="@id/logout_btn"
-                        app:layout_constraintHorizontal_chainStyle="spread_inside"
-                        />
+                        app:layout_constraintHorizontal_chainStyle="spread_inside"/>
+
                     <ImageButton
                         android:id="@+id/logout_btn"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
                         android:src="@drawable/logout"
                         android:contentDescription="@string/logoutBtnDesc"
                         android:background="@drawable/logout_bg"
+                        android:padding="10dp"
                         android:layout_marginHorizontal="10dp"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@id/toolbar_title"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        />
+                        app:layout_constraintEnd_toEndOf="parent"/>
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.appcompat.widget.Toolbar>
         </com.google.android.material.appbar.AppBarLayout>
+
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/main_fragment_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@id/bottom_nav_bar"
-            android:layout_below="@id/toolbar_layout"
-            />
+            android:layout_below="@id/toolbar_layout"/>
+
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_nav_bar"
             android:layout_width="match_parent"
@@ -75,10 +81,15 @@
             app:menu="@menu/bottom_nav_bar"
             android:layout_alignParentBottom="true"
             android:background="@drawable/bottom_nav_bar_style"
-            android:layout_marginHorizontal="10dp"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginBottom="8dp"
             app:itemGravity="center"
-            />
+            app:itemIconTint="@color/text_secondary"
+            app:itemTextColor="@color/text_secondary"
+            app:itemActiveIndicatorStyle="@null"
+            app:labelVisibilityMode="labeled"/>
     </RelativeLayout>
+
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/drawer_nav_layout"
         android:layout_width="wrap_content"
@@ -86,6 +97,8 @@
         android:layout_gravity="start"
         app:headerLayout="@layout/drawer_nav_header"
         android:paddingTop="40dp"
+        android:background="@color/surface_card"
+        app:itemTextColor="@color/text_primary"
+        app:itemIconTint="@color/text_secondary"/>
 
-        />
 </androidx.drawerlayout.widget.DrawerLayout>

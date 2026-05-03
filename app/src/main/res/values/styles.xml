@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Shape Appearance: top_radius (used in AuthScreen card) -->
     <style name="top_radius">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSizeTopRight">40dp</item>
@@ -7,4 +8,85 @@
         <item name="cornerSizeBottomRight">0dp</item>
         <item name="cornerSizeBottomLeft">0dp</item>
     </style>
+
+
+
+    <!-- ===== Button Styles ===== -->
+    <style name="Widget.LogicMed.Button.Primary" parent="Widget.Material3.Button">
+        <item name="backgroundTint">@color/accent_teal</item>
+        <item name="android:textColor">@color/bg_color</item>
+        <item name="cornerRadius">14dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:paddingTop">14dp</item>
+        <item name="android:paddingBottom">14dp</item>
+    </style>
+
+    <!-- ===== Text Styles ===== -->
+    <style name="TextAppearance.LogicMed.Display" parent="">
+        <item name="android:textSize">30sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:letterSpacing">-0.02</item>
+    </style>
+
+    <style name="TextAppearance.LogicMed.Headline" parent="">
+        <item name="android:textSize">22sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:letterSpacing">-0.01</item>
+    </style>
+
+    <style name="TextAppearance.LogicMed.Title" parent="">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/text_primary</item>
+    </style>
+
+    <style name="TextAppearance.LogicMed.Body" parent="">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/text_secondary</item>
+    </style>
+
+    <style name="TextAppearance.LogicMed.Caption" parent="">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/text_muted</item>
+    </style>
+
+    <style name="TextAppearance.LogicMed.Accent.Teal" parent="">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/accent_teal</item>
+    </style>
+
+    <style name="TextAppearance.LogicMed.Accent.Amber" parent="">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/accent_amber</item>
+    </style>
+
+    <!-- ===== Input Styles ===== -->
+    <style name="Widget.LogicMed.TextInputLayout" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/accent_teal</item>
+        <item name="hintTextColor">@color/text_secondary</item>
+        <item name="boxCornerRadiusTopStart">14dp</item>
+        <item name="boxCornerRadiusTopEnd">14dp</item>
+        <item name="boxCornerRadiusBottomStart">14dp</item>
+        <item name="boxCornerRadiusBottomEnd">14dp</item>
+        <item name="boxBackgroundColor">@color/surface_input</item>
+    </style>
+
+
+    <!-- ===== SearchView Style ===== -->
+    <style name="Widget.LogicMed.SearchView" parent="">
+        <item name="android:background">@drawable/search_bar_bg</item>
+        <item name="queryBackground">@android:color/transparent</item>
+    </style>
+
+
+
+
+
+
+
 </resources>

@@ -2,13 +2,42 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="bg_color">#D8DDEB</color>
-    <color name="doc_session_color">#A0A2BA</color>
-    <color name="secondary_color">#EFF3FF</color>
-    <color name="dark_nav">#2C2B2B</color>
-    <color name="light_nav">#BCB5B5</color>
-    <color name="red">#FF0000</color>
-    <color name="blue">#0000FF</color>
-    <color name="grey">#193036</color>
-    <color name="semi_transparent">#88000000</color>
+
+    <!-- Core Backgrounds -->
+    <color name="bg_color">#0B0F1A</color>
+    <color name="secondary_color">#111827</color>
+    <color name="grey">#0F1525</color>
+
+    <!-- Surface / Card / Panel -->
+    <color name="dark_nav">#0D1322</color>
+    <color name="light_nav">#161E33</color>
+
+    <!-- Accent Colors -->
+    <color name="blue">#00D4AA</color>
+    <color name="red">#FF6B6B</color>
+
+    <!-- Extended palette -->
+    <color name="accent_teal">#00D4AA</color>
+    <color name="accent_teal_dark">#00B894</color>
+    <color name="accent_amber">#FFB74D</color>
+
+    <color name="accent_purple">#A78BFA</color>
+
+    <!-- Text -->
+    <color name="text_primary">#F0F4FC</color>
+    <color name="text_secondary">#94A3C0</color>
+    <color name="text_muted">#5B6B8A</color>
+
+    <!-- Surfaces -->
+    <color name="surface_card">#161E33</color>
+    <color name="surface_elevated">#1C2541</color>
+    <color name="surface_input">#111827</color>
+    <color name="border_subtle">#1E2D4A</color>
+
+
+    <!-- Overlays -->
+    <color name="semi_transparent">#CC0B0F1A</color>
+
+    <color name="teal_10">#1A00D4AA</color>
+    <color name="amber_10">#1AFFB74D</color>
 </resources>

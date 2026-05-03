@@ -5,19 +5,21 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:paddingHorizontal="10dp"
+    android:paddingHorizontal="12dp"
+    android:paddingTop="12dp"
     tools:context=".SearchFragment">
+
     <androidx.appcompat.widget.SearchView
         android:id="@+id/search_search_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:queryHint="@string/searchBarHint"
         app:iconifiedByDefault="false"
-        android:layout_marginBottom="10dp"
-        />
+        android:layout_marginBottom="12dp"
+        style="@style/Widget.LogicMed.SearchView"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/search_doctors_list_rv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
+        android:layout_height="match_parent"/>
 </LinearLayout>

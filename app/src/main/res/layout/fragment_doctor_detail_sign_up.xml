@@ -7,115 +7,109 @@
     android:background="?frag_bg"
     android:padding="20dp"
     tools:context=".DoctorDetailSignUpFragment">
+
     <TextView
         android:id="@+id/doc_data_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/doctorDataTitle"
+        style="@style/TextAppearance.LogicMed.Headline"
         android:textAlignment="center"
-        android:textStyle="bold"
-        android:textSize="20sp"
         android:layout_alignParentTop="true"
-        />
+        android:layout_marginBottom="8dp"/>
+
     <LinearLayout
         android:id="@+id/doctor_detail_fee_slot_field_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_below="@id/doc_data_title"
-        android:layout_marginVertical="10dp"
-        >
+        android:layout_marginBottom="12dp">
+
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="0dp"
             android:layout_weight="0.4"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp"
-            app:boxCornerRadiusBottomStart="10dp"
-            app:boxCornerRadiusTopEnd="10dp"
-            app:boxCornerRadiusBottomEnd="10dp"
-            app:boxCornerRadiusTopStart="10dp"
-            >
+            android:layout_marginEnd="6dp"
+            style="@style/Widget.LogicMed.TextInputLayout">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/doctor_detail_fee"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/feeHint"
                 android:inputType="numberDecimal"
-                />
+                android:textColor="@color/text_primary"/>
         </com.google.android.material.textfield.TextInputLayout>
+
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="0dp"
             android:layout_weight="0.6"
             android:layout_height="wrap_content"
-            app:boxCornerRadiusBottomStart="10dp"
-            app:boxCornerRadiusTopEnd="10dp"
-            app:boxCornerRadiusBottomEnd="10dp"
-            app:boxCornerRadiusTopStart="10dp"
-            >
+            style="@style/Widget.LogicMed.TextInputLayout">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/doctor_detail_appointment_slot"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/timeSlotHint"
                 android:inputType="numberDecimal"
-                />
+                android:textColor="@color/text_primary"/>
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
+
     <TextView
         android:id="@+id/doc_data_sub_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/doctorDayOfDutyTitle"
-        android:textAlignment="center"
-        android:textSize="15sp"
+        style="@style/TextAppearance.LogicMed.Body"
         android:textStyle="bold"
-        android:layout_marginTop="10dp"
+        android:textColor="@color/accent_teal"
+        android:textAlignment="viewStart"
         android:layout_below="@id/doctor_detail_fee_slot_field_layout"
-        android:layout_marginBottom="10dp"
-        />
+        android:layout_marginBottom="8dp"/>
+
     <HorizontalScrollView
         android:id="@+id/doc_data_chip_group_section"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/doc_data_sub_title"
-        >
+        android:layout_marginBottom="12dp"
+        android:scrollbars="none">
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/doctor_days_of_duty_chip_group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:horizontalItemSpacing="2dp"
             app:selectionRequired="true"
-            app:singleLine="true"
-            />
+            app:singleLine="true"/>
     </HorizontalScrollView>
+
     <TextView
         android:id="@+id/doc_data_category_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/doctorCategoriesTitle"
-        android:textAlignment="center"
-        android:textSize="15sp"
+        style="@style/TextAppearance.LogicMed.Body"
         android:textStyle="bold"
-        android:layout_marginTop="10dp"
-        android:layout_below="@id/doc_data_chip_group_section"
-        android:layout_marginHorizontal="10dp"
-        />
+        android:textColor="@color/accent_amber"
+        android:textAlignment="viewStart"
+        android:layout_below="@id/doc_data_chip_group_section"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/doctor_data_fields_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/doctor_data_submit_button"
         android:layout_below="@id/doc_data_category_title"
-        />
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"/>
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/doctor_data_submit_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cornerRadius="10dp"
-        android:backgroundTint="?button_color"
-        android:textColor="?button_text_color"
+        style="@style/Widget.LogicMed.Button.Primary"
         android:text="@string/submitBtnText"
-        android:layout_alignParentBottom="true"
-        />
+        android:layout_alignParentBottom="true"/>
 
 </RelativeLayout>

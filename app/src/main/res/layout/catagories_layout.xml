@@ -2,22 +2,23 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    >
+    android:paddingHorizontal="4dp">
+
     <TextView
         android:id="@+id/category_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        style="@style/TextAppearance.LogicMed.Body"
         android:textStyle="bold"
-        android:textSize="13sp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="10dp"
-        android:layout_alignParentTop="true"
-        />
+        android:textColor="@color/text_primary"
+        android:layout_marginBottom="6dp"
+        android:layout_marginTop="12dp"
+        android:layout_alignParentTop="true"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/categories_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/category_title"
-        android:layout_alignParentBottom="true"
-        />
+        android:layout_alignParentBottom="true"/>
 </RelativeLayout>

@@ -4,48 +4,49 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="20dp"
+    android:padding="24dp"
     android:background="?frag_bg"
     tools:context=".SignupFragment">
+
     <TextView
         android:id="@+id/signup_frag_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/signupFragTitle"
-        android:textSize="30sp"
-        android:textStyle="bold"
+        style="@style/TextAppearance.LogicMed.Display"
         android:textAlignment="center"
-        android:layout_marginBottom="20dp"
-        />
+        android:layout_marginBottom="20dp"/>
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/signup_name_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:boxCornerRadiusTopStart="20dp"
+        style="@style/Widget.LogicMed.TextInputLayout"
         android:layout_below="@id/signup_frag_header"
-        >
+        android:layout_marginBottom="8dp">
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/signup_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/nameHint"
             android:inputType="text"
-            />
+            android:textColor="@color/text_primary"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/signup_email_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        style="@style/Widget.LogicMed.TextInputLayout"
         android:layout_below="@id/signup_name_layout"
-        >
+        android:layout_marginBottom="8dp">
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/signup_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/emailHint"
             android:inputType="textEmailAddress"
-            />
+            android:textColor="@color/text_primary"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <LinearLayout
@@ -55,37 +56,33 @@
         android:orientation="horizontal"
         android:baselineAligned="false"
         android:layout_below="@id/signup_email_layout"
-        >
+        android:layout_marginBottom="8dp">
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="0dp"
             android:layout_weight="0.4"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-
-            >
+            android:layout_marginEnd="6dp"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
             <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                 android:id="@+id/signup_role"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/roleHint"
                 android:inputType="text"
-                />
+                android:textColor="@color/text_primary"/>
         </com.google.android.material.textfield.TextInputLayout>
-
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="0dp"
             android:layout_weight="0.5"
             android:layout_height="wrap_content"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-            >
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
             <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                 android:id="@+id/signup_location"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/locationHint"
                 android:inputType="text"
-                />
+                android:textColor="@color/text_primary"/>
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
@@ -93,59 +90,57 @@
         android:id="@+id/signup_pass_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        style="@style/Widget.LogicMed.TextInputLayout"
         app:passwordToggleEnabled="true"
         android:layout_below="@id/signup_loc_role_layout"
-        >
+        android:layout_marginBottom="8dp">
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/signup_pass"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/passwordHint"
             android:inputType="textPassword"
-            />
+            android:textColor="@color/text_primary"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/signup_c_pass_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        style="@style/Widget.LogicMed.TextInputLayout"
         app:passwordToggleEnabled="true"
-        app:boxCornerRadiusBottomEnd="20dp"
-        android:layout_marginBottom="10dp"
-        android:layout_below="@id/signup_pass_layout"
-        >
+        android:layout_marginBottom="16dp"
+        android:layout_below="@id/signup_pass_layout">
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/signup_c_pass"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/cPasswordHint"
             android:inputType="textPassword"
-            />
+            android:textColor="@color/text_primary"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/signup_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="?button_color"
-        app:cornerRadius="10dp"
-        android:textColor="?button_text_color"
-        android:layout_below="@id/signup_c_pass_layout"
-        />
+        style="@style/Widget.LogicMed.Button.Primary"
+        android:layout_below="@id/signup_c_pass_layout"/>
+
     <ProgressBar
         android:id="@+id/signup_progress_bar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:layout_alignParentBottom="true"
-        android:background="?frag_bg"
-        />
+        android:background="?frag_bg"/>
+
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/signup_detail_frag"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:layout_alignParentBottom="true"
-        android:visibility="gone"
-        />
+        android:visibility="gone"/>
+
 </RelativeLayout>
