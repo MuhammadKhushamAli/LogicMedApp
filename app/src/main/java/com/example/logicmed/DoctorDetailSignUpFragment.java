@@ -103,7 +103,8 @@ public class DoctorDetailSignUpFragment extends Fragment implements SubCategorie
         timeSlot = -1.0f;
     }
     private void addDaysOfDuties() {
-        String[] daysOfWeek = new String[] {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
+        MyApplication app = (MyApplication) context.getApplicationContext();
+        String[] daysOfWeek = app.daysOfWeek;
 
         for (String dayOfWeek : daysOfWeek) {
             Chip chip = new Chip(context);

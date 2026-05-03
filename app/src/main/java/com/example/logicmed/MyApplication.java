@@ -23,6 +23,8 @@ public class MyApplication extends Application {
     public SharedPreferences sPrefUser;
     public SharedPreferences.Editor sPrefUserEdit;
     public ArrayList<DoctorCategoriesAndSubCategories> doctorsCategoriesAndSubCategories;
+    public String[] daysOfWeek;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -105,6 +107,7 @@ public class MyApplication extends Application {
         cloudinaryInitMap.put("cloud_name", "dlsbqnmnb");
         cloudinaryInitMap.put("secure", true);
         MediaManager.init(this, cloudinaryInitMap);
+        daysOfWeek = new String[] {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
 
     }
 }
