@@ -20,9 +20,11 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipDrawable;
 import com.google.android.material.chip.ChipGroup;
+import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class DoctorDetailSignUpFragment extends Fragment implements SubCategoriesAdapter.setOnclickListener{
 
@@ -31,11 +33,15 @@ public class DoctorDetailSignUpFragment extends Fragment implements SubCategorie
     private RecyclerView rvCategories;
     private Context context;
     private MaterialButton btnSubmit;
+    private TextInputEditText etFee;
+    private TextInputEditText etSlot;
     private List<String> categoriesOfDoctor;
     private List<Schedule> timingsOfDoctors;
+    private float fee;
+    private float timeSlot;
 
     public interface setOnSignUpListener {
-        void setDataOnSignUp(List<String> categoriesOfDoctor, List<Schedule> timingsOfDoctors);
+        void setDataOnSignUp(List<String> categoriesOfDoctor, List<Schedule> timingsOfDoctors, float fee, float timeSlot);
     }
 
     public DoctorDetailSignUpFragment() {
@@ -67,7 +73,21 @@ public class DoctorDetailSignUpFragment extends Fragment implements SubCategorie
         setCategoriesAndSubCategories();
 
         btnSubmit.setOnClickListener(v -> {
-            listener.setDataOnSignUp(categoriesOfDoctor, timingsOfDoctors);
+            try {
+                fee = Float.parseFloat(Objects.requireNonNull(etFee.getText()).toString());
+                timeSlot = Float.parseFloat(Objects.requireNonNull(etSlot.getText()).toString());
+            }
+            catch (Exception exception) {
+                Toast.makeText(context, "Enter Valid Number", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (fee <= 0.0f || timeSlot <= 0.0f || categoriesOfDoctor.isEmpty() || timingsOfDoctors.isEmpty()) {
+                Toast.makeText(context, "All Fields Are Required", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            listener.setDataOnSignUp(categoriesOfDoctor, timingsOfDoctors, fee, timeSlot);
         });
 
     }
@@ -75,9 +95,12 @@ public class DoctorDetailSignUpFragment extends Fragment implements SubCategorie
         cgDaysOfDuties = view.findViewById(R.id.doctor_days_of_duty_chip_group);
         rvCategories = view.findViewById(R.id.doctor_data_fields_recycler_view);
         btnSubmit = view.findViewById(R.id.doctor_data_submit_button);
+        etFee = view.findViewById(R.id.doctor_detail_fee);
+        etSlot = view.findViewById(R.id.doctor_detail_appointment_slot);
         categoriesOfDoctor = new ArrayList<>();
         timingsOfDoctors = new ArrayList<>();
-
+        fee = -1.0f;
+        timeSlot = -1.0f;
     }
     private void addDaysOfDuties() {
         String[] daysOfWeek = new String[] {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};

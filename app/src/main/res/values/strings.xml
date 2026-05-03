@@ -53,4 +53,6 @@
     <string name="startConversation">Start Conversation</string>
     <string name="typeMsgHint">Start Typing Here</string>
     <string name="messageImage">Image Message</string>
+    <string name="feeHint">Fee:</string>
+    <string name="timeSlotHint">Appointment Slot (Min):</string>
 </resources>

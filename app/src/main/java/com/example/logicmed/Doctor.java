@@ -7,18 +7,19 @@ public class Doctor extends User {
     private float fee;
     private List<String> docCategories;
     private List<Schedule> docTimings;
-    private String slotDuration;
+    private float slotDuration;
 
     public Doctor() {
         super();
 
     }
 
-    public Doctor(String fullName, String profileImageUrl, String role, String city, float fee, List<String> docCategories, List<Schedule> docTimings) {
+    public Doctor(String fullName, String profileImageUrl, String role, String city, float fee, float slotDuration,  List<String> docCategories, List<Schedule> docTimings) {
         super(fullName, profileImageUrl, role, city);
         this.fee = fee;
         this.docCategories = docCategories;
         this.docTimings = docTimings;
+        this.slotDuration = slotDuration;
     }
 
     public Doctor(String fullName, String role, String city, float fee, List<String> docCategories, List<Schedule> docTimings) {
@@ -54,5 +55,13 @@ public class Doctor extends User {
 
     public void setDocTimings(List<Schedule> docTimings) {
         this.docTimings = docTimings;
+    }
+
+    public float getSlotDuration() {
+        return slotDuration;
+    }
+
+    public void setSlotDuration(float slotDuration) {
+        this.slotDuration = slotDuration;
     }
 }

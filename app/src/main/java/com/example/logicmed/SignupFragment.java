@@ -78,6 +78,7 @@ public class SignupFragment extends Fragment
     private List<Schedule> docTimings;
     private String cloudinaryURL;
     private float fee;
+    private float timeSlot;
     private Context context;
 
     public SignupFragment() {
@@ -318,12 +319,7 @@ public class SignupFragment extends Fragment
     }
 
     @Override
-    public void setDataOnSignUp(List<String> categoriesOfDoctor, List<Schedule> timingsOfDoctors) {
-        if (categoriesOfDoctor.isEmpty() || timingsOfDoctors.isEmpty()) {
-            Toast.makeText(context, "Categories and Timings are required for Doctors", Toast.LENGTH_LONG).show();
-            return;
-        }
-
+    public void setDataOnSignUp(List<String> categoriesOfDoctor, List<Schedule> timingsOfDoctors, float fee, float timeSlot) {
         fragmentManager
                 .beginTransaction()
                 .replace(R.id.signup_detail_frag, profileSetupFragment)
@@ -331,12 +327,14 @@ public class SignupFragment extends Fragment
         viewModelProvider.get(SignupViewModel.class).setCurrentPage(1);
         this.docCategories = categoriesOfDoctor;
         this.docTimings = timingsOfDoctors;
+        this.fee = fee;
+        this.timeSlot = timeSlot;
     }
 
     private void inputAndMakeMap() {
         User user = null;
         if (role.equals(KeyUtils.doctorKey)) {
-            user = new Doctor(fullName, cloudinaryURL, role, city, fee, docCategories, docTimings);
+            user = new Doctor(fullName, cloudinaryURL, role, city, fee, timeSlot, docCategories, docTimings);
         }
         else {
             user = new User(fullName, cloudinaryURL, role, city);
@@ -350,8 +348,7 @@ public class SignupFragment extends Fragment
                 .remove(profileSetupFragment)
                 .commit();
         fragmentContainerView.setVisibility(View.GONE);
-        String signupTxt = "Sign Up";
-        btnSignup.setText(signupTxt);
+        progressBar.setVisibility(View.VISIBLE);
         viewModelProvider.get(SignupViewModel.class).setCurrentPage(1);
 
         if (bitmap != null || uri != null) {

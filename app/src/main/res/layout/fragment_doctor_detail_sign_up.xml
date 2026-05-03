@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="?frag_bg"
+    android:padding="20dp"
     tools:context=".DoctorDetailSignUpFragment">
     <TextView
         android:id="@+id/doc_data_title"
@@ -16,6 +17,50 @@
         android:textSize="20sp"
         android:layout_alignParentTop="true"
         />
+    <LinearLayout
+        android:id="@+id/doctor_detail_fee_slot_field_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/doc_data_title"
+        android:layout_marginVertical="10dp"
+        >
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="0dp"
+            android:layout_weight="0.4"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            app:boxCornerRadiusBottomStart="10dp"
+            app:boxCornerRadiusTopEnd="10dp"
+            app:boxCornerRadiusBottomEnd="10dp"
+            app:boxCornerRadiusTopStart="10dp"
+            >
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/doctor_detail_fee"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/feeHint"
+                android:inputType="numberDecimal"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="0dp"
+            android:layout_weight="0.6"
+            android:layout_height="wrap_content"
+            app:boxCornerRadiusBottomStart="10dp"
+            app:boxCornerRadiusTopEnd="10dp"
+            app:boxCornerRadiusBottomEnd="10dp"
+            app:boxCornerRadiusTopStart="10dp"
+            >
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/doctor_detail_appointment_slot"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/timeSlotHint"
+                android:inputType="numberDecimal"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
     <TextView
         android:id="@+id/doc_data_sub_title"
         android:layout_width="match_parent"
@@ -25,7 +70,7 @@
         android:textSize="15sp"
         android:textStyle="bold"
         android:layout_marginTop="10dp"
-        android:layout_below="@id/doc_data_title"
+        android:layout_below="@id/doctor_detail_fee_slot_field_layout"
         android:layout_marginBottom="10dp"
         />
     <HorizontalScrollView
