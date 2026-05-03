@@ -21,6 +21,7 @@ public class Appointment implements Parcelable {
     private String day;
     private String date;
     private String timeSlot;
+    private String status;
     @ServerTimestamp
     private Timestamp appointMentTimeStamp;
 
@@ -42,6 +43,15 @@ public class Appointment implements Parcelable {
         this.timeSlot = timeSlot;
         this.patientDetails = patientDetails;
         this.doctorDetails = doctorDetails;
+        this.status = "Pending";
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getDate() {
