@@ -130,5 +130,31 @@
         android:layout_alignParentEnd="true"
         android:layout_margin="20dp"
         />
-
+    <FrameLayout
+        android:id="@+id/appointment_booking_frag_container_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:background="@color/semi_transparent"
+        android:elevation="100dp"
+        android:backgroundTint="@color/semi_transparent"
+        android:visibility="gone"
+        android:clickable="true"
+        android:focusable="true"
+        >
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            app:cardCornerRadius="30dp"
+            android:elevation="100dp"
+            app:cardUseCompatPadding="true"
+            >
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/appointment_booking_frag_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+    </androidx.cardview.widget.CardView>
+    </FrameLayout>
 </RelativeLayout>

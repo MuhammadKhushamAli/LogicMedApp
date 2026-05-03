@@ -1,33 +1,55 @@
 package com.example.logicmed;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.ServerTimestamp;
 
-import java.sql.Timestamp;
 import java.util.List;
 
-public class Appointment {
+public class Appointment implements Parcelable {
+    public static final String PATIENT_ID_FIELD = "patientId";
+    public static final String DOCTOR_ID_FIELD = "doctorId";
     private String patientId;
     private String doctorId;
     private ParticipantDetail patientDetails;
     private ParticipantDetail doctorDetails;
     private String checkUpFeedBack;
     private String day;
+    private String date;
     private String timeSlot;
     @ServerTimestamp
     private Timestamp appointMentTimeStamp;
 
     public Appointment() {
     }
+    protected Appointment(Parcel parcel) {
+        date = parcel.readString();
+        day = parcel.readString();
+        timeSlot = parcel.readString();
+    }
 
-    public Appointment(String patientId, String doctorId, String day, String timeSlot, ParticipantDetail patientDetails, ParticipantDetail doctorDetails) {
+    public Appointment(String patientId, String doctorId, String date, String day, String timeSlot, ParticipantDetail patientDetails, ParticipantDetail doctorDetails) {
         this.patientId = patientId;
         this.doctorId = doctorId;
         this.checkUpFeedBack = null;
         this.appointMentTimeStamp = null;
+        this.date = date;
         this.day = day;
         this.timeSlot = timeSlot;
         this.patientDetails = patientDetails;
         this.doctorDetails = doctorDetails;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public String getPatientId() {
@@ -93,4 +115,28 @@ public class Appointment {
     public void setAppointMentTimeStamp(Timestamp appointMentTimeStamp) {
         this.appointMentTimeStamp = appointMentTimeStamp;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel parcel, int i) {
+        parcel.writeString(date);
+        parcel.writeString(day);
+        parcel.writeString(timeSlot);
+    }
+
+    public static final Creator<Appointment> creator = new Creator<Appointment>() {
+        @Override
+        public Appointment createFromParcel(Parcel parcel) {
+            return new Appointment(parcel);
+        }
+
+        @Override
+        public Appointment[] newArray(int i) {
+            return new Appointment[i];
+        }
+    };
 }

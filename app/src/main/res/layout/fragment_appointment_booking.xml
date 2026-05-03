@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,12 +7,23 @@
     android:orientation="vertical"
     android:padding="20dp"
     tools:context=".AppointmentBookingFragment">
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         >
+
+        <ImageButton
+            android:id="@+id/appointment_booking_go_back_btn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/arrow_back_icon"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/backArrow"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            />
         <TextView
+            android:id="@+id/appointment_booking_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/bookAppointmentText"
@@ -21,11 +32,13 @@
             android:textStyle="bold"
             />
         <LinearLayout
+            android:id="@+id/appointment_booking_doctor_intro_section"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center"
             android:layout_marginTop="20dp"
+            android:layout_below="@id/appointment_booking_title"
             >
             <androidx.cardview.widget.CardView
                 android:layout_width="50dp"
@@ -61,20 +74,23 @@
             android:layout_marginTop="20dp"
             android:drawableEnd="@drawable/calender"
             android:drawablePadding="10dp"
+            android:layout_below="@id/appointment_booking_doctor_intro_section"
             />
         <TextView
+            android:id="@+id/appointment_booking_timeslots_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/timeSlotHint"
             android:textStyle="bold"
             android:textSize="18sp"
             android:layout_marginTop="20dp"
+            android:layout_below="@id/appointment_booking_select_date"
             />
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/appointment_booking_time_slots_rv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:layout_below="@id/appointment_booking_timeslots_title"
             />
         <com.google.android.material.button.MaterialButton
             android:id="@+id/appointment_booking_submit_button"
@@ -85,6 +101,7 @@
             android:text="@string/bookAppointmentText"
             android:textColor="?button_text_color"
             android:layout_marginTop="20dp"
+            android:layout_below="@id/appointment_booking_time_slots_rv"
             />
-    </LinearLayout>
-</ScrollView>
+    </RelativeLayout>
+</androidx.core.widget.NestedScrollView>

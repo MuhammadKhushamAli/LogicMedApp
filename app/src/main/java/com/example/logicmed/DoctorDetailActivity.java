@@ -3,6 +3,7 @@ package com.example.logicmed;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -11,14 +12,18 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.FragmentContainerView;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -27,11 +32,14 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class DoctorDetailActivity extends AppCompatActivity {
+public class DoctorDetailActivity extends AppCompatActivity
+        implements AppointmentBookingFragment.setOnClickListener {
     MyApplication app;
     private ImageButton ibGoBack;
     private ImageView ivProfile;
@@ -40,9 +48,13 @@ public class DoctorDetailActivity extends AppCompatActivity {
     private RecyclerView rvTimings;
     private RecyclerView rvCategories;
     private FloatingActionButton addMessage;
+    private MaterialButton btnBookAppointment;
     private ProgressBar progressBar;
     private String uId;
     private Doctor doctor;
+    private FragmentManager fragmentManager;
+    private AppointmentBookingFragment appointmentBookingFragment;
+    private FrameLayout fragmentContainerViewCardView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +72,6 @@ public class DoctorDetailActivity extends AppCompatActivity {
         ibGoBack.setOnClickListener(v -> {
             finish();
         });
-
     }
 
     private void init() {
@@ -73,6 +84,10 @@ public class DoctorDetailActivity extends AppCompatActivity {
         rvCategories = findViewById(R.id.doctor_detail_categories);
         addMessage = findViewById(R.id.doctor_detail_start_conversation_btn);
         progressBar = findViewById(R.id.doctor_detail_progress_bar);
+        btnBookAppointment = findViewById(R.id.doctor_detail_book_appointment_btn);
+        fragmentManager = getSupportFragmentManager();
+        fragmentContainerViewCardView = findViewById(R.id.appointment_booking_frag_container_layout);
+        fragmentContainerViewCardView.setVisibility(View.GONE);
         uId = null;
         doctor = null;
     }
@@ -114,6 +129,7 @@ public class DoctorDetailActivity extends AppCompatActivity {
                         rvCategories.setHasFixedSize(true);
                         rvCategories.setLayoutManager(new LinearLayoutManager(DoctorDetailActivity.this, LinearLayoutManager.VERTICAL, false));
                         rvCategories.setAdapter(doctorCategoryAdapter);
+                        bookAppointment();
                     }
                 });
     }
@@ -208,5 +224,73 @@ public class DoctorDetailActivity extends AppCompatActivity {
         else {
             return otherUId + "_" + currentUId;
         }
+    }
+    private void bookAppointment() {
+        if (doctor == null) {
+            Toast.makeText(this, "Slow Network! Please Wait or Restart", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        btnBookAppointment.setOnClickListener(v -> {
+            List<Schedule> schedules = doctor.getDocTimings();
+
+            List<SlotsOfDay> slotsOfDays = new ArrayList<>();
+            for(Schedule schedule: schedules) {
+                List<String> slots = slotMaker(schedule.getFromTime(), schedule.getEndTime());
+                slotsOfDays.add(
+                        new SlotsOfDay(schedule.getDay(), slots)
+                );
+            }
+
+            app.firestore.collection(KeyUtils.firebaseAppointmentCollectionKey)
+                    .whereEqualTo(Appointment.DOCTOR_ID_FIELD, uId)
+                    .get()
+                    .addOnCompleteListener(task -> {
+                       if (task.isSuccessful()) {
+                           List<Appointment> appointments = task.getResult().toObjects(Appointment.class);
+                           goForBooking(slotsOfDays, appointments);
+                       }
+                       else {
+                           Toast.makeText(this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                       }
+                    });
+        });
+    }
+    private List<String> slotMaker(String startTime, String endTime) {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("H:m");
+        LocalTime localStartTime = LocalTime.parse(startTime, dateTimeFormatter);
+        LocalTime localEndTime = LocalTime.parse(endTime, dateTimeFormatter);
+
+        List<String> slots = new ArrayList<>();
+
+        while (localStartTime.isBefore(localEndTime)) {
+            LocalTime slotStartTime = localStartTime;
+            LocalTime slotEndTime = localStartTime.plusMinutes((long) doctor.getSlotDuration());
+            if (slotEndTime.isBefore(localEndTime)) {
+                slots.add(slotStartTime.toString() + " - " + slotEndTime.toString());
+            }
+            localStartTime = slotEndTime;
+        }
+        return slots;
+    }
+    private void goForBooking(List<SlotsOfDay> slotsOfDays, List<Appointment> appointmentList) {
+        appointmentBookingFragment = AppointmentBookingFragment.newInstance(
+                uId,
+                doctor.getFullName(),
+                doctor.getProfileImageUrl(),
+                slotsOfDays,
+                appointmentList
+        );
+        fragmentManager.beginTransaction()
+                .replace(R.id.appointment_booking_frag_container, appointmentBookingFragment)
+                .commit();
+        fragmentContainerViewCardView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onClose() {
+        fragmentManager.beginTransaction()
+                .remove(appointmentBookingFragment)
+                .commit();
+        fragmentContainerViewCardView.setVisibility(View.GONE);
     }
 }

@@ -14,6 +14,7 @@ public class KeyUtils {
     static public final String firebaseUserCollectionKey = "users";
     static public final String firebaseChatCollectionKey = "chats";
     static public final String firebaseMessageCollectionKey = "messages";
+    static public final String firebaseAppointmentCollectionKey = "appointments";
     static public final String doctorKey = "Doctor";
     static public final String patientKey = "Patient";
     static public final String doctorsUIDIntentKey = "doctorsUIDIntent";
