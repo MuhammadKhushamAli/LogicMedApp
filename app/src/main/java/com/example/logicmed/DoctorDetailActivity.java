@@ -101,7 +101,7 @@ public class DoctorDetailActivity extends AppCompatActivity {
                                     .into(ivProfile);
                         }
                         tvName.setText(doctor.getFullName());
-//
+
                         String strFee = "Fee: " + doctor.getFee();
                         tvFee.setText(strFee);
 
