@@ -38,7 +38,7 @@ public class DoctorTimingAndCategoryAdapter extends RecyclerView.Adapter<DoctorT
         }
         else if (timings != null) {
             Schedule schedule = timings.get(position);
-            categoryOrTiming = schedule.getDay() + " ( " + schedule.getFromTime() + " : " + schedule.getFromTime() + " ) ";
+            categoryOrTiming = schedule.getDay() + " ( " + schedule.getFromTime() + " - " + schedule.getEndTime() + " ) ";
         }
         if (categoryOrTiming != null) {
             holder.tvTimingOrCategory.setText(categoryOrTiming);
