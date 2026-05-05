@@ -280,7 +280,7 @@ public class AppointmentBookingFragment extends Fragment
         String name = app.sPrefUser.getString(KeyUtils.namePrefKey, "");
         String profileUrl = app.sPrefUser.getString(KeyUtils.profileUrlPrefKey, "");
 
-        if(user == null || name.isEmpty() || profileUrl.isEmpty()) {
+        if(user == null || name.isEmpty()) {
             Toast.makeText(context, "User Not Found", Toast.LENGTH_SHORT).show();
             return;
         }
