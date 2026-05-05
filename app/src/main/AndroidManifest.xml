@@ -19,10 +19,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LogicMed">
         <activity
+            android:name=".AIActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
             android:name=".ChatActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustPan"
-            />
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".DoctorDetailActivity"
             android:exported="false" />

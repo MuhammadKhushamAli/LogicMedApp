@@ -141,6 +141,12 @@ public class MainActivity extends AppCompatActivity{
             else if (id == R.id.chat_frag) {
                 selectedFrag = new ChatFragment();
             }
+            else if (id == R.id.ai_chat_frag) {
+                startActivity(new Intent(
+                        this,
+                        AIActivity.class
+                ));
+            }
 
             if (selectedFrag != null) {
                 fragmentManager.beginTransaction()
