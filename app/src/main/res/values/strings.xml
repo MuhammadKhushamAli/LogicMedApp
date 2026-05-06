@@ -60,4 +60,5 @@
     <string name="aiChatTitle">Dr. LogicMed</string>
     <string name="sendButton">Send Message</string>
     <string name="drFeedback">Your Feedback</string>
+    <string name="allAppointmentsTitle">All Appointments</string>
 </resources>
