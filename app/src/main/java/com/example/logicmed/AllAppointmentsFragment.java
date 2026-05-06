@@ -29,9 +29,9 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-public class AllAppointmentsFragment extends Fragment implements AppointmentRecyclerAdapter.setOnClickListener {
+public class AllAppointmentsFragment extends Fragment implements AllAppointmentsRecyclerAdapter.setOnClickListener {
     private RecyclerView rvAppointments;
-    private AppointmentRecyclerAdapter adapter;
+    private AllAppointmentsRecyclerAdapter adapter;
     private MyApplication app;
     private ActivityResultLauncher<Intent> voiceActivityResultLauncher;
     private Context context;
@@ -79,7 +79,7 @@ public class AllAppointmentsFragment extends Fragment implements AppointmentRecy
         FirestoreRecyclerOptions<Appointment> options = new FirestoreRecyclerOptions.Builder<Appointment>()
                 .setQuery(query, Appointment.class)
                 .build();
-        adapter = new AppointmentRecyclerAdapter(options, context, this);
+        adapter = new AllAppointmentsRecyclerAdapter(options, context, this);
         rvAppointments.setHasFixedSize(true);
         rvAppointments.setLayoutManager(new GridLayoutManager(context, 2));
 
