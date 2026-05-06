@@ -25,6 +25,8 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.datepicker.CalendarConstraints;
+import com.google.android.material.datepicker.CompositeDateValidator;
+import com.google.android.material.datepicker.DateValidatorPointForward;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseUser;
@@ -170,6 +172,7 @@ public class AppointmentBookingFragment extends Fragment
                 for (SlotsOfDay slotsOfDay : list_of_available_slots) {
 
                     if (!(slotsOfDay.getSlots().isEmpty())) {
+
                         int dayOfAppointment = calenderDayNumberFinder(slotsOfDay.getDay());
                         if (dayOfWeek == dayOfAppointment) {
                             return true;
@@ -190,6 +193,12 @@ public class AppointmentBookingFragment extends Fragment
             }
         };
 
+        List<CalendarConstraints.DateValidator> validators = new ArrayList<>();
+        validators.add(DateValidatorPointForward.now());
+        validators.add(dateValidator);
+
+        CalendarConstraints.DateValidator combinedValidator = CompositeDateValidator.allOf(validators);
+
         // Start of Calender
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
         calendar.set(Calendar.DAY_OF_MONTH, 1);
@@ -201,7 +210,7 @@ public class AppointmentBookingFragment extends Fragment
         long endOfCalender = calendar.getTimeInMillis();
 
         calendarConstraints = new CalendarConstraints.Builder()
-                .setValidator(dateValidator)
+                .setValidator(combinedValidator)
                 .setStart(startOfCalender)
                 .setEnd(endOfCalender)
                 .build();
