@@ -154,6 +154,7 @@ public class ChatActivity extends AppCompatActivity {
             String message = Objects.requireNonNull(etMessage.getText()).toString();
             FirebaseUser firebaseUser = app.firebaseAuth.getCurrentUser();
             String senderName = app.sPrefUser.getString(KeyUtils.namePrefKey, "");
+            etMessage.setText(null);
 
             if (firebaseUser == null || senderName.isEmpty() || chatId.isEmpty()) {
                 Toast.makeText(this, "Incomplete Credentials, Re-Login", Toast.LENGTH_LONG).show();
@@ -171,10 +172,7 @@ public class ChatActivity extends AppCompatActivity {
         app.firestore.collection(KeyUtils.firebaseMessageCollectionKey)
                 .add(message)
                 .addOnCompleteListener(task -> {
-                   if (task.isSuccessful()) {
-                       etMessage.setText("");
-                   }
-                   else {
+                   if (!(task.isSuccessful())) {
                        Toast.makeText(this, "Unable to Send, Try Again", Toast.LENGTH_LONG).show();
                    }
                 });
