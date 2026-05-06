@@ -141,7 +141,7 @@ public class HomeFragment extends Fragment
         tvRole.setText(sPref.getString(KeyUtils.rolePrefKey, ""));
         tvName.setText(sPref.getString(KeyUtils.namePrefKey, ""));
         Random random = new Random();
-        tvMonth.setText(monthsOfYear.get(random.nextInt(13)));
+        tvMonth.setText(monthsOfYear.get(random.nextInt(12)));
         simpleDateFormat = new SimpleDateFormat(KeyUtils.dateFormate, Locale.US);
 
     }
