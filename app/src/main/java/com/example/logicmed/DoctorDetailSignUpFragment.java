@@ -40,7 +40,6 @@ public class DoctorDetailSignUpFragment extends Fragment implements SubCategorie
     private List<Schedule> timingsOfDoctors;
     private float fee;
     private float timeSlot;
-
     public interface setOnSignUpListener {
         void setDataOnSignUp(List<String> categoriesOfDoctor, List<Schedule> timingsOfDoctors, float fee, float timeSlot);
     }
@@ -115,14 +114,15 @@ public class DoctorDetailSignUpFragment extends Fragment implements SubCategorie
                     com.google.android.material.R.style.Widget_MaterialComponents_Chip_Filter));
 
             chip.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                if (isChecked) {
-                    formAndToTImePicker(chip, dayOfWeek);
-                }
-                else {
-                    int prevObjIndex = (int) chip.getTag();
-                    timingsOfDoctors.remove(prevObjIndex);
-                    chip.setText(dayOfWeek);
-                    chip.setTag(null);
+                if (buttonView.isPressed()) {
+                    if (isChecked) {
+                        formAndToTImePicker(chip, dayOfWeek);
+                    } else {
+                        int prevObjIndex = (int) chip.getTag();
+                        timingsOfDoctors.remove(prevObjIndex);
+                        chip.setText(dayOfWeek);
+                        chip.setTag(null);
+                    }
                 }
                 chip.setChecked(isChecked);
             });
@@ -136,13 +136,19 @@ public class DoctorDetailSignUpFragment extends Fragment implements SubCategorie
             String fromTime = String.format(Locale.US, "%02d:%02d", hour, minutes);
 
             TimePickerDialog toTimePickerDialogue = new TimePickerDialog(context, (view2, hourEnd, minutesEnd) -> {
-                String endTime = String.format(Locale.US, "%02d:%02d", hourEnd, minutesEnd);
+                if (hourEnd <= hour) {
+                    Toast.makeText(context, "End Time must be Greater then Start Time", Toast.LENGTH_SHORT).show();
+                    chip.setChecked(false);
+                }
+                else {
+                    String endTime = String.format(Locale.US, "%02d:%02d", hourEnd, minutesEnd);
 
-                Schedule schedule = new Schedule(dayOfWeek, fromTime, endTime);
-                String textForClickableChip = dayOfWeek + " ( " + fromTime + " - " + endTime + " ) ";
-                chip.setText(textForClickableChip);
-                timingsOfDoctors.add(schedule);
-                chip.setTag(timingsOfDoctors.indexOf(schedule));
+                    Schedule schedule = new Schedule(dayOfWeek, fromTime, endTime);
+                    String textForClickableChip = dayOfWeek + " ( " + fromTime + " - " + endTime + " ) ";
+                    chip.setText(textForClickableChip);
+                    timingsOfDoctors.add(schedule);
+                    chip.setTag(timingsOfDoctors.indexOf(schedule));
+                }
             }, 5, 0, false);
 
             toTimePickerDialogue.setTitle("To");
