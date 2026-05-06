@@ -46,7 +46,8 @@
             android:layout_height="wrap_content"
             android:hint="@string/emailHint"
             android:inputType="textEmailAddress"
-            android:textColor="@color/text_primary"/>
+            android:textColor="@color/text_primary"
+            android:nextFocusForward="@id/signup_role"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <LinearLayout
@@ -69,7 +70,8 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/roleHint"
                 android:inputType="text"
-                android:textColor="@color/text_primary"/>
+                android:textColor="@color/text_primary"
+                android:nextFocusForward="@id/signup_location"/>
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="0dp"
@@ -82,7 +84,8 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/locationHint"
                 android:inputType="text"
-                android:textColor="@color/text_primary"/>
+                android:textColor="@color/text_primary"
+                android:nextFocusForward="@id/signup_pass"/>
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 

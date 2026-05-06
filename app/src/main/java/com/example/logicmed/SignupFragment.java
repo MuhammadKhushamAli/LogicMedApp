@@ -14,9 +14,11 @@ import androidx.fragment.app.FragmentContainerView;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ProgressBar;
@@ -156,6 +158,34 @@ public class SignupFragment extends Fragment
             }
             fragmentContainerView.setVisibility(View.VISIBLE);
             viewModelProvider.get(SignupViewModel.class).setCurrentPage(1);
+        });
+        atvRole.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                atLocation.requestFocus();
+                return true;
+            }
+            return false;
+        });
+        atvRole.setOnKeyListener((v, keyCode, event) -> {
+            if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
+                atLocation.requestFocus();
+                return true;
+            }
+            return false;
+        });
+        atLocation.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                tePassword.requestFocus();
+                return true;
+            }
+            return false;
+        });
+        atLocation.setOnKeyListener((v, keyCode, event) -> {
+            if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
+                tePassword.requestFocus();
+                return true;
+            }
+            return false;
         });
     }
 
