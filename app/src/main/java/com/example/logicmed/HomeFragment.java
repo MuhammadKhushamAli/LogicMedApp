@@ -38,6 +38,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Random;
 
 public class HomeFragment extends Fragment
         implements AppointmentRecyclerAdapter.setOnClickListener {
@@ -123,23 +124,24 @@ public class HomeFragment extends Fragment
         SharedPreferences sPref = app.sPrefUser;
 
         monthsOfYear = new ArrayList<>(Arrays.asList(
-                "January",
-                "February",
-                "March",
-                "April",
-                "May",
-                "June",
-                "July",
-                "August",
-                "September",
-                "October",
-                "November",
-                "December"
+                "Trust",
+                "Clarity",
+                "Empathy",
+                "Patience",
+                "Honesty",
+                "Listening",
+                "Respect",
+                "Precision",
+                "Support",
+                "Consent",
+                "Diligence",
+                "Resilience"
         ));
 
         tvRole.setText(sPref.getString(KeyUtils.rolePrefKey, ""));
         tvName.setText(sPref.getString(KeyUtils.namePrefKey, ""));
-        tvMonth.setText(monthsOfYear.get(0));
+        Random random = new Random();
+        tvMonth.setText(monthsOfYear.get(random.nextInt(13)));
         simpleDateFormat = new SimpleDateFormat(KeyUtils.dateFormate, Locale.US);
 
     }
