@@ -93,7 +93,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ImageButton ibLogout = toolbar.findViewById(R.id.logout_btn);
         ibLogout.setOnClickListener(v -> {
             app.firebaseAuth.signOut();
-            app.sPrefUserEdit.clear().apply();
+            app.sPrefUserEdit.clear()
+                    .putBoolean(KeyUtils.isFirstTimePrefKey, false)
+                    .apply();
             startActivity(
                     new Intent(
                             this,
