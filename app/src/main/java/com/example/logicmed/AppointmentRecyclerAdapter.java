@@ -43,22 +43,27 @@ public class AppointmentRecyclerAdapter extends FirestoreRecyclerAdapter<Appoint
 
     @Override
     protected void onBindViewHolder(@NonNull AppointmentViewHoler holder, int position, @NonNull Appointment model) {
-        simpleDateFormat = new SimpleDateFormat(KeyUtils.dateFormate, Locale.US);
-        Date date = new Date();
-        String currentDate = simpleDateFormat.format(date);
-
-        simpleDateFormat = new SimpleDateFormat(KeyUtils.timeFormate, Locale.US);
+        Date currentDate = null;
+        Date appDate = null;
         Date currentTime = null;
         Date endTime = null;
         try {
+            Date date = new Date();
+            simpleDateFormat = new SimpleDateFormat(KeyUtils.dateFormate, Locale.US);
+            currentDate = simpleDateFormat.parse(simpleDateFormat.format(date));
+            appDate = simpleDateFormat.parse(simpleDateFormat.format(model.getDate()));
+
+            simpleDateFormat = new SimpleDateFormat(KeyUtils.timeFormate, Locale.US);
             currentTime = simpleDateFormat.parse(simpleDateFormat.format(date));
             endTime = simpleDateFormat.parse(model.getTimeSlot().split(" - ")[1]);
 
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
-
-        if (currentDate.equals(model.getDate()) && Objects.requireNonNull(endTime).before(currentTime)) {
+        if (Objects.requireNonNull(appDate).before(currentDate)) {
+            holder.itemView.setVisibility(View.GONE);
+        }
+        else if (Objects.requireNonNull(appDate).before(currentDate) && Objects.requireNonNull(endTime).before(currentTime)) {
             holder.itemView.setVisibility(View.GONE);
         }
         else {
