@@ -31,8 +31,10 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.firestore.Query;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -54,6 +56,7 @@ public class HomeFragment extends Fragment
     private MaterialAlertDialogBuilder materialAlertDialogBuilder;
     private String currentAppointmentID;
     private String currentAppointmentFeedback;
+    private SimpleDateFormat simpleDateFormat;
 
     public HomeFragment() {
     }
@@ -137,6 +140,8 @@ public class HomeFragment extends Fragment
         tvRole.setText(sPref.getString(KeyUtils.rolePrefKey, ""));
         tvName.setText(sPref.getString(KeyUtils.namePrefKey, ""));
         tvMonth.setText(monthsOfYear.get(0));
+        simpleDateFormat = new SimpleDateFormat(KeyUtils.dateFormate, Locale.US);
+
     }
     private void monthsIterator() {
         ibNext.setOnClickListener(v -> {
@@ -153,14 +158,17 @@ public class HomeFragment extends Fragment
         });
     }
     private void getAppointments() {
-        Query query = null;
+        String currentDate = simpleDateFormat.format(new Date());
+
+        Query query = app.firestore.collection(KeyUtils.firebaseAppointmentCollectionKey)
+                .whereGreaterThanOrEqualTo(Appointment.DATE_FIELD, currentDate)
+                .whereEqualTo(Appointment.STATUS_ID_FIELD, Appointment.PENDING_STATUS);
+
         if (app.sPrefUser.getString(KeyUtils.rolePrefKey, KeyUtils.patientKey).equals(KeyUtils.doctorKey)) {
-            query = app.firestore.collection(KeyUtils.firebaseAppointmentCollectionKey)
-                    .whereEqualTo(Appointment.DOCTOR_ID_FIELD, app.firebaseAuth.getCurrentUser().getUid());
+            query.whereEqualTo(Appointment.DOCTOR_ID_FIELD, app.firebaseAuth.getCurrentUser().getUid());
         }
         else {
-            query = app.firestore.collection(KeyUtils.firebaseAppointmentCollectionKey)
-                    .whereEqualTo(Appointment.PATIENT_ID_FIELD, app.firebaseAuth.getCurrentUser().getUid());
+            query.whereEqualTo(Appointment.PATIENT_ID_FIELD, app.firebaseAuth.getCurrentUser().getUid());
         }
 
         FirestoreRecyclerOptions<Appointment> options = new FirestoreRecyclerOptions.Builder<Appointment>()

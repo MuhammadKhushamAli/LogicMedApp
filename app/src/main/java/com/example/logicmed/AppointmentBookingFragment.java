@@ -143,7 +143,7 @@ public class AppointmentBookingFragment extends Fragment
         rvSlots = view.findViewById(R.id.appointment_booking_time_slots_rv);
         tvSlotsTitle = view.findViewById(R.id.appointment_booking_timeslots_title);
         btnSubmit = view.findViewById(R.id.appointment_booking_submit_button);
-        simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        simpleDateFormat = new SimpleDateFormat(KeyUtils.dateFormate, Locale.US);
         tvSlotsTitle.setVisibility(View.INVISIBLE);
         rvSlots.setHasFixedSize(true);
         currentSelectedSlot = null;

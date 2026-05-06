@@ -18,11 +18,18 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.Objects;
+
 public class AppointmentRecyclerAdapter extends FirestoreRecyclerAdapter<Appointment, AppointmentRecyclerAdapter.AppointmentViewHoler> {
 
     private MyApplication app;
     private setOnClickListener listener;
     private Context context;
+    private SimpleDateFormat simpleDateFormat;
 
     public interface setOnClickListener {
         void onChangeStatus(String apID);
@@ -36,6 +43,27 @@ public class AppointmentRecyclerAdapter extends FirestoreRecyclerAdapter<Appoint
 
     @Override
     protected void onBindViewHolder(@NonNull AppointmentViewHoler holder, int position, @NonNull Appointment model) {
+        simpleDateFormat = new SimpleDateFormat(KeyUtils.dateFormate, Locale.US);
+        Date date = new Date();
+        String currentDate = simpleDateFormat.format(date);
+
+        simpleDateFormat = new SimpleDateFormat(KeyUtils.timeFormate, Locale.US);
+        Date currentTime = null;
+        Date endTime = null;
+        try {
+            currentTime = simpleDateFormat.parse(simpleDateFormat.format(date));
+            endTime = simpleDateFormat.parse(model.getTimeSlot().split(" - ")[1]);
+
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+
+        if (currentDate.equals(model.getDate()) && Objects.requireNonNull(endTime).before(currentTime)) {
+            holder.itemView.setVisibility(View.GONE);
+        }
+        else {
+            holder.itemView.setVisibility(View.VISIBLE);
+        }
         ParticipantDetail participantDetail;
         holder.tvStatus.setText(model.getStatus());
         holder.tvClick.setVisibility(View.VISIBLE);

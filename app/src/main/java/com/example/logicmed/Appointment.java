@@ -17,6 +17,7 @@ public class Appointment implements Parcelable {
     public static final String CHECKUP_FEEDBACK_FIELD = "checkUpFeedBack";
     public static final String RESOLVED_STATUS = "Resolved";
     public static final String PENDING_STATUS = "Pending";
+    public static final String DATE_FIELD = "date";
     private String patientId;
     private String doctorId;
     private ParticipantDetail patientDetails;

@@ -21,4 +21,6 @@ public class KeyUtils {
     static public final String chatUIDIntentKey = "chatUIDIntent";
     static public final String userProfileUrlIntentKey = "userProfile";
     static public final String userNameIntentKey = "userName";
+    static public final String dateFormate = "yyyy/MM/dd";
+    static public final String timeFormate = "HH:mm";
 }
