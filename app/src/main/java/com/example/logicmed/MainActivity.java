@@ -2,6 +2,7 @@ package com.example.logicmed;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
+import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -29,7 +31,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     private BottomNavigationView bottomNavigationView;
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
@@ -122,6 +124,7 @@ public class MainActivity extends AppCompatActivity{
         );
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+        navigationView.setNavigationItemSelectedListener(this);
     }
     private void linkFragsToBottomNavBar() {
         bottomNavigationView.setOnItemSelectedListener(item -> {
@@ -180,4 +183,22 @@ public class MainActivity extends AppCompatActivity{
         });
     }
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        int id = menuItem.getItemId();
+        Fragment selectedFragment = null;
+
+        if (id == R.id.drawer_all_appointments_frag) {
+            selectedFragment = new AllAppointmentsFragment();
+        }
+        if (selectedFragment != null) {
+            fragmentManager.beginTransaction()
+                    .replace(R.id.main_fragment_container, selectedFragment)
+                    .addToBackStack(null)
+                    .commit();
+            drawerLayout.closeDrawer(GravityCompat.START);
+            return true;
+        }
+        return false;
+    }
 }

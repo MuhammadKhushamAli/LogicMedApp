@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<group>
+    <item
+        android:id="@+id/drawer_all_appointments_frag"
+        android:title="@string/allAppointmentsTitle"
+        android:icon="@drawable/all_app"
+        />
+</group>
+</menu>
