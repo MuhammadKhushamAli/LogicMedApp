@@ -63,7 +63,7 @@ public class AppointmentRecyclerAdapter extends FirestoreRecyclerAdapter<Appoint
         if (Objects.requireNonNull(appDate).before(currentDate)) {
             holder.itemView.setVisibility(View.GONE);
         }
-        else if (Objects.requireNonNull(appDate).before(currentDate) && Objects.requireNonNull(endTime).before(currentTime)) {
+        else if (Objects.requireNonNull(appDate).equals(currentDate) && Objects.requireNonNull(endTime).before(currentTime)) {
             holder.itemView.setVisibility(View.GONE);
         }
         else {
