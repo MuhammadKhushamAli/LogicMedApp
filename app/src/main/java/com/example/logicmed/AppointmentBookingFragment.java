@@ -32,6 +32,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firestore.v1.TargetOrBuilder;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -72,6 +73,7 @@ public class AppointmentBookingFragment extends Fragment
     private String currentSelectedDay;
     private String currentSelectedDate;
     private SimpleDateFormat simpleDateFormat;
+    private SimpleDateFormat simpleDateFormatTime;
 
     public interface setOnClickListener {
         void onClose();
@@ -146,6 +148,7 @@ public class AppointmentBookingFragment extends Fragment
         tvSlotsTitle = view.findViewById(R.id.appointment_booking_timeslots_title);
         btnSubmit = view.findViewById(R.id.appointment_booking_submit_button);
         simpleDateFormat = new SimpleDateFormat(KeyUtils.dateFormate, Locale.US);
+        simpleDateFormatTime = new SimpleDateFormat(KeyUtils.timeFormate, Locale.US);
         tvSlotsTitle.setVisibility(View.INVISIBLE);
         rvSlots.setHasFixedSize(true);
         currentSelectedSlot = null;
@@ -247,13 +250,38 @@ public class AppointmentBookingFragment extends Fragment
 
            int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
 
-           for (SlotsOfDay slotsOfDay : list_of_available_slots) {
+           Date dateNow = new Date();
+           String todayDate = simpleDateFormat.format(dateNow);
+            Date nowTime = null;
+            try {
+                nowTime = simpleDateFormatTime.parse(simpleDateFormatTime.format(dateNow));
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
+
+            for (SlotsOfDay slotsOfDay : list_of_available_slots) {
                int dayOfAppointment = calenderDayNumberFinder(slotsOfDay.getDay());
+
                if (dayOfWeek == dayOfAppointment) {
                    currentSelectedDay = slotsOfDay.getDay();
                    Date date = calendar.getTime();
                    currentSelectedDate = simpleDateFormat.format(date);
                    List<String> finalSlots = new ArrayList<>(slotsOfDay.getSlots());
+
+                   if (currentSelectedDate.equals(todayDate)) {
+                       Date finalNowTime = nowTime;
+                       finalSlots.removeIf(slot -> {
+                          try {
+                              String slotStartTime = slot.split(" - ")[0];
+                              Date slotStart = simpleDateFormatTime.parse(slotStartTime);
+                              return !(slotStart.after(finalNowTime));
+                          }
+                          catch (ParseException e) {
+                              return false;
+                          }
+                      });
+                   }
+
                    for (Appointment appointment: list_of_available_appointments) {
                        if (appointment.getDate().equals(currentSelectedDate) && appointment.getDay().equals(currentSelectedDay)) {
                            finalSlots.remove(appointment.getTimeSlot());
