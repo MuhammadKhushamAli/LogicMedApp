@@ -51,7 +51,7 @@ public class AppointmentRecyclerAdapter extends FirestoreRecyclerAdapter<Appoint
             Date date = new Date();
             simpleDateFormat = new SimpleDateFormat(KeyUtils.dateFormate, Locale.US);
             currentDate = simpleDateFormat.parse(simpleDateFormat.format(date));
-            appDate = simpleDateFormat.parse(simpleDateFormat.format(model.getDate()));
+            appDate = simpleDateFormat.parse(model.getDate());
 
             simpleDateFormat = new SimpleDateFormat(KeyUtils.timeFormate, Locale.US);
             currentTime = simpleDateFormat.parse(simpleDateFormat.format(date));
