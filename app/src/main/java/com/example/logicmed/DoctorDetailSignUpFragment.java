@@ -24,6 +24,7 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 public class DoctorDetailSignUpFragment extends Fragment implements SubCategoriesAdapter.setOnclickListener{
@@ -132,10 +133,10 @@ public class DoctorDetailSignUpFragment extends Fragment implements SubCategorie
     }
     private void formAndToTImePicker(Chip chip, String dayOfWeek) {
         TimePickerDialog fromTimePickerDialogue = new TimePickerDialog(context, (view, hour, minutes) -> {
-            String fromTime = hour + ":" + minutes;
+            String fromTime = String.format(Locale.US, "%02d:%02d", hour, minutes);
 
             TimePickerDialog toTimePickerDialogue = new TimePickerDialog(context, (view2, hourEnd, minutesEnd) -> {
-                String endTime = hourEnd + ":" + minutesEnd;
+                String endTime = String.format(Locale.US, "%02d:%02d", hourEnd, minutesEnd);
 
                 Schedule schedule = new Schedule(dayOfWeek, fromTime, endTime);
                 String textForClickableChip = dayOfWeek + " ( " + fromTime + " - " + endTime + " ) ";
