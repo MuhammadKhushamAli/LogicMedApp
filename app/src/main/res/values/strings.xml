@@ -59,4 +59,5 @@
     <string name="clickToChangeStatus">Click To Change Status\n</string>
     <string name="aiChatTitle">Dr. LogicMed</string>
     <string name="sendButton">Send Message</string>
+    <string name="drFeedback">Your Feedback</string>
 </resources>

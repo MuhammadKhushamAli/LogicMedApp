@@ -14,6 +14,9 @@ public class Appointment implements Parcelable {
     public static final String PATIENT_ID_FIELD = "patientId";
     public static final String DOCTOR_ID_FIELD = "doctorId";
     public static final String STATUS_ID_FIELD = "status";
+    public static final String CHECKUP_FEEDBACK_FIELD = "checkUpFeedBack";
+    public static final String RESOLVED_STATUS = "Resolved";
+    public static final String PENDING_STATUS = "Pending";
     private String patientId;
     private String doctorId;
     private ParticipantDetail patientDetails;
@@ -44,7 +47,7 @@ public class Appointment implements Parcelable {
         this.timeSlot = timeSlot;
         this.patientDetails = patientDetails;
         this.doctorDetails = doctorDetails;
-        this.status = "Pending";
+        this.status = PENDING_STATUS;
     }
 
     public String getStatus() {

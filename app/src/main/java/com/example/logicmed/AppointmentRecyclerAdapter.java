@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 public class AppointmentRecyclerAdapter extends FirestoreRecyclerAdapter<Appointment, AppointmentRecyclerAdapter.AppointmentViewHoler> {
 
@@ -37,31 +38,46 @@ public class AppointmentRecyclerAdapter extends FirestoreRecyclerAdapter<Appoint
     protected void onBindViewHolder(@NonNull AppointmentViewHoler holder, int position, @NonNull Appointment model) {
         ParticipantDetail participantDetail;
         holder.tvStatus.setText(model.getStatus());
+        holder.tvClick.setVisibility(View.VISIBLE);
 
         if (app.sPrefUser.getString(KeyUtils.rolePrefKey, KeyUtils.patientKey).equals(KeyUtils.doctorKey)) {
-            holder.tvClick.setVisibility(View.VISIBLE);
             participantDetail = model.getPatientDetails();
-
-            holder.itemView.setOnClickListener(v -> {
-                int pos = holder.getBindingAdapterPosition();
-                if (pos != RecyclerView.NO_POSITION) {
-                    String apId = getSnapshots().getSnapshot(pos).getId();
-
-                    new AlertDialog.Builder(context)
-                            .setTitle("Change the Status")
-                            .setPositiveButton("Resolved", (a, b) -> {
-                                listener.onChangeStatus(apId);
-                            })
-                            .setNegativeButton("Not Change", (a, b) -> {
-
-                            }).show();
-                }
-            });
         }
         else {
             participantDetail = model.getDoctorDetails();
-            holder.tvClick.setVisibility(View.GONE);
+
+            if (model.getStatus().equals(Appointment.PENDING_STATUS) && model.getCheckUpFeedBack() == null) {
+                holder.tvClick.setVisibility(View.GONE);
+            }
+         }
+        String tvClickMsg;
+        if (model.getStatus().equals(Appointment.RESOLVED_STATUS) && model.getCheckUpFeedBack() != null && (!model.getCheckUpFeedBack().isEmpty())) {
+            tvClickMsg = "Click To View Status";
         }
+        else {
+            tvClickMsg = "Click To Change Status";
+        }
+        holder.tvClick.setText(tvClickMsg);
+
+        holder.itemView.setOnClickListener(v -> {
+            int pos = holder.getBindingAdapterPosition();
+            if (pos != RecyclerView.NO_POSITION) {
+                if (model.getStatus().equals(Appointment.RESOLVED_STATUS) && model.getCheckUpFeedBack() != null && (!model.getCheckUpFeedBack().isEmpty())) {
+                    new MaterialAlertDialogBuilder(context)
+                            .setTitle("Your Appointment Feedback")
+                            .setMessage(model.getCheckUpFeedBack())
+                            .setPositiveButton("OK", (a, b) -> {})
+                            .show();
+                }
+                else {
+                    if (app.sPrefUser.getString(KeyUtils.rolePrefKey, KeyUtils.patientKey).equals(KeyUtils.doctorKey)) {
+                        String apId = getSnapshots().getSnapshot(pos).getId();
+
+                        listener.onChangeStatus(apId);
+                    }
+                }
+            }
+        });
 
         holder.tvName.setText(participantDetail.getName());
         String dateText = model.getDate() + " @ " + model.getTimeSlot();
