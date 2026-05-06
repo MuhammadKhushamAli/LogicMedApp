@@ -34,16 +34,6 @@ public class MessageRecyclerAdapter extends FirestoreRecyclerAdapter<Message, Me
         holder.tvMessage.setVisibility(View.GONE);
         holder.ivImage.setVisibility(View.GONE);
 
-//        ConstraintSet constraintSet = new ConstraintSet();
-//        constraintSet.clone((ConstraintLayout) holder.itemView);
-//
-//        if (model.getSenderId().equals(uId)) {
-//            constraintSet.setHorizontalBias(R.id.message_content_section, 1.0f);
-//        }
-//        else {
-//            constraintSet.setHorizontalBias(R.id.message_content_section, 0.0f);
-//        }
-
         if (model.getIsImage()) {
             Glide.with(holder.itemView)
                     .load(model.getMessage())
