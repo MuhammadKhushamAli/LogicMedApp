@@ -45,7 +45,7 @@ public class ChatPersonRecyclerAdapter extends FirestoreRecyclerAdapter<Chat, Ch
             return;
         }
 
-        if(!(detail.getProfileUrl().isEmpty())) {
+        if((detail.getProfileUrl() != null)) {
             Glide.with(holder.itemView)
                     .load(detail.getProfileUrl())
                     .placeholder(R.drawable.avatar)
