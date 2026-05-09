@@ -27,7 +27,7 @@
 
 | Role        | Capabilities |
 |-------------|-------------|
-| **Patient** | Browse & search doctors, book appointments, chat with doctors, consult an AI medical agent, provide voice-based feedback, manage profile with photo upload |
+| **Patient** | Browse & search doctors, book appointments, chat with doctors, consult an AI medical agent, manage profile with photo upload |
 | **Doctor**  | Register with specialties / schedule / fee, view & manage appointments, chat with patients, resolve appointments with voice feedback |
 
 The app features a **futuristic dark medical aesthetic** with a curated teal/amber/purple accent palette, glassmorphism panels, and smooth entrance animations.
