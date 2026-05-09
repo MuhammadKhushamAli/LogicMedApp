@@ -70,10 +70,10 @@ public class AllAppointmentsFragment extends Fragment implements AllAppointments
 
         Query query = app.firestore.collection(KeyUtils.firebaseAppointmentCollectionKey);
         if (app.sPrefUser.getString(KeyUtils.rolePrefKey, KeyUtils.patientKey).equals(KeyUtils.doctorKey)) {
-            query.whereEqualTo(Appointment.DOCTOR_ID_FIELD, app.firebaseAuth.getCurrentUser().getUid());
+            query = query.whereEqualTo(Appointment.DOCTOR_ID_FIELD, app.firebaseAuth.getCurrentUser().getUid());
         }
         else {
-            query.whereEqualTo(Appointment.PATIENT_ID_FIELD, app.firebaseAuth.getCurrentUser().getUid());
+            query = query.whereEqualTo(Appointment.PATIENT_ID_FIELD, app.firebaseAuth.getCurrentUser().getUid());
         }
 
         FirestoreRecyclerOptions<Appointment> options = new FirestoreRecyclerOptions.Builder<Appointment>()
